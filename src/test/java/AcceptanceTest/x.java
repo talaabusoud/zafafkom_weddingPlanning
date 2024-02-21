@@ -7,7 +7,7 @@ import io.cucumber.java.en.When;
 public class x {
     @When("user click on save and flag is {string}")
     public void userClickOnSaveAndFlagIs(String string) {
-        System.out.println("jmalll");
+
 
     }
     @Then("the field {string} shoud be an error")
