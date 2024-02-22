@@ -1,16 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="org.example.zafafcom.HelloController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-    <Label fx:id="welcomeText"/>
-    <Button text="Hello!" onAction="#onHelloButtonClick"/>
-</VBox>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="back" stylesheets="@../../../backgrund.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.zafafcom.HelloController">
+   <children>
+      <Label layoutX="181.0" prefHeight="179.0" prefWidth="238.0" text="زفافكم" textFill="WHITE">
+         <font>
+            <Font name="Hayah" size="120.0" />
+         </font>
+      </Label>
+      <Label layoutX="433.0" layoutY="165.0" text="الاسم" textFill="WHITE">
+         <font>
+            <Font name="Cairo Regular" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="426.0" layoutY="228.0" text="كلمة السر" textFill="WHITE">
+         <font>
+            <Font name="Cairo Regular" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="username" alignment="CENTER_RIGHT" layoutX="183.0" layoutY="170.0" prefHeight="26.0" prefWidth="226.0" style="-fx-background-radius: 10;">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="password" alignment="CENTER_RIGHT" layoutX="183.0" layoutY="226.0" prefHeight="26.0" prefWidth="226.0" style="-fx-background-radius: 10;">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <Button fx:id="login" layoutX="184.0" layoutY="277.0" mnemonicParsing="false" onAction="#login" prefHeight="0.0" prefWidth="226.0" style="-fx-background-color: #ffffff; -fx-background-radius: 10;" text="تسجيل الدخول" textFill="#5b268b">
+         <font>
+            <Font name="Cairo Regular" size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="new_user" layoutX="288.0" layoutY="333.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" style="-fx-background-color: #5B268B;" text="انشاء حساب جديد" textAlignment="RIGHT" textFill="WHITE" />
+   </children>
+</AnchorPane>
