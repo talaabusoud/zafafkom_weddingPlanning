@@ -36,7 +36,7 @@ public class login_Admin {
         // Implement code to enter invalid username or password
     }
 
-    @Then("the appropriate \"Invalid username or password provided\" message should be displayed")
+    @Then("the appropriate \"\"Invalid username or password provided\"\" message should be displayed")
     public void theAppropriateInvalidUsernameOrPasswordProvidedMessageShouldBeDisplayed() {
         isErrorMessageDisplayed = true; // Assuming error message is displayed
         assertEquals(true, isErrorMessageDisplayed);
