@@ -2,26 +2,35 @@ package AcceptanceTest;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-
-import static org.junit.Assert.assertEquals;
+import serveses.LoginToMyAppAsServiceProvider;
+import static org.junit.Assert.*;
 
 public class logout_Service_provider {
 
-    private boolean ServiceproviderLoggedIn = true;
+
+     LoginToMyAppAsServiceProvider myApp ;
+    public logout_Service_provider(){
+        myApp = new LoginToMyAppAsServiceProvider();
+        myApp.login();
+    }
 
     @Given("that the Service provider choose to logout")
     public void thatTheServiceproviderChooseToLogout() {
-        ServiceproviderLoggedIn = false;
+
+            assertTrue(myApp.isLoggedIn());
+
     }
 
     @Then("the Service provider will be logout")
     public void theServiceproviderWillBeLogout() {
-        assertEquals(false, ServiceproviderLoggedIn);
+        myApp.logout();
+        assertFalse(myApp.isLoggedIn());
     }
 
     @Then("the the Service provider can't logout")
     public void theTheServiceproviderCanTLogout() {
-        assertEquals(true, !ServiceproviderLoggedIn);
+            assertTrue(myApp.isLoggedIn());
+
     }
 
 }

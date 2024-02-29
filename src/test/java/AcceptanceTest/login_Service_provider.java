@@ -3,41 +3,48 @@ package AcceptanceTest;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import serveses.LoginToMyAppAsServiceProvider;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
 
 public class login_Service_provider {
 
-    boolean isLoggedIn = false;
-    boolean isErrorMessageDisplayed = false;
+    LoginToMyAppAsServiceProvider myApp;
+    String password,email;
+    public login_Service_provider()
+    {
 
-    @Given("the Service provider is on the login page")
-    public void theServiceProviderIsOnTheLoginPage() {
+        myApp = new LoginToMyAppAsServiceProvider();
     }
+    @Given("that the owner is not logged in the app")
+    public void thatTheOwnerIsNotLoggedInTheApp() {
+        assertFalse(myApp.isLoggedIn());
 
-    @When("the Service provider enters valid username and password")
-    public void theServiceProviderEntersValidUsernameAndPassword() {
-        isLoggedIn = true; // Simulating successful login
     }
+    @Given("the username owner is {string}")
+    public void theUsernameOwnerIs(String email) {
+        this.email = email;
 
-    @Then("the Service provider should be successfully logged in")
-    public void theServiceProviderShouldBeSuccessfullyLoggedIn() {
-        assertEquals(true, isLoggedIn);
     }
-
-    @When("the Service provider enters invalid username {string} or password {string}")
-    public void theServiceProviderEntersInvalidUsernameOrPassword(String username, String password) {
-        isLoggedIn = false; // Simulating failed login
+    @Given("the password owner is {string}")
+    public void thePasswordOwnerIs(String password) {
+        this.password = password;
     }
+    @Then("the owner is logged in the app successfully")
+    public void theOwnerIsLoggedInTheAppSuccessfully() {
+        myApp.loggInCheck(email,password);
+        assertTrue(myApp.isLoggedIn());
 
-    @When("the Service provider leaves the username and password fields empty")
-    public void theServiceProviderLeavesTheUsernameAndPasswordFieldsEmpty() {
-        isLoggedIn = false;
-        isErrorMessageDisplayed = true;
     }
+    @Then("the owner will not login")
+    public void theOwnerWillNotLogin() {
+        myApp.loggInCheck(email,password);
+        assertFalse(myApp.isLoggedIn());
 
-    @Then("an error message should be displayed prompting the Service provider to enter both username and password")
-    public void anErrorMessageShouldBeDisplayedPromptingTheServiceProviderToEnterBothUsernameAndPassword() {
-        assertEquals(true, isErrorMessageDisplayed);
+    }
+    @Then("the message appear to tell the owner what's wrong")
+    public void theMessageAppearToTellTheOwnerWhatSWrong() {
+        myApp.errorInLogin();
     }
 }
