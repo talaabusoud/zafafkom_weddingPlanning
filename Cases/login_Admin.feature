@@ -1,24 +1,28 @@
-Feature: Admin Login
+Feature: admin login
 
-  Scenario: Successful Login with Valid Credentials
-    Given the admin is on the login page
-    When the admin enters valid username and password
-    And clicks on the login button
-    Then the admin should be successfully logged in
+  Scenario: Successful log in
+    Given that the admin is not logged in the app
+    And the username is "mohamad"
+    And the password is "1234"
+    Then  the admin is logged in the app successfully
 
-  Scenario Outline: Error Handling for Invalid Input
-    Given the admin is on the login page
-    When the admin enters invalid username "<username>" or password "<password>"
-    And clicks on the login button
-    Then the appropriate "<login_result>" message should be displayed
+  Scenario: Admin entered a wrong username
+    Given that the admin is not logged in the app
+    And the username is "wrong"
+    And the password is "1234"
+    Then the admin will not login
+    And the message appear to tell the admin what's wrong
 
-    Examples:
-      | username  | password | login_result                                             |
-      | wrong     | 123      | "Invalid username or password provided"                 |
-      | mohamad   | wrong    | "Invalid username or password provided"                 |
+  Scenario: Administrator entered a wrong password
+    Given that the admin is not logged in the app
+    And the username is "mohamad"
+    And the password is "wrong"
+    Then the admin will not login
+    And the message appear to tell the admin what's wrong
 
-  Scenario: Empty Username and Password
-    Given the admin is on the login page
-    When the admin leaves the username and password fields empty
-    And clicks on the login button
-    Then an error message should be displayed prompting the admin to enter both username and password
+  Scenario: Admin entered empty password or email
+    Given that the admin is not logged in the app
+    And the username is " "
+    And the password is " "
+    Then the admin will not login
+    And the message appear to tell the admin what's wrong

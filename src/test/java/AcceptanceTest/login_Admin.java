@@ -3,53 +3,53 @@ package AcceptanceTest;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import main.LoggerUtility;
+import serveses.LoginToMyAppAsAdmin;
 
-import static org.junit.Assert.assertEquals;
+import java.util.logging.Logger;
+
+import static org.junit.Assert.*;
+
 
 public class login_Admin {
-
-    boolean isLoggedIn = false;
-    boolean isErrorMessageDisplayed = false;
-
-    @Given("the admin is on the login page")
-    public void theAdminIsOnTheLoginPage() {
-        // Implement code to navigate to the login page
+    private static Logger logger = LoggerUtility.getLogger();
+    LoginToMyAppAsAdmin myApp;
+    String password,email;
+    public login_Admin()
+    {
+        myApp = new LoginToMyAppAsAdmin();
     }
 
-    @When("the admin enters valid username and password")
-    public void theAdminEntersValidUsernameAndPassword() {
-        // Implement code to enter valid username and password
+
+    @Given("that the admin is not logged in the app")
+    public void thatTheAdminIsNotLoggedInTheApp() {
+
+        assertFalse(myApp.isLoggedIn());
+    }
+    @Given("the username is {string}")
+    public void theUsernameIs(String email) {
+        this.email = email;
+    }
+    @Given("the password is {string}")
+    public void thePasswordIs(String password) {
+        this.password = password;
+    }
+    @Then("the admin is logged in the app successfully")
+    public void theAdminIsLoggedInTheAppSuccessfully() {
+        myApp.loggInCheck(email,password);
+        assertEquals(true,myApp.isLoggedIn());
+
+    }
+    @Then("the admin will not login")
+    public void theAdminWillNotLogin() {
+        myApp.loggInCheck(email,password);
+        assertFalse(myApp.isLoggedIn());
+        logger.info("\n");
+
+    }
+    @Then("the message appear to tell the admin what's wrong")
+    public void theMessageAppearToTellTheAdminWhatSWrong() {
+        myApp.errorInLogin();
     }
 
-    @When("clicks on the login button")
-    public void clicksOnTheLoginButton() {
-        isLoggedIn = true; // Assuming successful login
-    }
-
-    @Then("the admin should be successfully logged in")
-    public void theAdminShouldBeSuccessfullyLoggedIn() {
-        assertEquals(true, isLoggedIn);
-    }
-
-    @When("the admin enters invalid username {string} or password {string}")
-    public void theAdminEntersInvalidUsernameOrPassword(String username, String password) {
-        // Implement code to enter invalid username or password
-    }
-
-    @Then("the appropriate \"\"Invalid username or password provided\"\" message should be displayed")
-    public void theAppropriateInvalidUsernameOrPasswordProvidedMessageShouldBeDisplayed() {
-        isErrorMessageDisplayed = true; // Assuming error message is displayed
-        assertEquals(true, isErrorMessageDisplayed);
-    }
-
-    @When("the admin leaves the username and password fields empty")
-    public void theAdminLeavesTheUsernameAndPasswordFieldsEmpty() {
-        // Implement code to leave both username and password fields empty
-    }
-
-    @Then("an error message should be displayed prompting the admin to enter both username and password")
-    public void anErrorMessageShouldBeDisplayedPromptingTheAdminToEnterBothUsernameAndPassword() {
-        isErrorMessageDisplayed = true; // Assuming error message is displayed
-        assertEquals(true, isErrorMessageDisplayed);
-    }
 }

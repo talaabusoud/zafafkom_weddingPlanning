@@ -1,24 +1,28 @@
-Feature: Service provider Login
+Feature: owner login
 
-  Scenario: Successful Login with Valid Credentials
-    Given the Service provider is on the login page
-    When the Service provider enters valid username and password
-    And clicks on the login button
-    Then the Service provider should be successfully logged in
+  Scenario: Successful log in
+    Given that the owner is not logged in the app
+    And the username owner is "mo@gmail"
+    And the password owner is "123"
+    Then  the owner is logged in the app successfully
 
-  Scenario Outline: Error Handling for Invalid Input
-    Given the Service provider is on the login page
-    When the Service provider enters invalid username "<username>" or password "<password>"
-    And clicks on the login button
-    Then the appropriate "<login_result>" message should be displayed
+  Scenario: owner entered a wrong username
+    Given that the owner is not logged in the app
+    And the username owner is "wrong"
+    And the password owner is "000"
+    Then the owner will not login
+    And the message appear to tell the owner what's wrong
 
-    Examples:
-      | username  | password | login_result                                            |
-      | wrong     | 123      | "Invalid username or password provided"                 |
-      | mohamad   | wrong    | "Invalid username or password provided"                 |
+  Scenario: owner entered a wrong password
+    Given that the owner is not logged in the app
+    And the username owner is "mo@gmail"
+    And the password owner is "wrong"
+    Then the owner will not login
+    And the message appear to tell the owner what's wrong
 
-  Scenario: Empty Username and Password
-    Given the Service provider is on the login page
-    When the Service provider leaves the username and password fields empty
-    And clicks on the login button
-    Then an error message should be displayed prompting the Service provider to enter both username and password
+  Scenario: owner entered empty password or email
+    Given that the owner is not logged in the app
+    And the username owner is " "
+    And the password owner is " "
+    Then the owner will not login
+    And the message appear to tell the owner what's wrong
