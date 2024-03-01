@@ -16,7 +16,7 @@ Feature: Add Service information
     And he fill in  'phone' with '0595429100'
     And he fill in  'Price' with '1000'
     And he fill in  'Picture' with extension 'png'
-    And he presses 'save' and flag is 'true'
+    And he presses 'saved in the request list' and flag is 'true'
     Then  the Service will be saved in the request list
 
   Scenario Outline: errors with input
@@ -27,7 +27,7 @@ Feature: Add Service information
     And he fill in  'Phone' with '<Phone>'
     And he fill in  'Price' with '<Price>'
     And he fill in  'Picture' with extension '<Picture>'
-    And he presses 'save' and flag is 'true'
+    And he presses 'saved in the request list' and flag is 'true'
     Then the user shoude See '<message>'
     Examples:
     |Id|Type         |Name   |Phone       |Price|Picture|message                         |

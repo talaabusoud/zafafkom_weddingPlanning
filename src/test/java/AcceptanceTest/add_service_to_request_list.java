@@ -3,13 +3,15 @@ package AcceptanceTest;
 import entity.Service;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import main.LoggerUtility;
 import serveses.LoginToMyAppAsServiceProvider;
 import database.RequestToAddServiceDB;
-
+import java.util.logging.Logger;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class add_service_to_request_list {
+    private static Logger logger = LoggerUtility.getLogger();
     boolean result_test_input = false;
     LoginToMyAppAsServiceProvider myApp ;
     Service service;
@@ -24,12 +26,12 @@ public class add_service_to_request_list {
     }
     @Then("the field {string} should be with error")
     public void theFieldShouldBeWithError(String string) {
-        System.out.println("pleas enter information first !");
+        theUserShoudeSee("pleas enter information first !\n");
         assertEquals(false,false);
     }
     @Then("the image {string} should be with error")
     public void theImageShouldBeWithError(String string) {
-        System.out.println("pleas enter Picture first !");
+        theUserShoudeSee("pleas enter information first !\n");
         assertEquals(false,false);
     }
 
@@ -69,13 +71,14 @@ public class add_service_to_request_list {
     public void theServiceWillBeSavedInTheRequestList() {
         if(result_test_input==true){
         RequestToAddServiceDB.addService(service); assertEquals(true,true);}
-        else theUserShoudeSee("Please make sure you enter the data correctly") ;
+        else theUserShoudeSee("Please make sure you enter the data correctly\n") ;
         assertEquals(false,false);
     }
 
     @When("he presses {string} and flag is {string}")
     public void hePressesAndFlagIs(String string, String string2) {
-        assertEquals(true,true);
+        if (string.equals("saved in the request list")&&string2.equals("true"))
+        {theServiceWillBeSavedInTheRequestList();}else theUserShoudeSee("Please make sure you enter the data correctly\n");
     }
     @When("he fill in  {string} with extension {string}")
     public void heFillInWithExtension(String string, String string2) {
@@ -85,6 +88,7 @@ public class add_service_to_request_list {
     }
     @Then("the user shoude See {string}")
     public void theUserShoudeSee(String string) {
+        logger.info(string);
         assertEquals(false,false);
 
     }
