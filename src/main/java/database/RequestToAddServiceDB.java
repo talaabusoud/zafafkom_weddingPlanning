@@ -1,76 +1,69 @@
 package database;
 
-
+import entity.Service;
+import entity.Reserve;
+import entity.ServiceProvider;
 import main.LoggerUtility;
-import entity.Apartment;
-import entity.House;
-import entity.HousingOwners;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 public class RequestToAddServiceDB {
-    private static List<House> houses = new ArrayList<>();
+    private static List<Service> services = new ArrayList<>();
     private static final Logger logger = LoggerUtility.getLogger();
-    static HousingOwners housingOwners = new HousingOwners();
+    static ServiceProvider serviceProvider = new ServiceProvider();
 
     private RequestToAddServiceDB() {
         throw new IllegalStateException("Utility class");
     }
 
-    public static void addHouse(House h) {
-
-        houses.add(h);
+    public static void addService(Service service) {
+        services.add(service);
     }
 
-    public static List<House> getHouses() {
-        return houses;
+    public static List<Service> getServices() {
+        return services;
     }
 
-    public static void displayHouse(House house) {
-        logger.info("id: " + house.getId() + "\n" + "the Owner: " + house.getOwner().getName()+ "\n" + "the location: "
-                + house.getLocation() + "\n" + "the services: " + house.getServices() + "\n" + "has Furniture Window: "
-                + house.getHasFurnitureWindow() + "\n" + "the number of Apartments: " + house.getTotalApartments() + "\n"+ "Photo: " + house.getPhoto() + "\n"+ "the number of floor: " + house.getNumOfFloor() + "\n");
+    public static void displayService(Service service) {
+        logger.info("Type: " + service.getType() + "\n"
+                + "Name: " + service.getName() + "\n"
+                + "Price: " + service.getPrice() + "\n"
+                + "Phone: " + service.getPhone() + "\n"
+                + "Image: " + service.getImage() + "\n");
 
         display();
-        logger.info("Apartments in this house:\n");
-        for (Apartment apartment : house.getApartments()) {
-            display();
-            logger.info("Apartment Number: " + apartment.getNumber() + "\n"
-                    + "Area: " + apartment.getArea() + "\n"
-                    + "Number of Rooms: " + apartment.getNumofroom() + "\n"
-                    + "Number of Bathrooms: " + apartment.getNumofbathrooms()+ "\n"
-                    //+ "Number of Bedrooms: " + apartment.getNumOfBedrooms() + "\n"
-                    + "Rent: " + apartment.getRent() + "\n"
-                    + "Total Number of Tenants: " + apartment.getNumOfTenant() + "\n"
-                    + "Has a Balcony: " + (apartment.isBalcony() ? "Yes" : "No") + "\n"
-                    + "Rent Payment Date: " + apartment.getRentPaymentDate() + "\n"
-                    + "Photo: " + apartment.getPhoto() + "\n"
-                    + "Floor's Number: " + apartment.getFloorNum()+ "\n");
-
+        logger.info("Reservations for this service:\n");
+        for (Reserve reservation : service.getReservations()) {
+            logger.info("Reservation ID: " + reservation.getId() + "\n"
+                    + "Service Name: " + reservation.getServiceName() + "\n"
+                    + "Customer Name: " + reservation.getCustomerName() + "\n"
+                    + "Event Date: " + reservation.getEventDate() + "\n"
+                    + "Event Location: " + reservation.getEventLocation() + "\n"
+                    + "Total Price: " + reservation.getTotalPrice() + "\n"
+                    + "Status: " + reservation.getStatus() + "\n");
             display();
         }
-
     }
 
-    public static void displayHouses(List<House> houses) {
-        logger.info("------------Houses------------\n");
+    public static void displayServices(List<Service> services) {
+        logger.info("------------Services------------\n");
 
-        for(House h:houses)
-        {
-            displayHouse(h);
+        for (Service service : services) {
+            displayService(service);
         }
-
-    }
-    public static void clearTheRequestList(){
-        houses.clear();
     }
 
-    public static void cancelRequest(int id ){
-        houses.removeIf(h -> h.getId() == id);
+    public static void clearTheRequestList() {
+        services.clear();
     }
-    public static void display(){
+
+    public static void cancelRequest(int id) {
+        services.removeIf(service -> service.getId() == id);
+    }
+
+    public static void display() {
         logger.info("------------------------\n");
     }
 }
