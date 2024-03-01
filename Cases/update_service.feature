@@ -1,27 +1,22 @@
-Feature: Update Service Information
+Feature: Admin updates a service
 
-  Scenario: Admin Cancels Service Update
-    Given the admin is on the service update page
-    When the admin decides to cancel the update
-    And clicks on the 'Cancel' button
-    Then all service information fields should be cleared
+  Scenario Outline: Successful update process
+    Given the service list has a service with ID <ExistingID>
+    When the admin updates the service with ID <ExistingID> to have a new price <NewPrice> and status <NewStatus>
+    Then the service with ID <ExistingID> should have its price updated to <NewPrice> and its status updated to <NewStatus>
 
-  Scenario: Admin Updates Service Information Successfully
-    Given the admin is on the service update page
-    And there is a service with ID 0
-    When the admin updates the service information with valid values
-    And clicks on the 'Update' button
-    Then the service information should be updated successfully
-
-  Scenario Outline: Error Handling for Invalid Service Information
-    When the admin updates the service information with invalid values
-    And clicks on the 'Update' button
-    Then an error '<Message>' should be displayed
     Examples:
-      | Type         | Name    | Phone       | Price | Picture | Message                             |
-      | <InvalidType>| Ro52yal | 0595429100  | 100   | png     | Invalid Type, please check it       |
-      | Wedding Hall | Royal   | 0595429100aa| 100   | png     | Invalid Phone, please check it       |
-      | Wedding Hall | Royal   | 059542910000| 100   | png     | Invalid Phone, please check it       |
-      | Wedding Hall | Royal   | 0595429100  | 100ax | png     | Invalid Price, please check it       |
-      | Wedding Hall | Royal   | 0595429100  | 100   | abc     | Invalid Picture extension, please check it |
+      | ExistingID | NewPrice | NewStatus |
+      | 1          | 150.0    | available |
+      | 1          | 40.0     | discontinued |
 
+  Scenario Outline: Update existing service with invalid price and status
+    Given that the admin wants to update the service with ID <ExistingID> to have an invalid <NewPrice> and/or invalid <NewStatus>
+    When the admin updates the service with ID <ExistingID>
+    Then the error message should be equal to "<Message>"
+
+    Examples:
+      | ExistingID | NewPrice | NewStatus | Message                           |
+      | 1          | -20.0    | available | Invalid Price!                    |
+      | 1          | 19.5     | available | Invalid Price!                    |
+      | 1          | 100      |           | Both Price and Status are missing|

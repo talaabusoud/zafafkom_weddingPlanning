@@ -10,7 +10,11 @@ import java.util.logging.Logger;
 
 public class ServiceDB {
     private static final List<Service> SERVICES = new ArrayList<>();
+    static {
+        SERVICES.add(new Service(1, "Hebron", "Hall", "available", "Royal", 15000));
+        SERVICES.add(new Service(2, "Hebron", "Food", "available", "Himuni", 10000));
 
+    }
     private static final Logger logger = LoggerUtility.getLogger();
 
     private ServiceDB() {

@@ -3,23 +3,35 @@ package entity;
 import java.util.List;
 
 public class Service {
-   private int id;
-   private String location;
-   private String type;
-   private String name;
-   private double price;
-   private String phone;
-   private String image;
-   private List<String> services;
-   private ServiceProvider owner;
-   private List<Reserve> reserves;
-   private String photo;
 
+   private int id; // Unique identifier for the service
+   private String location; // Location where the service is offered
+   private String type; // Category of the service (e.g., Cleaning, Repair, etc.)
+   private String status; // Current state of the service (e.g., Available, Discontinued, On Hold)
+   private String name; // Descriptive name of the service
+   private double price; // Cost of the service
+
+   // Additional attributes may be added based on your specific requirements
+   private String phone; // Contact phone number for the service provider (optional)
+   private String image; // URL or path to an image representing the service (optional)
+   private List<String> additionalServices; // List of any additional services offered (optional)
+   private ServiceProvider owner; // Reference to the provider offering the service
+   private List<Reserve> reservations; // List of reservations for this service
 
    public Service() {
-      // constructor without parameters
+      // Constructor without parameters, can be used for initialization
    }
 
+   public Service(int id, String location, String type, String status, String name, double price) {
+      this.id = id;
+      this.location = location;
+      this.type = type;
+      this.status = status;
+      this.name = name;
+      this.price = price;
+   }
+
+   // Getters and setters for all attributes
    public int getId() {
       return id;
    }
@@ -42,6 +54,14 @@ public class Service {
 
    public void setType(String type) {
       this.type = type;
+   }
+
+   public String getStatus() {
+      return status;
+   }
+
+   public void setStatus(String status) {
+      this.status = status;
    }
 
    public String getName() {
@@ -76,12 +96,12 @@ public class Service {
       this.image = image;
    }
 
-   public List<String> getServices() {
-      return services;
+   public List<String> getAdditionalServices() {
+      return additionalServices;
    }
 
-   public void setServices(List<String> services) {
-      this.services = services;
+   public void setAdditionalServices(List<String> additionalServices) {
+      this.additionalServices = additionalServices;
    }
 
    public ServiceProvider getOwner() {
@@ -93,20 +113,22 @@ public class Service {
    }
 
    public List<Reserve> getReservations() {
-      return reserves;
+      return reservations;
    }
 
-   public void setReserves(List<Reserve> reserves) {
-      this.reserves = reserves;
+   public void setReservations(List<Reserve> reservations) {
+      this.reservations = reservations;
    }
 
-   public String getPhoto() {
-      return photo;
+   @Override
+   public String toString() {
+      return "Service{" +
+              "id=" + id +
+              ", location='" + location + '\'' +
+              ", type='" + type + '\'' +
+              ", status='" + status + '\'' +
+              ", name='" + name + '\'' +
+              ", price=" + price +
+              '}';
    }
-
-   public void setPhoto(String photo) {
-      this.photo = photo;
-   }
-
-
 }
