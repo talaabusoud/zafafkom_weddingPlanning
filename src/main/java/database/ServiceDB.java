@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 
 public class ServiceDB {
     private static final List<Service> SERVICES = new ArrayList<>();
+
     private static final Logger logger = LoggerUtility.getLogger();
 
     private ServiceDB() {
@@ -17,15 +18,20 @@ public class ServiceDB {
     }
 
     public static void addService(Service service) {
-        SERVICES.add(service);
+        if (service != null) {
+            SERVICES.add(service);
+        } else {
+            logger.warning("Ignoring null service addition");
+        }
     }
-
     public static List<Service> getServices() {
         return SERVICES;
     }
 
     public static void deleteService(int id) {
-        SERVICES.removeIf(s -> s.getId() == id);
+        if (SERVICES != null) {
+            SERVICES.removeIf(s -> s.getId() == id);
+        }
     }
 
     public static void displayService(Service service) {
