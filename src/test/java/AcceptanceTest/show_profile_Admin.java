@@ -1,105 +1,117 @@
 package AcceptanceTest;
 
+import entity.Admin;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-
+import main.LoggerUtility;
+import main.Test_input;
+import serveses.AppLogger;
+import serveses.LoginToMyAppAsAdmin;
+import java.util.logging.Logger;
+import database.AdminDB;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class show_profile_Admin {
-    private String password;
-    private String phoneNumber;
-    private String address;
-    private String name;
-    private boolean profileUpdated;
+    LoginToMyAppAsAdmin myApp;
+    Admin admin;
+    private static Logger logger = LoggerUtility.getLogger();
+    private String newName;
+    private String newPhone;
+    private String newAddress;
+    private String newPassword;
+    boolean re_test;
+
+    public show_profile_Admin() {
+        myApp = new LoginToMyAppAsAdmin();
+        myApp.login();
+
+    }
+
 
     @Given("that the admin is logged in")
     public void thatTheAdminIsLoggedIn() {
+        assertTrue(myApp.isLoggedIn());
+        logger.info("\n");
 
     }
-    @Given("the admin has the following information:")
-    public void theAdminHasTheFollowingInformation(io.cucumber.datatable.DataTable dataTable) {
-
+    @Then("the admin profile appears with the following information:")
+    public void theAdminProfileAppearsWithTheFollowingInformation() {
+        AdminDB.displayAdmin(admin);
     }
-    @Then("the admin profile appears with the provided information")
-    public void theAdminProfileAppearsWithTheProvidedInformation() {
-        assertEquals(true, true);
 
-    }
+
     @Given("the admin wants to update their profile information")
     public void theAdminWantsToUpdateTheirProfileInformation() {
         // Write code here that turns the phrase above into concrete actions
-
     }
-    @When("the admin changes their password to {string}")
-    public void theAdminChangesTheirPasswordTo(String newPassword) {
-        this.password = newPassword;
+    @When("the admin changes their {string} to {string}")
+    public void theAdminChangesTheirTo(String field, String value) {
+        switch (field) {
+            case "name":
+                if(Test_input.Name(value)) {
+                    re_test = true;
+                    newName=value;
+                } else {
+                    re_test = false;
+                    logger.warning("Invalid name format.");
+                }
+                break;
+            case "phone number":
+                if(Test_input.Phone(value)) {
+                    re_test = true;
+                    newPhone=value;
+                } else {
+                    re_test = false;
+                    logger.warning("Invalid phone number format.");
+                }
+                break;
+            case "address":
+                if(Test_input.Name(value)) {
+                    re_test = true;
+                    newAddress=value;
+                } else { re_test = false;
+                    logger.warning("Invalid name format.");}
+                break;
+            case "password":
+                newPassword=value;
 
-    }
-    @When("the admin changes their phone number to {string}")
-    public void theAdminChangesTheirPhoneNumberTo(String newPhoneNumber) {
-        this.phoneNumber = newPhoneNumber;
-
-    }
-    @When("the admin changes their address to {string}")
-    public void theAdminChangesTheirAddressTo(String newAddress) {
-        this.address = newAddress;
-
-    }
-    @When("the admin changes their name to {string}")
-    public void theAdminChangesTheirNameTo(String newName) {
-        this.name = newName;
-
-    }
-    @When("the admin clicks on the {string} button")
-    public void theAdminClicksOnTheButton(String buttonName) {
-        if (buttonName.equals("Save")) {
-            this.profileUpdated = true;
+                break;
+            default:
+                logger.warning("Invalid field: " + field);
         }
+    }
+
+    @When("the admin clicks on the {string} button")
+    public void theAdminClicksOnTheButton(String button) {
+        if (button.equals("Save") && admin != null){
+            if(re_test==true){
+                admin.setName(newName);
+                admin.setPhone(newPhone);
+                admin.setAddress(newAddress);
+                admin.setPassword(newPassword);
+            }
+        }
+        else System.out.println(button+"\t"+admin);
+
     }
     @Then("the admin profile should be updated successfully")
     public void theAdminProfileShouldBeUpdatedSuccessfully() {
-        assertEquals(true, this.profileUpdated);
-
-    }
-
-    @Given("the admin wants to update their password")
-    public void theAdminWantsToUpdateTheirPassword() {
-        // Write code here that turns the phrase above into concrete actions
-
-    }
-    @When("the admin enters the current password {string}")
-    public void theAdminEntersTheCurrentPassword(String string) {
-        this.profileUpdated= true;
-
-    }
-    @When("the admin enters the new password {string}")
-    public void theAdminEntersTheNewPassword(String newPassword) {
-        // Write code here that turns the phrase above into concrete actions
-        this.password = newPassword;
-    }
-    @When("the admin confirms the new password {string}")
-    public void theAdminConfirmsTheNewPassword(String string) {
-        // Write code here that turns the phrase above into concrete actions
-
-    }
-    @Then("the admin password should be updated successfully")
-    public void theAdminPasswordShouldBeUpdatedSuccessfully() {
-        // Write code here that turns the phrase above into concrete actions
-        assertEquals(true, this.profileUpdated);
+       assertEquals(true,re_test);
     }
 
 
-    @When("the admin enters an incorrect current password {string}")
-    public void theAdminEntersAnIncorrectCurrentPassword(String string) {
-        // Write code here that turns the phrase above into concrete actions
-        this.profileUpdated= false;
+
+    @Then("the admin should see {string}")
+    public void theAdminShouldSee(String message) {
+        if (message.equals("Profile updated successfully")) {
+
+            logger.warning( message);
+
+        } else {
+            logger.warning("Unexpected message: " + message);
+        }
     }
 
-
-    @Then("an error message should appear indicating the incorrect current password")
-    public void anErrorMessageShouldAppearIndicatingTheIncorrectCurrentPassword() {
-        // Write code here that turns the phrase above into concrete actions
-        assertEquals(false, this.profileUpdated);
-    }
 }
