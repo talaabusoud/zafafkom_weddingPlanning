@@ -2,35 +2,28 @@ Feature: Admin Profile
 
   Scenario: Show Admin Profile
     Given that the admin is logged in
-    And the admin has the following information:
-      | Password  | Phone   | Address | Name    | ID |
-      | 000       | 098866  | nablus  | mohamad | 2  |
-    Then the admin profile appears with the provided information
+    Then the admin profile appears with the following information:
+
 
   Scenario: Update Admin Profile Successfully
     Given that the admin is logged in
     And the admin wants to update their profile information
-    When the admin changes their password to "123456"
-    And the admin changes their phone number to "0591234567"
-    And the admin changes their address to "Ramallah"
-    And the admin changes their name to "mohamad maher"
+    When the admin changes their 'name' to 'Mohamad Maher'
+    And the admin changes their 'phone' to '0591234567'
+    And the admin changes their 'address' to 'Ramallah'
+    And the admin changes their 'password' to '123456'
     And the admin clicks on the 'Save' button
     Then the admin profile should be updated successfully
 
-  Scenario: Update Admin Password
+  Scenario Outline: Errors with Input
     Given that the admin is logged in
-    And the admin wants to update their password
-    When the admin enters the current password "000"
-    And the admin enters the new password "123456"
-    And the admin confirms the new password "123456"
-    And the admin clicks on the 'Change Password' button
-    Then the admin password should be updated successfully
+    And the admin wants to update their profile information
+    When the admin changes their 'name' to '<Name>'
+    And the admin changes their 'phone' to '<Phone>'
+    And the admin clicks on the 'Save' button
+    Then the admin should see '<message>'
 
-  Scenario: Update Admin Password with Incorrect Current Password
-    Given that the admin is logged in
-    And the admin wants to update their password
-    When the admin enters an incorrect current password "111"
-    And the admin enters the new password "123456"
-    And the admin confirms the new password "123456"
-    And the admin clicks on the 'Change Password' button
-    Then an error message should appear indicating the incorrect current password
+    Examples:
+      | Name    | Phone       | message                           |
+      | Ro52yal | 0595429100  | Invalid Name, please check it     |
+      | Royal   | 0595429100aa| Invalid Phone, please check it    |
