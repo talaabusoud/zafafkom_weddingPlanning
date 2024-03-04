@@ -84,27 +84,38 @@ public class UserDB {
         LoggerUtility.getLogger().warning("User not found for login: " + username);
         return null;
     }
+//
+//    public static boolean validateUserInformation(User user) {
+//        // Perform validation logic here
+//        // For example, check if the user's email is in a valid format or other constraints
+//
+//        // Return true if the user information is considered valid, otherwise false
+//        return isValidEmail(user.getEmail()) && isValidPassword(user.getPassword());
+//    }
+//    private static boolean isValidEmail(String email) {
+//        // Implement email validation logic
+//        // Return true if the email is valid, otherwise false
+//        // You might use regular expressions or other methods for email validation
+//        return email != null && email.matches("your_email_validation_regex_here");
+//    }
+//
+//    private static boolean isValidPassword(String password) {
+//        // Implement password validation logic
+//        // Return true if the password is valid, otherwise false
+//        // You might check for length, complexity, etc.
+//        return password != null && password.length() >= 8;
+//    }
 
-    public static boolean validateUserInformation(User user) {
-        // Perform validation logic here
-        // For example, check if the user's email is in a valid format or other constraints
-
-        // Return true if the user information is considered valid, otherwise false
-        return isValidEmail(user.getEmail()) && isValidPassword(user.getPassword());
-    }
-    private static boolean isValidEmail(String email) {
-        // Implement email validation logic
-        // Return true if the email is valid, otherwise false
-        // You might use regular expressions or other methods for email validation
-        return email != null && email.matches("your_email_validation_regex_here");
+    // Add this method to UserDB class
+    public static boolean isUserExists(int userId, String email) {
+        for (User existingUser : users) {
+            if (existingUser.getId() == userId || existingUser.getEmail().equals(email)) {
+                return true; // User with the same ID or email already exists
+            }
+        }
+        return false; // User does not exist
     }
 
-    private static boolean isValidPassword(String password) {
-        // Implement password validation logic
-        // Return true if the password is valid, otherwise false
-        // You might check for length, complexity, etc.
-        return password != null && password.length() >= 8;
-    }
 
     public static boolean authenticateUser(String username, String password) {
         // Logic to authenticate user
@@ -116,7 +127,7 @@ public class UserDB {
 
     public static void displayUsers(List<User> users) {
         logger.info("-------------------------------------------------User----------------------------------------------\n");
-        logger.info("|     id     |    Name    |  PhoneNumber  |  Address  |  City  |  Street  |            Service           |\n");
+        logger.info("|  id   |    Name    |PhoneNumber|  Address  |  City  |  Street  |            Service             |\n");
         for(User t:users)
         {
             displayUser(t);
