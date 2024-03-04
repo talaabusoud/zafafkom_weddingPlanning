@@ -37,6 +37,7 @@ public class UserDB {
         return users;
     }
 
+    ////////////////////// must edit
     public static void displayUser(User user) {
         if(user == null)
         {
@@ -123,7 +124,6 @@ public class UserDB {
         User user = getUserByUsernameAndPassword(username,password);
         return user != null && user.getPassword().equals(password);
     }
-
 
     public static void displayUsers(List<User> users) {
         logger.info("-------------------------------------------------User----------------------------------------------\n");

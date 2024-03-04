@@ -11,7 +11,6 @@ import entity.User;
 import java.util.List;
 import java.util.ArrayList;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class signup_User {
