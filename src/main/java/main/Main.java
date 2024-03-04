@@ -2,7 +2,6 @@ package main;
 
 import database.*;
 import entity.*;
-import entity.User;
 import serveses.LoginToMyAppAsAdmin;
 import serveses.LoginToMyAppAsServiceProvider;
 import serveses.LoginAsUser;
@@ -71,122 +70,6 @@ public class Main {
 
         logger.info("\n");
     }
-
-    //sign up page (register user)
-//    public static void signUpPage(){
-//        displayUpLine();
-//        displayEmpty();
-//        displayStarsLine();
-//        logger.warning("|        *               WELCOME TO SIGNUP PAGE:)              *        |\n");
-//        displayStarsLine();
-//        displayDownLine();
-//        logger.info("\n");
-//
-//        user = new User();
-//        Scanner scanner = new Scanner(System.in);
-//
-//        // Gather user information
-//        logger.info(" - Enter your ID: ");
-//        user.setId(Integer.parseInt(scanner.next()));
-//
-//        logger.info(" - Enter your Name: ");
-//        user.setName(scanner.next());
-//
-//        logger.info(" - Enter your Phone Number: ");
-//        user.setPhoneNumber(scanner.next());
-//
-//        logger.info(" - Enter your Address: ");
-//        user.setAddress(scanner.next());
-//
-//        logger.info(" - Enter your City: ");
-//        user.setCity(scanner.next());
-//
-//        logger.info(" - Enter your Street: ");
-//        user.setStreet(scanner.next());
-//
-//        logger.info(" - Enter your Email: ");
-//        user.setEmail(scanner.next());
-//
-//        String password;
-//        // Validate password length
-//        do {
-//            logger.info(" - Enter your Password (must be at least 5 characters): ");
-//            password = scanner.next();
-//
-//            if (password.length() < 5) {
-//                displayUpLine();
-//                logger.warning("|            Password must be at least 6 characters long.               |\n");
-//                logger.warning("|                  Please enter a stronger password.                    |\n");
-//                displayDownLine();
-//            }
-//        } while (password.length() < 5);
-//
-//        // Check if the user with the same ID or email already exists
-//        while (UserDB.isUserExists(user.getId(), user.getEmail())) {
-//            displayUpLine();
-//            logger.warning("|           User with the same ID or email already exists.              |\n");
-//            logger.warning("|               Please re-enter your ID and Email.                      |\n");
-//            logger.warning("|                   **YOU NEED TO SIGN UP AGAIN**                       |\n");
-//            displayDownLine();
-//            logger.info(" - Re-enter your ID: ");
-//            user.setId(Integer.parseInt(scanner.next()));
-//            logger.info(" - Re-enter your Email: ");
-//            user.setEmail(scanner.next());
-//        }
-//
-//        displayUpLine();
-//        logger.info("         ****************************************************         \n");
-//        logger.info("         * Thank you for signing up! Here are your details: *         \n");
-//        logger.info("         ****************************************************         \n");
-//        logger.info("               ID: "+user.getId()+"                                                      \n");
-//        logger.info("               Name: "+user.getName()+"                                                    \n");
-//        logger.info("               Phone Number: "+user.getPhoneNumber()+"                                            \n");
-//        logger.info("               Address: "+user.getAddress()+"                                                 \n");
-//        logger.info("               City: "+user.getCity()+"                                                    \n");
-//        logger.info("               Street: "+user.getStreet()+"                                                  \n");
-//        logger.info("               Email: "+user.getEmail()+"                                                   \n");
-//        logger.info("               Password: "+ "*".repeat(Math.max(0, password.length())) +"                                                \n");
-//
-//        int choice;
-//        do {
-//            logger.info("         ****************************************************         \n");
-//            logger.info("         *    ENTER THE NUMBER OF ACTION YOU WANT TO TAKE   *         \n");
-//            logger.info("         ****************************************************         \n");
-//            logger.info("               1- Confirm Informations to Sign Up                     \n");
-//            logger.info("               2- Edit Information                                    \n");
-//            displayUpLine();
-//            logger.info("\n");
-//            choice = scanner.nextInt();
-//        } while (choice != 1 && choice != 2);
-//
-//        if (choice == 1) {
-//            // Confirm sign up
-//            User newUser = new User();
-//            newUser.setId(user.getId());
-//            newUser.setName(user.getName());
-//            newUser.setPhoneNumber(user.getPhoneNumber());
-//            newUser.setAddress(user.getAddress());
-//            newUser.setCity(user.getCity());
-//            newUser.setStreet(user.getStreet());
-//            newUser.setEmail(user.getEmail());
-//            newUser.setPassword(user.getPassword());
-//
-//            // Add the user to the database if not already exists
-//            UserDB.addUser(newUser);
-//
-//            displayUpLine();
-//            displayEmpty();
-//            logger.info("|               User added successfully! Here are your details:               |\n");
-//            displayEmpty();
-//            UserDB.displayUser(newUser); // Need to edit function in UserDB
-//            displayEmpty();
-//            displayDownLine();
-//            logger.info("\n");
-//        } else {
-//            // Edit information
-//            signUpPage(); // Re-run the sign-up page for editing
-//        }
-//    }
 
     //sign up page (register user)
     public static void signUpPage(){
