@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 public class UserDB {
     private static final Logger logger = LoggerUtility.getLogger();
     static List<User> users= new ArrayList<>();
@@ -23,7 +25,11 @@ public class UserDB {
         user.setCity("Nablus");
         user.setStreet("rafedya");
         user.setEmail("jana123@gmail.com");
-        user.setPassword("12345666");
+
+        // Hash pass before storing it
+        String hashedPassword = BCrypt.hashpw("12345666", BCrypt.gensalt());
+        user.setPassword(hashedPassword);
+
         user.setHasServiceWindow(false);
         user.setService(new ArrayList<>());
         users.add(user);
@@ -74,7 +80,7 @@ public class UserDB {
     public static User getUserByUsernameAndPassword(String username, String password) {
         // Iterate through the list of users and find the matching user
         for (User user : users) {
-            if (user.getEmail().equals(username) && user.getPassword().equals(password)) {
+            if (user.getEmail().equals(username) && BCrypt.checkpw(password, user.getPassword()))  {
                 // Return the matching user
                 LoggerUtility.getLogger().info("User found for login: " + username);
                 return user;
@@ -85,27 +91,6 @@ public class UserDB {
         LoggerUtility.getLogger().warning("User not found for login: " + username);
         return null;
     }
-//
-//    public static boolean validateUserInformation(User user) {
-//        // Perform validation logic here
-//        // For example, check if the user's email is in a valid format or other constraints
-//
-//        // Return true if the user information is considered valid, otherwise false
-//        return isValidEmail(user.getEmail()) && isValidPassword(user.getPassword());
-//    }
-//    private static boolean isValidEmail(String email) {
-//        // Implement email validation logic
-//        // Return true if the email is valid, otherwise false
-//        // You might use regular expressions or other methods for email validation
-//        return email != null && email.matches("your_email_validation_regex_here");
-//    }
-//
-//    private static boolean isValidPassword(String password) {
-//        // Implement password validation logic
-//        // Return true if the password is valid, otherwise false
-//        // You might check for length, complexity, etc.
-//        return password != null && password.length() >= 8;
-//    }
 
     // Add this method to UserDB class
     public static boolean isUserExists(int userId, String email) {

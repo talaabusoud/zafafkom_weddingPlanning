@@ -6,6 +6,8 @@ import serveses.LoginToMyAppAsAdmin;
 import serveses.LoginToMyAppAsServiceProvider;
 import serveses.LoginAsUser;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -15,9 +17,6 @@ public class Main {
 
     public static void displayEnterValidNumber(){
         logger.warning("|                  PLEASE ENTER VALID NUMBER :)                         |\n");
-    }
-    public static void enterSignUpInfoAgain(){
-        logger.warning("|            PLEASE ENTER SIGN UP INFORMATION AGAIN :)                  |\n");
     }
     public static void displayUpLine(){
         logger.info("________________________________________________________________________\n");
@@ -51,7 +50,13 @@ public class Main {
         logger.info("\n");
     }
 
-    public static void loginPage(){
+    // Hash the password using BCrypt and return the hashed value
+    private static String hashPassword(String plainTextPassword) {
+        return BCrypt.hashpw(plainTextPassword, BCrypt.gensalt());
+    }
+
+    // login page form
+    public static String[] loginPage(){
         displayUpLine();
         displayEmpty();
         displayStarsLine();
@@ -60,16 +65,74 @@ public class Main {
         displayDownLine();
         logger.info("\n");
 
-        String email;
-        String password;
+        String[] input = new String[2];
         Scanner scanner = new Scanner(System.in);
         logger.info(" - Enter your email: ");
-        email = scanner.next();
+        input[0] = scanner.next().toLowerCase(Locale.ROOT); // Convert to lowercase
         logger.info(" - Enter your password: ");
-        password = scanner.next();
+        input[1] = scanner.next();
 
-        logger.info("\n");
+        return input;
     }
+
+    //login page (for user)
+    public static void userLogin(String email, String enteredPassword) {
+        LoginAsUser userLogin = new LoginAsUser();
+        User loggedInUser = userLogin.loggInCheck(email, enteredPassword);
+
+        if (loggedInUser != null) {
+            displayUpLine();
+            displayEmpty();
+            displayStarsLine();
+            logger.warning("|        *                   WELCOME " + loggedInUser.getName() + ":)                    *        |\n");
+            displayStarsLine();
+            displayEmpty();
+            logger.info("|              ENTER THE NUMBER OF ACTION YOU WANT TO TAKE              |\n");
+            displayStarsLine();
+            displayEmpty();
+            logger.info("|------------------------------- User Page -----------------------------|\n");
+            logger.info("|               1- Show  Services                                       |\n");
+            logger.info("|               2- Show Details of my Reservations                      |\n");
+            logger.info("|               3- My Profile                                           |\n");
+            logger.info("|               4- Log out                                              |\n");
+            displayDownLine();
+            logger.info("\n");
+
+        } // end of successfully logged in
+        else {
+            // Login failed due to incorrect password
+            displayUpLine();
+            logger.warning("|   Login failed! Please check your email and password and try again.   |\n");
+            logger.warning("|                 1- Re-enter email and password                        |\n");
+            logger.warning("|                 2- Don't have an account? Sign up for a new account   |\n");
+            logger.warning("|                 3- Back to home page                                  |\n");
+            displayDownLine();
+            logger.info("\n");
+
+            Scanner scanner = new Scanner(System.in);
+            int choice = scanner.nextInt();
+            switch (choice) {
+                case 1:
+                    // Re-enter email and password
+                    String[] loginInfo = loginPage();
+                    userLogin(loginInfo[0], loginInfo[1]);
+                    break;
+                case 2:
+                    // Sign up for a new account
+                    signUpPage();
+                    break;
+                case 3:
+                    // Back to the main menu
+                    menu();
+                    break;
+                default:
+                    displayUpLine();
+                    displayEnterValidNumber();
+                    displayDownLine();
+                    break;
+            }
+        }// end of failed logging in
+    }// end of login page for user
 
     //sign up page (register user)
     public static void signUpPage(){
@@ -157,6 +220,8 @@ public class Main {
                 displayDownLine();
             }
         } while (password.length() < 5);
+        // Hash the user's password before saving it to UserDB
+        user.setPassword(hashPassword(password));
 
         // Check if the user with the same ID or email already exists
         while (UserDB.isUserExists(user.getId(), user.getEmail())) {
@@ -213,15 +278,27 @@ public class Main {
 
         int choice;
         do {
-            logger.info("         ****************************************************         \n");
-            logger.info("         *    ENTER THE NUMBER OF ACTION YOU WANT TO TAKE   *         \n");
-            logger.info("         ****************************************************         \n");
-            logger.info("               1- Confirm Informations to Sign Up                     \n");
-            logger.info("               2- Edit Information                                    \n");
-            displayUpLine();
-            logger.info("\n");
-            choice = scanner.nextInt();
-        } while (choice != 1 && choice != 2);
+            try {
+                logger.info("         ****************************************************         \n");
+                logger.info("         *    ENTER THE NUMBER OF ACTION YOU WANT TO TAKE   *         \n");
+                logger.info("         ****************************************************         \n");
+                logger.info("               1- Confirm Information to Sign Up                      \n");
+                logger.info("               2- Edit Information                                    \n");
+                logger.info("               3- Don't save and back Home                            \n");
+                displayUpLine();
+                logger.info("\n");
+
+                choice = scanner.nextInt();
+            }catch (InputMismatchException e){
+                // Clear buffer (avoid infinite loop)
+                scanner.nextLine();
+                displayUpLine();
+                logger.warning("|                            Invalid input.                             |\n");
+                logger.warning("|                   Please enter a number (1, 2, or 3).                 |\n");
+                displayDownLine();
+                choice = -1;
+            }
+        } while (choice != 1 && choice != 2 && choice != 3);
 
         if (choice == 1) {
             // Confirm sign up
@@ -239,20 +316,31 @@ public class Main {
             UserDB.addUser(newUser);
 
             displayUpLine();
-            displayEmpty();
-            logger.info("|               User added successfully! Here are your details:               |\n");
-            displayEmpty();
-            UserDB.displayUser(newUser); // Need to edit function in UserDB
-            displayEmpty();
+            logger.info("|                  Account created added successfully!                  |\n");
+            //UserDB.displayUser(newUser); // Need to edit function in UserDB
             displayDownLine();
             logger.info("\n");
-        } else {
+        } else if (choice == 2){
             // Edit information
             signUpPage(); // Re-run the sign-up page for editing
+        } else {
+            //Home
+            //logger.info("No action taken. Returning to the Home page.");
+            //menu();
+            logger.info("\n");
         }
     }
 
+    // logout method
+    public static void logout() {
+        displayUpLine();
+        logger.info("|               Logout successful. Returning to the main menu.          |\n");
+        displayDownLine();
+        logger.info("\n");
 
+        // Clear user data
+        user = null;
+    }
     public static void main(String[]args) {
         Scanner scanner = new Scanner(System.in);
         int option = 0;
@@ -272,17 +360,80 @@ public class Main {
             // login as Admin
             if (option == 1){
                 loginPage();
+
+                //                    logger.info("WELCOME Admin " + user.getName() + "\n");
+//                    while (true) {
+//                        logger.info("---------------Admin Options-----------------------------\n");
+//                        logger.info("| 1- add new user /service provider|\n");
+//                        logger.info("| 2- Show service provider           |\n");
+//                        logger.info("| 3- Show users                          |\n");
+//                        logger.info("| 4- Show services(delete)                          |\n");
+//                        logger.info("| 5- show reservations (delete) |\n");
+///                        logger.info("| 6- profile                        |\n");
+////                        logger.info("| 7- requests list |\n");
+////                        logger.info("| 8- logout|\n");
+//                        logger.info("---------------------------------------------------------\n");
+//
+//                    }
+
             }
 
             // login as service provider
             else if (option == 2) {
                 loginPage();
+
+                //                    logger.info("WELCOME service provider " + user.getName() + "\n");
+//                    while (true) {
+//                        logger.info("---------------service provider Options-----------------------------\n");
+//                        logger.info("| 1- add new service |\n");
+//                        logger.info("| 2- edit service (search + edit + delete)            |\n");
+//                        logger.info("| 3- show reservations (details + delete ) |\n");
+///                        logger.info("| 4- profile                        |\n");
+////                        logger.info("| 5- logout|\n");
+//                        logger.info("---------------------------------------------------------\n");
+//
+//                    }
             }
 
+//___________USER_______________________________________________________________________________________________________
             // login as user
             else if (option == 3 ) {
-                loginPage();
-            }
+                String[] loginInfo = loginPage();
+                userLogin(loginInfo[0], loginInfo[1]);
+
+                int choice = scanner.nextInt();
+                switch (choice) {
+                    //service page
+                    case 1:
+                        // Show services
+                        break;
+
+
+                    // user reservations
+                    case 2:
+                        // Show details of reservations
+                        break;
+
+
+                    // user profile
+                    case 3:
+                        // My Profile
+                        break;
+
+
+                    // Logout
+                    case 4:
+                        logout();
+                        break;
+
+                    default:
+                        displayUpLine();
+                        displayEnterValidNumber();
+                        displayDownLine();
+                        break;
+                }
+            }// end of option 3 (login as user)
+
 
 //______________________________________________________________________________________________________________________
             // sign up user

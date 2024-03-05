@@ -3,9 +3,9 @@ package serveses;
 import entity.User;
 import main.LoggerUtility;
 import database.UserDB;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.logging.Logger;
-
 
 public class LoginAsUser {
     private static final Logger logger = LoggerUtility.getLogger();
@@ -49,20 +49,20 @@ public class LoginAsUser {
         logger.info("Something WRONG!,The username or the password is not correct\n");
     }
 
-    public void loggInCheck(String username, String password) {
-        logger.info("Attempting login with username: " + username);
-        for(User user: UserDB.getUsers())
-        {
-            if (username.equals(user.getEmail()) && password.equals(user.getPassword()))
-            {
-                login();
-                logger.info("Login successful for username: " + username);
-                return;
+    // Verify entered password against stored hashed password
+    public boolean verifyPassword(String enteredPassword, String hashedPassword) {
+        return BCrypt.checkpw(enteredPassword, hashedPassword);
+    }
+
+    public User loggInCheck(String enteredEmail, String enteredPassword) {
+        for (User u : UserDB.getUsers()) {
+            if (u.getEmail().equalsIgnoreCase(enteredEmail)) {
+                if (verifyPassword(enteredPassword, u.getPassword())) {
+                    return u; // Successfully logged in
+                }
             }
         }
-        logger.warning("Login failed for username: " + username);
-        errorInLogin();
-        logout();
+        return null; // Login failed
     }
 
     public boolean validateUserInformation(User user) {

@@ -13,7 +13,6 @@ import static org.junit.Assert.assertTrue;
 
 public class login_User {
 
-
   String password;
   String username;
 
@@ -98,6 +97,25 @@ public class login_User {
         // Write code here that turns the phrase above into concrete actions
       system.errorInLogin();
         //throw new io.cucumber.java.PendingException();
+    }
+
+    // New Scenario
+    @When("the user enters incorrect password {string}")
+    public void the_user_enters_incorrect_password(String incorrectPassword) {
+      password = incorrectPassword;
+    }
+
+    @Then("the user will not login with incorrect password")
+    public void the_user_will_not_login_with_incorrect_password() {
+      system.loggInCheck(username, password);
+      assertFalse(system.isLoggedIn());
+    }
+
+    // New Scenario
+    @Then("the user will not login as the user does not exist")
+    public void the_user_will_not_login_as_the_user_does_not_exist() {
+      system.loggInCheck(username, password);
+      assertFalse(system.isLoggedIn());
     }
 
 }
