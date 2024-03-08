@@ -20,6 +20,7 @@ public class editAccount_User {
     public editAccount_User(){
         system = new LoginAsUser();
         system.login();
+        user = new User();
     }
 
     @When("the user modifies his information with new values:")
@@ -33,21 +34,24 @@ public class editAccount_User {
         // For other transformations you can register a DataTableType.
         List<Map<String, String>> userData = dataTable.asMaps(String.class, String.class);
 
-        // Assuming there's only one row of data
-        Map<String, String> newUserInfo = userData.get(0);
+        if (!userData.isEmpty()) {
+            Map<String, String> newUserInfo = userData.get(0);
 
-        // Update user object with new information
-        user.setName(newUserInfo.get("name"));
-        user.setPhoneNumber(newUserInfo.get("PhoneNumber"));
-        user.setAddress(newUserInfo.get("address"));
-        user.setCity(newUserInfo.get("city"));
-        user.setStreet(newUserInfo.get("street"));
-        user.setEmail(newUserInfo.get("email"));
-        user.setPassword(newUserInfo.get("password"));
+            // Update user object with new information
+            user.setName(newUserInfo.get("Name"));
+            user.setPhoneNumber(newUserInfo.get("PhoneNumber"));
+            user.setAddress(newUserInfo.get("Address"));
+            user.setCity(newUserInfo.get("City"));
+            user.setStreet(newUserInfo.get("Street"));
+            user.setEmail(newUserInfo.get("Email"));
+            user.setPassword(newUserInfo.get("Password"));
 
-        // Update user information in the system
-        UserDB.updateUser(user);
-        System.out.println("User is modifying information with new values: " + dataTable.asList());
+            // Update user information in the system
+            UserDB.updateUser(user);
+            System.out.println("User is modifying information with new values: " + newUserInfo);
+        } else {
+            throw new IllegalArgumentException("No data provided for user modification.");
+        }
         //throw new io.cucumber.java.PendingException();
     }
 
@@ -67,12 +71,6 @@ public class editAccount_User {
         System.out.println("User's information is successfully updated.");
     }
 
-    @When("the user wants to delete his account")
-    public void the_user_wants_to_delete_his_account() {
-        // Write code here that turns the phrase above into concrete actions
-        //throw new io.cucumber.java.PendingException();
-        System.out.println("User wants to delete his account.");
-    }
 
     @When("provides the credentials:")
     public void provides_the_credentials(io.cucumber.datatable.DataTable dataTable) {
@@ -91,9 +89,14 @@ public class editAccount_User {
         String password = credentials.get("password");
 
         user = UserDB.getUserByUsernameAndPassword(username, password);
+        if (user == null) {
+            // Handle the case where the user is not found
+            throw new RuntimeException("User not found for provided credentials: " + credentials);
+        }
+
         System.out.println("User provides the following credentials: " + dataTable.asList());
 
-    }
+}
 
     @When("clicks the confirmation button")
     public void clicks_the_confirmation_button() {
@@ -101,14 +104,6 @@ public class editAccount_User {
         //throw new io.cucumber.java.PendingException();
         System.out.println("User clicks the confirmation button.");
 
-    }
-
-    @Then("the account is successfully deleted from the system")
-    public void the_account_is_successfully_deleted_from_the_system() {
-        // Write code here that turns the phrase above into concrete actions
-        //throw new io.cucumber.java.PendingException();System.out.println("Account is successfully deleted from the system.");
-        System.out.println("Account is successfully deleted from the system.");
-        assertFalse(system.isLoggedIn());
     }
 
     @And("the user's information is updated in the system")
