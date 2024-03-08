@@ -18,11 +18,13 @@ public class profile_User {
 
     public profile_User() {
         system = new LoginAsUser();
-        system.login();
+        //system.login();
     }
 
     @Given("the user with id {string} is logged in")
     public void theUserWithIdIsLoggedIn(String string) {
+        system.setCredentials("jana123@gmail.com", "12345666");
+        system.login();
         assertTrue(system.isLoggedIn());
         // Write code here that turns the phrase above into concrete actions
         //throw new io.cucumber.java.PendingException();
