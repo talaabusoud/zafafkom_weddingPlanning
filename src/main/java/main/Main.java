@@ -31,6 +31,7 @@ public class Main {
         logger.info("|        *******************************************************        |\n");
     }
 
+    //Home Page
     public static void menu(){
         displayUpLine();
         displayEmpty();
@@ -78,26 +79,10 @@ public class Main {
     //login page (for user)
     public static void userLogin(String email, String enteredPassword) {
         LoginAsUser userLogin = new LoginAsUser();
-        User loggedInUser = userLogin.loggInCheck(email, enteredPassword);
+        user = userLogin.loggInCheck(email, enteredPassword);
 
-        if (loggedInUser != null) {
-            displayUpLine();
-            displayEmpty();
-            displayStarsLine();
-            logger.warning("|        *                   WELCOME " + loggedInUser.getName() + ":)                    *        |\n");
-            displayStarsLine();
-            displayEmpty();
-            logger.info("|              ENTER THE NUMBER OF ACTION YOU WANT TO TAKE              |\n");
-            displayStarsLine();
-            displayEmpty();
-            logger.info("|------------------------------- User Page -----------------------------|\n");
-            logger.info("|               1- Show  Services                                       |\n");
-            logger.info("|               2- Show Details of my Reservations                      |\n");
-            logger.info("|               3- My Profile                                           |\n");
-            logger.info("|               4- Log out                                              |\n");
-            displayDownLine();
-            logger.info("\n");
-
+        if (user != null) {
+            userPage(user);
         } // end of successfully logged in
         else {
             // Login failed due to incorrect password
@@ -133,6 +118,70 @@ public class Main {
             }
         }// end of failed logging in
     }// end of login page for user
+
+    // user page
+    public static void userPage(User loggedInUser) {
+        Scanner scanner = new Scanner(System.in);
+        int userChoice;
+
+//        while (true){
+            displayUpLine();
+            displayEmpty();
+            displayStarsLine();
+            logger.warning("|        *                   WELCOME " + loggedInUser.getName() + ":)                    *        |\n");
+            displayStarsLine();
+            displayEmpty();
+            logger.info("|              ENTER THE NUMBER OF ACTION YOU WANT TO TAKE              |\n");
+            displayStarsLine();
+            displayEmpty();
+            logger.info("|------------------------------- User Page -----------------------------|\n");
+            logger.info("|               1- Show  Services                                       |\n");
+            logger.info("|               2- Show Details of my Reservations                      |\n");
+            logger.info("|               3- My Profile                                           |\n");
+            logger.info("|               4- Log out                                              |\n");
+            displayDownLine();
+            logger.info("\n");
+
+            try {
+                userChoice = scanner.nextInt();
+            } catch (InputMismatchException e) {
+                // Clear buffer (avoid infinite loop)
+                scanner.nextLine();
+                displayUpLine();
+                logger.warning("|                            Invalid input.                             |\n");
+                logger.warning("|                   Please enter a number (1 to 4).                    |\n");
+                displayDownLine();
+                userChoice = -1;
+            }
+
+            switch (userChoice) {
+                case 1:
+                    // Show services
+                    // TODO: Add functionality for showing services
+                    break;
+
+                case 2:
+                    // Show details of my reservations
+                    // TODO: Add functionality for showing reservations
+                    break;
+
+                case 3:
+                    userProfile(loggedInUser);
+                    break;
+
+                case 4:
+                    // Log out
+                    logout();
+                    break;
+
+                default:
+                    displayUpLine();
+                    displayEnterValidNumber();
+                    displayDownLine();
+                    break;
+            }
+//        }
+    }
 
     //sign up page (register user)
     public static void signUpPage(){
@@ -341,6 +390,165 @@ public class Main {
         // Clear user data
         user = null;
     }
+
+    // user profile page
+    public static void userProfile(User loggedInUser) {
+        Scanner scanner = new Scanner(System.in);
+        int profileChoice;
+
+        do {
+            displayUpLine();
+            displayEmpty();
+            displayStarsLine();
+            logger.info("|         *               USER PROFILE - " + loggedInUser.getName() + "              *         |\n");
+            displayStarsLine();
+            displayDownLine();
+            logger.info("\n");
+
+            logger.info("|               1- Show Account Information                              |\n");
+            logger.info("|               2- Edit Information                                      |\n");
+            logger.info("|               3- Back to User Page                                     |\n");
+            displayDownLine();
+            logger.info("\n");
+
+            try {
+                profileChoice = scanner.nextInt();
+            } catch (InputMismatchException e) {
+                // Clear buffer (avoid infinite loop)
+                scanner.nextLine();
+                displayUpLine();
+                logger.warning("|                            Invalid input.                             |\n");
+                logger.warning("|                   Please enter a number (1, 2, or 3).                 |\n");
+                displayDownLine();
+                profileChoice = -1;
+            }
+
+            switch (profileChoice) {
+                case 1:
+                    // Show Account Information
+                    displayUpLine();
+                    UserDB.displayUser(loggedInUser);
+                    displayDownLine();
+                    break;
+
+                case 2:
+                    // Edit Information
+                    editUserProfile(loggedInUser);
+                    break;
+
+                case 3:
+                    userPage(loggedInUser);
+                    return;
+//                  break;
+
+
+                default:
+                    displayUpLine();
+                    displayEnterValidNumber();
+                    displayDownLine();
+                    break;
+            }
+        } while (true);
+    }
+
+    // edit user profile page
+    public static void editUserProfile(User loggedInUser) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Provide options for editing different fields
+        int editChoice;
+        do {
+            displayUpLine();
+            displayEmpty();
+            displayStarsLine();
+            logger.info("|      *               EDIT USER PROFILE - " + loggedInUser.getName() + "          *      |\n");
+            displayStarsLine();
+            displayDownLine();
+            logger.info("\n");
+
+            logger.info("|               1- Edit Name                                            |\n");
+            logger.info("|               2- Edit Phone Number                                    |\n");
+            logger.info("|               3- Edit Address                                         |\n");
+            logger.info("|               4- Edit City                                            |\n");
+            logger.info("|               5- Edit Street                                          |\n");
+            logger.info("|               6- Edit Email                                           |\n");
+            logger.info("|               7- Edit Password                                        |\n");
+            logger.info("|               8- Back to User Profile Page                            |\n");
+            displayDownLine();
+            logger.info("\n");
+
+            try {
+                editChoice = scanner.nextInt();
+            } catch (InputMismatchException e) {
+                // Clear buffer (avoid infinite loop)
+                scanner.nextLine();
+                displayUpLine();
+                logger.warning("|                            Invalid input.                             |\n");
+                logger.warning("|                   Please enter a number (1 to 8).                    |\n");
+                displayDownLine();
+                editChoice = -1;
+            }
+
+            switch (editChoice) {
+                case 1:
+                    logger.info(" - Enter new Name: ");
+                    loggedInUser.setName(scanner.next());
+                    break;
+
+                case 2:
+                    logger.info(" - Enter new Phone Number: ");
+                    loggedInUser.setPhoneNumber(scanner.next());
+                    break;
+
+                case 3:
+                    logger.info(" - Enter new Address: ");
+                    loggedInUser.setAddress(scanner.next());
+                    break;
+
+                case 4:
+                    logger.info(" - Enter new City: ");
+                    loggedInUser.setCity(scanner.next());
+                    break;
+
+                case 5:
+                    logger.info(" - Enter new Street: ");
+                    loggedInUser.setStreet(scanner.next());
+                    break;
+
+                case 6:
+                    logger.info(" - Enter new Email: ");
+                    loggedInUser.setEmail(scanner.next());
+                    break;
+
+                case 7:
+                    // Hash and set new password
+                    logger.info(" - Enter new Password (must be at least 5 characters): ");
+                    String newPassword = scanner.next();
+                    while (newPassword.length() < 5) {
+                        displayUpLine();
+                        logger.warning("|            Password must be at least 6 characters long.               |\n");
+                        logger.warning("|                  Please enter a stronger password.                    |\n");
+                        displayDownLine();
+                        logger.info(" - Enter new Password (must be at least 5 characters): ");
+                        newPassword = scanner.next();
+                    }
+                    loggedInUser.setPassword(hashPassword(newPassword));
+                    break;
+
+                case 8:
+                    // Back to User Profile Page
+                    return;
+
+                default:
+                    displayUpLine();
+                    displayEnterValidNumber();
+                    displayDownLine();
+                    break;
+            }
+        } while (true);
+    }
+
+
     public static void main(String[]args) {
         Scanner scanner = new Scanner(System.in);
         int option = 0;
@@ -401,8 +609,8 @@ public class Main {
                 String[] loginInfo = loginPage();
                 userLogin(loginInfo[0], loginInfo[1]);
 
-                int choice = scanner.nextInt();
-                switch (choice) {
+                int userChoice = scanner.nextInt();
+                switch (userChoice) {
                     //service page
                     case 1:
                         // Show services
@@ -411,20 +619,25 @@ public class Main {
 
                     // user reservations
                     case 2:
-                        // Show details of reservations
                         break;
 
 
                     // user profile
                     case 3:
-                        // My Profile
+                        if (user != null) {
+                            userProfile(user);
+                        } else {
+                            displayUpLine();
+                            logger.warning("| User not logged in. Please log in first.                              |\n");
+                            displayDownLine();
+                        }
                         break;
 
 
                     // Logout
                     case 4:
                         logout();
-                        break;
+                        return;
 
                     default:
                         displayUpLine();
