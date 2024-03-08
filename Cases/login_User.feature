@@ -10,7 +10,7 @@ Feature: User Login
     Then the user is logged in the app successfully "<login_result>"
     Examples:
       |     username        | password |      login_result     |
-      |  jana123@gmail.com  | 12345666 | " login successfully "|
+      |jana123@gmail.com|12345666| " login successfully "|
 
 
 

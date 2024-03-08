@@ -31,12 +31,16 @@ public class LoginAsUser {
         //System.out.println("User logged out.");
     }
     public void login() {
-        //if (!isLoggedIn && UserDB.authenticateUser(username, password)) {
+            //isLoggedIn = true;
+
+        if (!isLoggedIn && loggInCheck(username, password) != null) {
             isLoggedIn = true;
-           // System.out.println("User logged in successfully.");
-        //} else {
-           // System.out.println("Login failed. Please check your credentials.");
-        //}
+            logger.info("User logged in successfully.");
+        } else {
+            logger.warning("Login failed. Please check your credentials.");
+        }
+
+
     }
 
     public void setCredentials(String username, String password) {
@@ -54,18 +58,40 @@ public class LoginAsUser {
         return BCrypt.checkpw(enteredPassword, hashedPassword);
     }
 
+//    public User loggInCheck(String enteredEmail, String enteredPassword) {
+//        for (User u : UserDB.getUsers()) {
+//            if (u.getEmail().equalsIgnoreCase(enteredEmail)) {
+//                if (verifyPassword(enteredPassword, u.getPassword())) {
+//                    return u; // Successfully logged in
+//                }
+//            }
+//        }
+//        return null; // Login failed
+//    }
+
     public User loggInCheck(String enteredEmail, String enteredPassword) {
         for (User u : UserDB.getUsers()) {
+            System.out.println("Checking user: " + u.getEmail());
+            System.out.println("Entered email: " + enteredEmail);
+
             if (u.getEmail().equalsIgnoreCase(enteredEmail)) {
+                System.out.println("Email match found.");
+
                 if (verifyPassword(enteredPassword, u.getPassword())) {
+                    System.out.println("Password match found. Login successful for user: " + enteredEmail);
                     return u; // Successfully logged in
+                } else {
+                    System.out.println("Incorrect password for user: " + enteredEmail);
                 }
             }
         }
+
+        System.out.println("User not found for login: " + enteredEmail);
         return null; // Login failed
     }
 
     public boolean validateUserInformation(User user) {
-        return false;
+        return user != null && user.getEmail() != null && !user.getEmail().isEmpty();
+//        return false;
     }
 }

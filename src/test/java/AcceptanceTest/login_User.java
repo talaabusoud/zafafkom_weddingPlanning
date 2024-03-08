@@ -58,7 +58,14 @@ public class login_User {
     @Then("the user is logged in the app successfully {string} login successfully {string}")
     public void the_user_is_logged_in_the_app_successfully_login_successfully(String string, String string2) {
         // Write code here that turns the phrase above into concrete actions
-      system.loggInCheck(username,password);
+      System.out.println("Username: " + username);
+      System.out.println("Password: " + password);
+      //system.loggInCheck(username,password);
+      System.out.println("Is logged in: " + system.isLoggedIn());
+      //assertTrue(system.isLoggedIn());
+
+      system.setCredentials(username, password);
+      system.login();  // Add this line to invoke the login method
       assertTrue(system.isLoggedIn());
         //throw new io.cucumber.java.PendingException();
     }
