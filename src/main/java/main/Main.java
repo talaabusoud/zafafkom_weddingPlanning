@@ -189,7 +189,7 @@ public class Main {
         displayUpLine();
         displayEmpty();
         displayStarsLine();
-        logger.warning("|        *               WELCOME TO SIGNUP PAGE:)              *        |\n");
+        logger.warning("|        *               WELCOME TO SIGNUP PAGE FOR USER:)              *        |\n");
         displayStarsLine();
         displayDownLine();
         logger.info("\n");
@@ -785,7 +785,7 @@ private static void Adminmenu(Admin loggedInUser){
                 addServiceProvider();
                 break;
             case "3":
-                addUser();
+                signUpPage();
                 break;
             case "4":
                 Adminmenu(admin);
@@ -841,15 +841,44 @@ private static void Adminmenu(Admin loggedInUser){
     }
 
     private static void addServiceProvider() {
-        System.out.println("Adding new ServiceProvider...");
-        // Implement the logic to add a new service provider
-        // This can include asking for details specific to service providers
-        // Example: ServiceProviderDB.addServiceProvider(newServiceProvider);
+        logger.info("---------------------------Adding new ServiceProvider...---------------------------\n");
+        Scanner scanner = new Scanner(System.in);
+        logger.info("Enter ServiceProvider's Name:");
+        String name = scanner.nextLine();
+        while (!Test_input.Name(name)) {
+            logger.info("Invalid name. Please enter a valid name (characters only):");
+            name = scanner.nextLine();
+        }
+
+        logger.info("Enter ServiceProvider's Email:");
+        String email = scanner.nextLine();
+        while (!email.contains("@") || !email.contains(".")) {
+            logger.info("Invalid email. Please enter a valid email:");
+            email = scanner.nextLine();
+        }
+
+        logger.info("Enter ServiceProvider's Phone:");
+        String phone = scanner.nextLine();
+        while (!Test_input.Phone(phone)) {
+            logger.info("Invalid phone number. Please enter a valid phone number (10 digits):");
+            phone = scanner.nextLine();
+        }
+
+        logger.info("Enter ServiceProvider's Address:");
+        String address = scanner.nextLine();
+
+        logger.info("Enter Admin's Password:");
+        String password = scanner.nextLine();
+        while (password.length() < 6) {
+            logger.warning("Password must be at least 6 characters long. Please enter a stronger password:");
+            password = scanner.nextLine();
+        }
+        int id = AdminDB.getAdmins().size() + 1;
+        // Assuming ServiceProvider class has a constructor that accepts these parameters
+        ServiceProvider newServiceProvider = new ServiceProvider(password,email, phone, address, name,id);
+        ServiceProviderDB.addServiceProvider(newServiceProvider);
+        ServiceProviderDB.displayServiceProvider(newServiceProvider);
     }
-    private static void addUser() {
-        System.out.println("Adding new User...");
-        // Implement the logic to add a new user
-        // This can include asking for user details like email, password, address, etc.
-        // Example: UserDB.addUser(newUser);
-    }
+
+
 }// end of main class

@@ -33,15 +33,21 @@ public class ServiceProviderDB {
         if (serviceProvider == null) {
             logger.warning("This service provider is not exist\n");
         } else {
-            String spaces = "|%12s";
-            String serviceProviderInfo = String.format("|%12s", serviceProvider.getId()) +
-                    String.format(spaces, serviceProvider.getName()) +
-                    String.format(spaces, serviceProvider.getPhone()) +
-                    String.format("|%14s", serviceProvider.getAddress()) +
-                    String.format(spaces, serviceProvider.getEmail()) + "|\n";
+            // تحديد الصيغة المناسبة لطباعة معلومات مقدم الخدمة
+            String format = "|%-12s|%12s|%15s|%14s|%20s|%20s|\n";
 
-            logger.info(serviceProviderInfo);
+            // طباعة العناوين لكل عمود
+            logger.info(String.format(format, "ID", "Name", "Phone", "Address", "Email", "password"));
 
+            // طباعة معلومات مقدم الخدمة الفعلية استخدام المتغير serviceProvider للوصول إلى خصائص الكائن
+            logger.info(String.format(format,
+                    serviceProvider.getId(),
+                    serviceProvider.getName(),
+                    serviceProvider.getPhone(),
+                    serviceProvider.getAddress(),
+                    serviceProvider.getEmail(),
+                    serviceProvider.getPassword() // تأكد من أنه من المقبول عرض كلمة المرور هنا
+            ));
         }
     }
 
