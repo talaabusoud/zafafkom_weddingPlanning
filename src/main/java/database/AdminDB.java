@@ -50,4 +50,25 @@ public class AdminDB {
         }
     }
 
-}
+    public static void updateAdmin(Admin loggedInUser) {
+        if (loggedInUser == null) {
+            logger.warning("\nAdmin object is null. Cannot update.\n");
+            return;
+        }
+
+        // البحث عن الإداري في قائمة الإداريين بناءً على معرف الإداري
+        for (Admin admin : AdminDB.getAdmins()) {
+            if (admin.getId() == loggedInUser.getId()) {
+                // تحديث المعلومات
+                admin.setName(loggedInUser.getName());
+                admin.setEmail(loggedInUser.getEmail());
+                admin.setPhone(loggedInUser.getPhone());
+                admin.setAddress(loggedInUser.getAddress());
+                admin.setPassword(loggedInUser.getPassword()); // افترض وجود طريقة لتشفير كلمة المرور قبل الحفظ
+
+                logger.info("\nAdmin profile has been updated successfully.\n");
+                return;
+            }
+
+    }
+}}

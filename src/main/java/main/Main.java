@@ -751,7 +751,7 @@ private static void Adminmenu(Admin loggedInUser){
             //showReservationsAndDeleteOption();
             break;
         case 6: // عرض الملف الشخصي للإدارة
-            //showAdminProfile(loggedInUser);
+            showAdminProfile(loggedInUser);
             break;
         case 7: // عرض قائمة الطلبات
             //showRequestsList();
@@ -845,7 +845,6 @@ private static void Adminmenu(Admin loggedInUser){
         Adminmenu(admin);
 
     }
-
     private static void addServiceProvider() {
         logger.info("---------------------------Adding new ServiceProvider...---------------------------\n");
         Scanner scanner = new Scanner(System.in);
@@ -977,5 +976,72 @@ private static void Adminmenu(Admin loggedInUser){
             logger.warning("\nService with ID " + id + " could not be found or deleted.\n");
         }
 
-    }}
+    }
+
+    private static void showAdminProfile(Admin loggedInUser) {
+
+        Scanner scanner = new Scanner(System.in);
+
+        // عرض معلومات الإداري
+        AdminDB.displayAdmin(loggedInUser);
+
+        // سؤال الإداري إذا كان يرغب في تعديل معلوماته
+        logger.info("Do you want to update your profile information? (yes/no): ");
+        String response = scanner.nextLine().trim().toLowerCase();
+
+
+        if ("yes".equals(response)) {
+
+            logger.info("Enter the new name (leave blank to keep current): ");
+            String newName = scanner.nextLine().trim();
+            if (!newName.isEmpty()) {
+                if (Test_input.Name(newName)) {
+                    loggedInUser.setName(newName);
+                } else {
+                    logger.warning("Invalid name. Keeping the current name.\n");
+                }
+            }
+
+            // رقم هاتف جديد
+            logger.info("Enter the new phone number (leave blank to keep current): ");
+            String newPhone = scanner.nextLine().trim();
+            if (!newPhone.isEmpty()) {
+                if (Test_input.Phone(newPhone)) {
+                    loggedInUser.setPhone(newPhone);
+                } else {
+                    logger.warning("Invalid phone number. Keeping the current phone number.\n");
+                }
+            }
+
+            logger.info("Enter the new address (leave blank to keep current): ");
+            String newAddress = scanner.nextLine().trim();
+            if (!newAddress.isEmpty()) {
+                loggedInUser.setAddress(newAddress);
+            }
+            logger.info("Enter the new password (leave blank to keep current): ");
+
+            String newPassword = scanner.nextLine().trim();
+            if (!newPassword.isEmpty()){
+            while (newPassword.length() < 6) {
+                logger.warning("Password must be at least 6 characters long. Please enter a stronger password:");
+                newPassword = scanner.nextLine().trim();
+            }
+
+                loggedInUser.setPassword(newPassword);
+            }
+            AdminDB.updateAdmin(loggedInUser);
+
+            logger.info("Your profile has been updated successfully.");
+        } else if ("no".equals(response)) {
+            logger.info("No changes have been made to your profile.");
+        } else {
+            logger.info("\nInvalid response.\n");
+        }
+        Adminmenu(admin);
+
+    }
+
+}
+
+
 
