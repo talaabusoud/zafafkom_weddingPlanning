@@ -694,11 +694,6 @@ public class Main {
 
     }
     public static void adminPage(Admin loggedInUser) {
-
-        Scanner scanner = new Scanner(System.in);
-        int adminChoice;
-
-//        while (true){
         displayUpLine();
         displayEmpty();
         displayStarsLine();
@@ -707,61 +702,154 @@ public class Main {
         displayEmpty();
         logger.info("|              ENTER THE NUMBER OF ACTION YOU WANT TO TAKE              |\n");
         displayStarsLine();
-        displayEmpty();
-        logger.info("|------------------------------- Admin Page -----------------------------|\n");
-        logger.info("|                 1- add new user / service provider                     |\n");
-        logger.info("|                 2- Show service provider                               |\n");
-        logger.info("|                 3- Show users                                          |\n");
-        logger.info("|                 4- Show services & delete                              |\n");
-        logger.info("|                 5- show reservations & delete                          |\n");
-        logger.info("|                 6- profile                                             |\n");
-        logger.info("|                 7- requests list                                       |\n");
-        logger.info("|                 8- logout                                              |\n");
-        logger.info("-------------------------------------------------------------------------|\n");
+        Adminmenu(loggedInUser );
+    }
+private static void Adminmenu(Admin loggedInUser){
+    Scanner scanner = new Scanner(System.in);
+    int adminChoice;
+
+    logger.info("\n|------------------------------- Admin Page -----------------------------|\n");
+    logger.info("|                 1- add new user / service provider                     |\n");
+    logger.info("|                 2- Show service provider                               |\n");
+    logger.info("|                 3- Show users                                          |\n");
+    logger.info("|                 4- Show services & delete                              |\n");
+    logger.info("|                 5- show reservations & delete                          |\n");
+    logger.info("|                 6- profile                                             |\n");
+    logger.info("|                 7- requests list                                       |\n");
+    logger.info("|                 8- logout                                              |\n");
+    logger.info("-------------------------------------------------------------------------|\n");
+    logger.info("\n");
+
+    try {
+        adminChoice = scanner.nextInt();
+    } catch (InputMismatchException e) {
+        // Clear buffer (avoid infinite loop)
+        scanner.nextLine();
+        displayUpLine();
+        logger.warning("|                            Invalid input.                             |\n");
+        logger.warning("|                   Please enter a number (1 to 8).                    |\n");
         displayDownLine();
-        logger.info("\n");
+        adminChoice = -1;
+    }
 
-        try {
-            adminChoice = scanner.nextInt();
-        } catch (InputMismatchException e) {
-            // Clear buffer (avoid infinite loop)
-            scanner.nextLine();
+    switch (adminChoice) {
+        case 1: // إضافة مستخدم جديد أو مقدم خدمة
+            addNewUser();
+            break;
+        case 2: // عرض مقدمي الخدمات
+            //     showServiceProviders();
+            break;
+        case 3: // عرض المستخدمين
+            //   showUsers();
+            break;
+        case 4: // عرض الخدمات والحذف
+            // showServicesAndDeleteOption();
+            break;
+        case 5: // عرض الحجوزات وخيار الحذف
+            //showReservationsAndDeleteOption();
+            break;
+        case 6: // عرض الملف الشخصي للإدارة
+            //showAdminProfile(loggedInUser);
+            break;
+        case 7: // عرض قائمة الطلبات
+            //showRequestsList();
+            break;
+        case 8: // تسجيل الخروج
+            logout();
+            break;
+
+        default:
             displayUpLine();
-            logger.warning("|                            Invalid input.                             |\n");
-            logger.warning("|                   Please enter a number (1 to 8).                    |\n");
+            displayEnterValidNumber();
             displayDownLine();
-            adminChoice = -1;
-        }
+            break;
+    }
+}
+    private static void addNewUser() {
 
-        switch (adminChoice) {
-            case 1:
-                // Show services
-                // TODO: Add functionality for showing services
+
+        logger.info("Please select the type of user you want to add:\n");
+        logger.info("1- Admin\n");
+        logger.info("2- ServiceProvider\n");
+        logger.info("3- User\n");
+        logger.info("4- Exist\n");
+
+        Scanner scanner = new Scanner(System.in);
+        String choice = scanner.nextLine(); // استخدام nextLine لقراءة السطر كاملاً
+
+        switch (choice) {
+            case "1":
+                addAdmin();
                 break;
-
-            case 2:
-                // Show details of my reservations
-                // TODO: Add functionality for showing reservations
+            case "2":
+                addServiceProvider();
                 break;
-
-            case 3:
-
+            case "3":
+                addUser();
                 break;
-
-            case 4:
-                // Log out
-                logout();
+            case "4":
+                Adminmenu(admin);
                 break;
-
             default:
-                displayUpLine();
-                displayEnterValidNumber();
-                displayDownLine();
+                System.out.println("Invalid choice. Please enter a number between 1 and 3.");
                 break;
         }
-//        }
+    }
+    private static void addAdmin() {
+        logger.info("---------------------------Adding new Admin...---------------------------\n");
+        Scanner scanner = new Scanner(System.in);
 
+        logger.info("Enter Admin's Name:");
+        String name = scanner.nextLine();
+        while (!Test_input.Name(name)) {
+            logger.info("Invalid name. Please enter a valid name (characters only):");
+            name = scanner.nextLine();
+        }
 
+        logger.info("Enter Admin's Email:");
+        String email = scanner.nextLine();
+        while (!email.contains("@") || !email.contains(".")) {
+            logger.info("Invalid email. Please enter a valid email:");
+            email = scanner.nextLine();
+        }
 
+        logger.info("Enter Admin's Phone:");
+        String phone = scanner.nextLine();
+        while (!Test_input.Phone(phone)) {
+            logger.info("Invalid phone number. Please enter a valid phone number (10 digits):");
+            phone = scanner.nextLine();
+        }
+
+        logger.info("Enter Admin's Address:");
+        String address = scanner.nextLine();
+
+        logger.info("Enter Admin's Password:");
+        String password = scanner.nextLine();
+        while (password.length() < 6) {
+            logger.warning("Password must be at least 6 characters long. Please enter a stronger password:");
+            password = scanner.nextLine();
+        }
+
+        int id = AdminDB.getAdmins().size() + 1;
+
+        // إنشاء كائن Admin وإضافته
+        Admin newAdmin = new Admin(password,email , phone, address, name, id);
+        AdminDB.addAdmin(password,email, phone, address, name, id);
+        AdminDB.displayAdmin(newAdmin);
+        Adminmenu(admin);
+
+    }
+
+    private static void addServiceProvider() {
+        System.out.println("Adding new ServiceProvider...");
+        // Implement the logic to add a new service provider
+        // This can include asking for details specific to service providers
+        // Example: ServiceProviderDB.addServiceProvider(newServiceProvider);
+    }
+    private static void addUser() {
+        System.out.println("Adding new User...");
+        // Implement the logic to add a new user
+        // This can include asking for user details like email, password, address, etc.
+        // Example: UserDB.addUser(newUser);
     }
 }// end of main class

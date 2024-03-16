@@ -30,7 +30,7 @@ public class Test_input {
                     break;
                 }
             }
-        }
+        }else  re = false;
         return re;
 
     }
