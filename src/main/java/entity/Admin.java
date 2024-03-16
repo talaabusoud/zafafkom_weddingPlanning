@@ -5,7 +5,7 @@ public class Admin {
     private String email;
     private String phone;
     private String address;
-    private String name;
+    private static String name;
     private int id;
 
     public Admin(String email, String password) {
@@ -54,7 +54,7 @@ public class Admin {
         this.address = address;
     }
 
-    public String getName() {
+    public static String getName() {
         return name;
     }
 

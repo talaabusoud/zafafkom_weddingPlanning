@@ -2,7 +2,7 @@ Feature: Admin Profile
 
   Scenario: Show Admin Profile
     Given that the admin is logged in
-    Then the admin profile appears with the following information:
+    Then the admin profile appears with the following information
 
 
   Scenario: Update Admin Profile Successfully

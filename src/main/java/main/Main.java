@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 
 public class Main {
     private static User user;
+    private static Admin admin;
     private static final Logger logger = LoggerUtility.getLogger();
 
     public static void displayEnterValidNumber(){
@@ -564,25 +565,13 @@ public class Main {
                 scanner.nextLine();
                 continue;
             }
-
             // login as Admin
             if (option == 1){
-                loginPage();
+                String[] loginInfo = loginPage();
+                adminLogin(loginInfo[0], loginInfo[1]);
 
-                //                    logger.info("WELCOME Admin " + user.getName() + "\n");
-//                    while (true) {
-//                        logger.info("---------------Admin Options-----------------------------\n");
-//                        logger.info("| 1- add new user /service provider|\n");
-//                        logger.info("| 2- Show service provider           |\n");
-//                        logger.info("| 3- Show users                          |\n");
-//                        logger.info("| 4- Show services(delete)                          |\n");
-//                        logger.info("| 5- show reservations (delete) |\n");
-///                        logger.info("| 6- profile                        |\n");
-////                        logger.info("| 7- requests list |\n");
-////                        logger.info("| 8- logout|\n");
-//                        logger.info("---------------------------------------------------------\n");
-//
-//                    }
+
+
 
             }
 
@@ -665,4 +654,114 @@ public class Main {
 
         }// end of while
     }// end of static main
+    //--------------------------------admin function--------------------------------
+    public static void adminLogin(String email , String password) {
+        LoginToMyAppAsAdmin adminlogin = new LoginToMyAppAsAdmin();
+        admin = adminlogin.loggInCheck(email,password);
+        if (admin != null) {
+            adminPage(admin);
+        } // end of successfully logged in
+        else {
+            // Login failed due to incorrect password
+            displayUpLine();
+            logger.warning("|   Login failed! Please check your email and password and try again.   |\n");
+            logger.warning("|                 1- Re-enter email and password                        |\n");
+            logger.warning("|                 2- Back to home page                                  |\n");
+            displayDownLine();
+            logger.info("\n");
+
+            Scanner scanner = new Scanner(System.in);
+            int choice = scanner.nextInt();
+            switch (choice) {
+                case 1:
+                    // Re-enter email and password
+                    String[] loginInfo = loginPage();
+                    adminLogin(loginInfo[0], loginInfo[1]);
+                    break;
+                case 2:
+                    // Back to the main menu
+                    menu();
+                    break;
+                default:
+                    displayUpLine();
+                    displayEnterValidNumber();
+                    displayDownLine();
+                    break;
+            }
+        }// end of failed logging in
+
+
+
+    }
+    public static void adminPage(Admin loggedInUser) {
+
+        Scanner scanner = new Scanner(System.in);
+        int adminChoice;
+
+//        while (true){
+        displayUpLine();
+        displayEmpty();
+        displayStarsLine();
+        logger.warning("|        *                   WELCOME " + loggedInUser.getEmail() + ":)                    *        |\n");
+        displayStarsLine();
+        displayEmpty();
+        logger.info("|              ENTER THE NUMBER OF ACTION YOU WANT TO TAKE              |\n");
+        displayStarsLine();
+        displayEmpty();
+        logger.info("|------------------------------- Admin Page -----------------------------|\n");
+        logger.info("|                 1- add new user / service provider                     |\n");
+        logger.info("|                 2- Show service provider                               |\n");
+        logger.info("|                 3- Show users                                          |\n");
+        logger.info("|                 4- Show services & delete                              |\n");
+        logger.info("|                 5- show reservations & delete                          |\n");
+        logger.info("|                 6- profile                                             |\n");
+        logger.info("|                 7- requests list                                       |\n");
+        logger.info("|                 8- logout                                              |\n");
+        logger.info("-------------------------------------------------------------------------|\n");
+        displayDownLine();
+        logger.info("\n");
+
+        try {
+            adminChoice = scanner.nextInt();
+        } catch (InputMismatchException e) {
+            // Clear buffer (avoid infinite loop)
+            scanner.nextLine();
+            displayUpLine();
+            logger.warning("|                            Invalid input.                             |\n");
+            logger.warning("|                   Please enter a number (1 to 8).                    |\n");
+            displayDownLine();
+            adminChoice = -1;
+        }
+
+        switch (adminChoice) {
+            case 1:
+                // Show services
+                // TODO: Add functionality for showing services
+                break;
+
+            case 2:
+                // Show details of my reservations
+                // TODO: Add functionality for showing reservations
+                break;
+
+            case 3:
+
+                break;
+
+            case 4:
+                // Log out
+                logout();
+                break;
+
+            default:
+                displayUpLine();
+                displayEnterValidNumber();
+                displayDownLine();
+                break;
+        }
+//        }
+
+
+
+    }
 }// end of main class
