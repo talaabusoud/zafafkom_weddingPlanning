@@ -32,10 +32,11 @@ public class ServiceDB {
         return SERVICES;
     }
 
-    public static void deleteService(int id) {
+    public static boolean deleteService(int id) {
         if (SERVICES != null) {
             SERVICES.removeIf(s -> s.getId() == id);
         }
+        return false;
     }
 
     public static void displayService(Service service) {

@@ -745,7 +745,7 @@ private static void Adminmenu(Admin loggedInUser){
                showUsers();
             break;
         case 4: // عرض الخدمات والحذف
-            // showServicesAndDeleteOption();
+             showServicesAndDeleteOption();
             break;
         case 5: // عرض الحجوزات وخيار الحذف
             //showReservationsAndDeleteOption();
@@ -930,4 +930,52 @@ private static void Adminmenu(Admin loggedInUser){
         Adminmenu(admin);
     }
 
-}// end of main class
+    private static void showServicesAndDeleteOption() {
+        logger.info("Please choose an action:\n1- Show Services\n2- Delete a Service\n");
+        Scanner scanner = new Scanner(System.in);
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+
+        switch (choice) {
+            case 1:
+                displayServices(ServiceDB.getServices());
+                Adminmenu(admin);
+
+                break;
+            case 2:
+                logger.info("Enter the ID of the service you want to delete:");
+                int serviceId = scanner.nextInt();
+                scanner.nextLine();
+                deleteService(serviceId);
+                Adminmenu(admin);
+                break;
+            default:
+                logger.warning("Invalid choice. Please select 1 or 2.");
+                break;
+        }
+    }
+    public static void displayServices(List<Service> services) {
+        if (services.isEmpty()) {
+            logger.info("No services found.");
+        } else {
+            String headerFormat = "| %-10s | %-20s | %-20s | %-15s | %-30s |\n";
+            logger.info("\n"+String.format(headerFormat, "ID", "Name", "Type", "Status", "Price"));
+
+            // عرض كل خدمة
+            for (Service service : services) {
+                logger.info(String.format(headerFormat,
+                        service.getId(), service.getName(), service.getType(), service.getStatus(), service.getPrice()));
+            }
+        }
+    }
+
+    public static void deleteService(int id) {
+        boolean removed = ServiceDB.deleteService(id);
+        if (removed) {
+            logger.info("\nService with ID " + id + " was deleted successfully.\n");
+        } else {
+            logger.warning("\nService with ID " + id + " could not be found or deleted.\n");
+        }
+
+    }}
+
