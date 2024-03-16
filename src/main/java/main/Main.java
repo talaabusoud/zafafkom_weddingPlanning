@@ -11,6 +11,8 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.util.*;
 import java.util.logging.Logger;
 
+import static database.ServiceProviderDB.displayServiceProvider;
+
 public class Main {
     private static User user;
     private static Admin admin;
@@ -737,10 +739,10 @@ private static void Adminmenu(Admin loggedInUser){
             addNewUser();
             break;
         case 2: // عرض مقدمي الخدمات
-            //     showServiceProviders();
+                showServiceProviders();
             break;
         case 3: // عرض المستخدمين
-            //   showUsers();
+               showUsers();
             break;
         case 4: // عرض الخدمات والحذف
             // showServicesAndDeleteOption();
@@ -765,6 +767,10 @@ private static void Adminmenu(Admin loggedInUser){
             break;
     }
 }
+
+
+
+
     private static void addNewUser() {
 
 
@@ -877,8 +883,51 @@ private static void Adminmenu(Admin loggedInUser){
         // Assuming ServiceProvider class has a constructor that accepts these parameters
         ServiceProvider newServiceProvider = new ServiceProvider(password,email, phone, address, name,id);
         ServiceProviderDB.addServiceProvider(newServiceProvider);
-        ServiceProviderDB.displayServiceProvider(newServiceProvider);
+        displayServiceProvider(newServiceProvider);
     }
+    private static void showServiceProviders() {
+        List<ServiceProvider> serviceProviders = ServiceProviderDB.getServiceProviders();
+        if (serviceProviders.isEmpty()) {
+            logger.info("No service providers found.");
+        } else {
+            String format = "|%-12s|%12s|%15s|%14s|%20s|%20s|\n";
+            logger.info(String.format(format, "ID", "Name", "Phone", "Address", "Email", "password"));
 
+            logger.info(new String(new char[100]).replace('\0', '-'));
+            logger.info("\n");
+            for (ServiceProvider serviceProvider : serviceProviders) {
+                logger.info(String.format(format,
+                        serviceProvider.getId(),
+                        serviceProvider.getName(),
+                        serviceProvider.getPhone(),
+                        serviceProvider.getAddress(),
+                        serviceProvider.getEmail(),
+                        serviceProvider.getPassword()
+                ));
+            }
+        }
+        Adminmenu(admin);
+    }
+    private static void showUsers() {
+        List<User> users = UserDB.getUsers();
+        if (users.isEmpty()) {
+            logger.info("No users found.");
+            return;
+        }
+        String headerFormat = "| %-10s | %-20s | %-20s | %-15s | %-30s |\n";
+        logger.info(String.format(headerFormat, "ID", "Name", "Phone Number", "City", "Email"));
+        logger.info(new String(new char[112]).replace('\0', '-'));
+        logger.info("\n");
+        String userFormat = "| %-10d | %-20s | %-20s | %-15s | %-30s |\n";
+        for (User user : users) {
+            logger.info(String.format(userFormat,
+                    user.getId(),
+                    user.getName(),
+                    user.getPhoneNumber(),
+                    user.getCity(),
+                    user.getEmail()));
+        }
+        Adminmenu(admin);
+    }
 
 }// end of main class

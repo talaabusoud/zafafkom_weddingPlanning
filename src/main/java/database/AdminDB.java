@@ -18,7 +18,7 @@ public class AdminDB {
     }
     static{
         admins.add(new Admin("1234","mohamad", "0595429100","Hebron","Mohamad",3));
-        admins.add(new Admin("1","x", "0595429100","Hebron","Mohamad",3));
+        admins.add(new Admin("1","1", "0595429100","Hebron","Mohamad",3));
     }
     public static void addAdmin(String password, String email, String phone, String address, String name, int id) {
 
