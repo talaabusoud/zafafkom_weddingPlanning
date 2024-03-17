@@ -46,33 +46,44 @@ public class ServiceDB {
 
 
     public static void displayService(Service service) {
-        String dataFormat = "| %-15d | %-10s | %-20s | %-10.2f | %-15s | %-30s | %-20s |\n";
+        // Ensure the dataFormat string includes all the necessary placeholders for the service details
+        String dataFormat = "| %-5d | %-15s | %-10.2f | %-12s | %-15s | %-15s | %-30s | %-15s |\n";
+
+        // Log the service details. Make sure to include the service's status and location in the output
         logger.info(String.format(dataFormat,
-                service.getId(),
-                service.getType(),
-                service.getName(),
-                service.getPrice(),
-                service.getPhone(),
-                service.getImage(),
-                service.getOwner().getName()));
-        logger.info("+-----------------+------------+----------------------+------------+-----------------+--------------------------------+----------------------+\n");
+                service.getId(),          // Service ID
+                service.getName(),        // Service Name
+                service.getPrice(),       // Service Price
+                service.getStatus(),      // Service Status
+                service.getLocation(),    // Service Location
+                service.getOwner().getName(), // Service Owner
+                service.getImage(),       // Service Image URL
+                service.getType()));      // Service Type
+
+        // Header and Footer for better readability
+        logger.info("+------+-----------------+----------+--------------+-----------------+-----------------+--------------------------------+-----------------+\n");
     }
 
     public static void displayServices(List<Service> services) {
-        logger.info("------------------------------------------------------ Services ------------------------------------------------------------------------------ \n");
-        String headerFormat = "| %-15s | %-10s | %-20s | %-10s | %-15s | %-30s | %-20s |\n";
-        logger.info("+-----------------+------------+----------------------+------------+-----------------+--------------------------------+----------------------+\n");
-        logger.info(String.format(headerFormat, "ID", "Type", "Name", "Price", "Phone", "Image", "Provider"));
-        logger.info("+-----------------+------------+----------------------+------------+-----------------+--------------------------------+----------------------+\n");
+        logger.info("-----------------------------------------------------------------------------------------------------------------------------------------------------\n");
+        String headerFormat = "| %-5s | %-15s | %-10s | %-12s | %-15s | %-15s | %-30s | %-15s |\n";
+        logger.info(String.format(headerFormat, "ID", "Name", "Price", "Status", "Location", "Owner", "Image URL", "Type"));
+        logger.info("-----------------------------------------------------------------------------------------------------------------------------------------------------\n");
 
         for (Service service : services) {
             displayService(service);
         }
     }
+
+
     public static List<Service> getServicesByProvider(int providerId) {
         return SERVICES.stream()
                 .filter(service -> service.getOwner().getId() == providerId)
                 .collect(Collectors.toList());
+    }
+
+    public static void updateService(Service updatedService) {
+        SERVICES.replaceAll(service -> service.getId() == updatedService.getId() ? updatedService : service);
     }
 
 

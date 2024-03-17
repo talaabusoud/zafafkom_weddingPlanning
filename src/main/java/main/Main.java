@@ -1164,18 +1164,16 @@ public class Main {
                 break;
             case 4:
                 // Call method to edit profile
-              //  editServiceProviderProfile(loggedInUser);
+                editServiceProviderProfile(loggedInUser);
                 break;
             case 5:
-                // Logout functionality
-              //  logoutServiceProvider();
                 break;
+
             default:
                 logger.warning("Invalid choice. Please enter a number (1 to 5).");
                 break;
         }
     }
-
 
     private static void addNewService(ServiceProvider loggedInUser) {
         Scanner scanner = new Scanner(System.in);
@@ -1263,11 +1261,10 @@ public class Main {
             logger.info("\nYou have no services listed.\n");
             return;
         } else {
-            logger.info("------------------------------------------------------ Services ------------------------------------------------------ \n");
-            String headerFormat = "| %-15s | %-10s | %-20s | %-10s | %-15s | %-30s | %-20s |\n";
-            logger.info("+-----------------+------------+----------------------+------------+-----------------+--------------------------------+----------------------+\n");
-            logger.info(String.format(headerFormat, "ID", "Type", "Name", "Price", "Phone", "Image", "Provider"));
-            logger.info("+-----------------+------------+----------------------+------------+-----------------+--------------------------------+----------------------+\n");
+            logger.info("-----------------------------------------------------------------------------------------------------------------------------------------------------\n");
+            String headerFormat = "| %-5s | %-15s | %-10s | %-12s | %-15s | %-15s | %-30s | %-15s |\n";
+            logger.info(String.format(headerFormat, "ID", "Name", "Price", "Status", "Location", "Owner", "Image URL", "Type"));
+            logger.info("-----------------------------------------------------------------------------------------------------------------------------------------------------\n");
 
             // طباعة الخدمات بشكل جدول
             providerServices.forEach(service -> displayService(service));
@@ -1281,7 +1278,7 @@ public class Main {
 
                 switch (choice) {
                     case 1:
-                        logger.info("Enter the ID of the service you want to edit:");
+                        editService(loggedInUser);
                         break;
                     case 2:
                         // حذف خدمة
@@ -1313,6 +1310,153 @@ public class Main {
         }
     }
 
+    private static void editService(ServiceProvider loggedInUser) {
+        Scanner scanner = new Scanner(System.in);
+        logger.info("\nEnter the ID of the service you want to edit:");
+        int serviceId = scanner.nextInt();
+        scanner.nextLine(); // لتنظيف البافر
+
+        // البحث عن الخدمة بناءً على مُعرف الخدمة ومُعرف مقدم الخدمة
+        Service serviceToEdit = null;
+        for (Service service : ServiceDB.getServicesByProvider(loggedInUser.getId())) {
+            if (service.getId() == serviceId) {
+                serviceToEdit = service;
+                break;
+            }
+        }
+
+        if (serviceToEdit == null) {
+            logger.info("\nService not found or does not belong to you.\n");
+            return;
+        }
+
+        // تعديل اسم الخدمة
+        logger.info("\nEnter the new name (leave blank to keep current):");
+        String newName = scanner.nextLine().trim();
+        if (!newName.isEmpty() && Test_input.Name(newName)) {
+            serviceToEdit.setName(newName);
+        } else if (!newName.isEmpty()) {
+            logger.info("\nInvalid name. Keeping the current name.");
+        }
+
+        // تعديل نوع الخدمة
+        logger.info("\nEnter the new type (e.g., Hall, Food, DJ, Zaffa, Decoration) (leave blank to keep current):");
+        String newType = scanner.nextLine().trim();
+        if (!newType.isEmpty() && Test_input.type(newType)) {
+            serviceToEdit.setType(newType);
+        } else if (!newType.isEmpty()) {
+            logger.info("\nInvalid type. Keeping the current type.");
+        }
+
+        // تعديل الموقع
+        logger.info("\nEnter the new location (leave blank to keep current):");
+        String newLocation = scanner.nextLine().trim();
+        if (!newLocation.isEmpty()) {
+            serviceToEdit.setLocation(newLocation);
+        }
+
+        // تعديل الحالة
+        logger.info("\nEnter the new status (\n1- for Available, \n2 -for Not Available  ");
+        String statusChoice = scanner.nextLine().trim();
+        if ("1".equals(statusChoice)) {
+            serviceToEdit.setStatus("Available");
+        } else {
+            serviceToEdit.setStatus("Not Available");
+        }
+
+        // تعديل السعر
+        logger.info("\nEnter the new price (leave blank to keep current):");
+        String newPriceStr = scanner.nextLine().trim();
+        if (!newPriceStr.isEmpty() && Test_input.Price(newPriceStr)) {
+            double newPrice = Double.parseDouble(newPriceStr);
+            serviceToEdit.setPrice(newPrice);
+        } else if (!newPriceStr.isEmpty()) {
+            logger.info("\nInvalid price. Keeping the current price.");
+        }
+
+        // تعديل الهاتف
+        logger.info("\nEnter the new phone (leave blank to keep current):");
+        String newPhone = scanner.nextLine().trim();
+        if (!newPhone.isEmpty() && Test_input.Phone(newPhone)) {
+            serviceToEdit.setPhone(newPhone);
+        } else if (!newPhone.isEmpty()) {
+            logger.info("\nInvalid phone. Keeping the current phone.");
+        }
+
+        // تعديل URL الصورة
+        logger.info("\nEnter the new image URL (leave blank to keep current):");
+        String newImageURL = scanner.nextLine().trim();
+        if (!newImageURL.isEmpty() && Test_input.imge(newImageURL)) {
+            serviceToEdit.setImage(newImageURL);
+        } else if (!newImageURL.isEmpty()) {
+            logger.info("\nInvalid image URL. Keeping the current image URL.");
+        }
+
+        // تحديث الخدمة في قاعدة البيانات
+        ServiceDB.updateService(serviceToEdit);
+        logger.info("\nService updated successfully.\n");
+    }
+
+    private static void editServiceProviderProfile(ServiceProvider loggedInUser) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Display current service provider profile
+        ServiceProviderDB.displayServiceProvider(loggedInUser);
+
+        // Ask if the service provider wants to update their information
+        logger.info("Do you want to update your profile information? (yes/no): ");
+        String response = scanner.nextLine().trim().toLowerCase();
+
+        if ("yes".equals(response)) {
+            // Name update
+            logger.info("Enter the new name (leave blank to keep current): ");
+            String newName = scanner.nextLine().trim();
+            if (!newName.isEmpty() && Test_input.Name(newName)) {
+                loggedInUser.setName(newName);
+            } else if (!newName.isEmpty()) {
+                logger.info("Invalid name. Keeping the current name.");
+            }
+
+            // Phone update
+            logger.info("Enter the new phone number (leave blank to keep current): ");
+            String newPhone = scanner.nextLine().trim();
+            if (!newPhone.isEmpty() && Test_input.Phone(newPhone)) {
+                loggedInUser.setPhone(newPhone);
+            } else if (!newPhone.isEmpty()) {
+                logger.info("Invalid phone number. Keeping the current phone number.");
+            }
+
+            // Address update
+            logger.info("Enter the new address (leave blank to keep current): ");
+            String newAddress = scanner.nextLine().trim();
+            if (!newAddress.isEmpty()) {
+                loggedInUser.setAddress(newAddress);
+            }
+
+            // Password update
+            logger.info("Enter the new password (leave blank to keep current): ");
+            String newPassword = scanner.nextLine().trim();
+            if (!newPassword.isEmpty()){
+                while (newPassword.length() < 6) {
+                    logger.warning("Password must be at least 6 characters long. Please enter a stronger password:");
+                    newPassword = scanner.nextLine().trim();
+                }
+                loggedInUser.setPassword(newPassword);
+            }
+
+            // Update the service provider in the database
+            ServiceProviderDB.updateServiceProvider(loggedInUser);
+
+            logger.info("Your profile has been updated successfully.");
+        } else if ("no".equals(response)) {
+            logger.info("No changes have been made to your profile.");
+        } else {
+            logger.info("\nInvalid response.\n");
+        }
+
+
+        Service_Provider_menu(serviceProvider);
+    }
 
 
 }

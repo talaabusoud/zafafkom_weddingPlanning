@@ -60,6 +60,14 @@ public class ServiceProviderDB {
         }
 
     }
+    public static void updateServiceProvider(ServiceProvider updatedServiceProvider) {
+        for (int i = 0; i < serviceProviders.size(); i++) {
+            ServiceProvider sp = serviceProviders.get(i);
+            if (sp.getId() == updatedServiceProvider.getId()) {
+                serviceProviders.set(i, updatedServiceProvider);
+                logger.info("Service provider profile updated successfully.");
+                return;
+            }}}
 
     public static ServiceProvider getServiceProviderById(int id) {
         for (ServiceProvider serviceProvider : serviceProviders) {
