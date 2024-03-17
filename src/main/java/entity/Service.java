@@ -22,13 +22,14 @@ public class Service {
       // Constructor without parameters, can be used for initialization
    }
 
-   public Service(int id, String location, String type, String status, String name, double price) {
+   public Service(int id, String location, String type, String status, String name, double price,ServiceProvider owner) {
       this.id = id;
       this.location = location;
       this.type = type;
       this.status = status;
       this.name = name;
       this.price = price;
+      this.owner = owner;
    }
 
    // Getters and setters for all attributes

@@ -33,20 +33,20 @@ public class ServiceProviderDB {
         if (serviceProvider == null) {
             logger.warning("This service provider is not exist\n");
         } else {
-            // تحديد الصيغة المناسبة لطباعة معلومات مقدم الخدمة
+
             String format = "|%-12s|%12s|%15s|%14s|%20s|%20s|\n";
 
-            // طباعة العناوين لكل عمود
+
             logger.info(String.format(format, "ID", "Name", "Phone", "Address", "Email", "password"));
 
-            // طباعة معلومات مقدم الخدمة الفعلية استخدام المتغير serviceProvider للوصول إلى خصائص الكائن
+
             logger.info(String.format(format,
                     serviceProvider.getId(),
                     serviceProvider.getName(),
                     serviceProvider.getPhone(),
                     serviceProvider.getAddress(),
                     serviceProvider.getEmail(),
-                    serviceProvider.getPassword() // تأكد من أنه من المقبول عرض كلمة المرور هنا
+                    serviceProvider.getPassword()
             ));
         }
     }
@@ -59,5 +59,14 @@ public class ServiceProviderDB {
             displayServiceProvider(sp);
         }
 
+    }
+
+    public static ServiceProvider getServiceProviderById(int id) {
+        for (ServiceProvider serviceProvider : serviceProviders) {
+            if (serviceProvider.getId() == id) {
+                return serviceProvider;
+            }
+        }
+        return null;
     }
 }

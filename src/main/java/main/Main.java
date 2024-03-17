@@ -11,6 +11,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.util.*;
 import java.util.logging.Logger;
 
+import static database.ServiceDB.displayService;
 import static database.ServiceProviderDB.displayServiceProvider;
 
 public class Main {
@@ -1058,7 +1059,7 @@ public class Main {
                         .orElse(null);
                 if (serviceToApprove != null) {
                     ServiceDB.addService(serviceToApprove);
-                    RequestToAddServiceDB.cancelRequest(approveId); // إزالة الطلب
+                    RequestToAddServiceDB.cancelRequest(approveId);
                     logger.info("Service with ID " + approveId + " has been approved.");
                 } else {
                     logger.info("Service with ID " + approveId + " not found.");
@@ -1155,8 +1156,7 @@ public class Main {
                 addNewService(loggedInUser);
                 break;
             case 2:
-                // Call method to show and delete services
-               // showAndDeleteServices(loggedInUser);
+                showAndDeleteServices(loggedInUser);
                 break;
             case 3:
                 // Call method to show and delete reservations
@@ -1175,6 +1175,7 @@ public class Main {
                 break;
         }
     }
+
 
     private static void addNewService(ServiceProvider loggedInUser) {
         Scanner scanner = new Scanner(System.in);
@@ -1253,8 +1254,76 @@ public class Main {
         logger.info("\nNew service has been added to the request list successfully.\n");
         Service_Provider_menu(serviceProvider);
     }
+    private static void showAndDeleteServices(ServiceProvider loggedInUser) {
+        Scanner scanner = new Scanner(System.in);
+
+        List<Service> providerServices = ServiceDB.getServicesByProvider(loggedInUser.getId()); // تنفيذ هذه الدالة لتحصل على الخدمات
+
+        if (providerServices.isEmpty()) {
+            logger.info("\nYou have no services listed.\n");
+            return;
+        } else {
+            logger.info("------------------------------------------------------ Services ------------------------------------------------------ \n");
+            String headerFormat = "| %-15s | %-10s | %-20s | %-10s | %-15s | %-30s | %-20s |\n";
+            logger.info("+-----------------+------------+----------------------+------------+-----------------+--------------------------------+----------------------+\n");
+            logger.info(String.format(headerFormat, "ID", "Type", "Name", "Price", "Phone", "Image", "Provider"));
+            logger.info("+-----------------+------------+----------------------+------------+-----------------+--------------------------------+----------------------+\n");
+
+            // طباعة الخدمات بشكل جدول
+            providerServices.forEach(service -> displayService(service));
+
+
+            boolean isRunning = true;
+
+                logger.info("Options: \n1- Edit a Service\n2- Delete a Service\n3- Exit\n");
+                logger.info("Enter your choice: ");
+                int choice = scanner.nextInt();
+
+                switch (choice) {
+                    case 1:
+                        logger.info("Enter the ID of the service you want to edit:");
+                        break;
+                    case 2:
+                        // حذف خدمة
+                        logger.info("Enter the ID of the service you want to delete:");
+                        int deleteId = scanner.nextInt();
+                        scanner.nextLine(); // تنظيف البافر
+                        boolean serviceExists = false;
+                        for (Service service : providerServices) {
+                            if (service.getId() == deleteId) {
+                                serviceExists = true;
+                                break;
+                            }
+                        }
+                        if (serviceExists && ServiceDB.deleteService(deleteId)) {
+                            logger.info("Service deleted successfully.");
+                        } else {
+                            logger.info("Service could not be found or does not belong to you.");
+                        }
+
+                        break;
+                    case 3:
+                        break;
+                    default:
+                        logger.info("Invalid option. Please enter a valid choice.");
+                        break;
+                }
+            Service_Provider_menu(serviceProvider);
+
+        }
+    }
+
+
 
 }
+
+
+
+
+
+
+
+
 
 
 
