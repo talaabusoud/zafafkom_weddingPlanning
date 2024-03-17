@@ -571,10 +571,6 @@ public class Main {
             if (option == 1){
                 String[] loginInfo = loginPage();
                 adminLogin(loginInfo[0], loginInfo[1]);
-
-
-
-
             }
 
             // login as service provider
@@ -706,7 +702,7 @@ public class Main {
         displayStarsLine();
         Adminmenu(loggedInUser );
     }
-private static void Adminmenu(Admin loggedInUser){
+    private static void Adminmenu(Admin loggedInUser){
     Scanner scanner = new Scanner(System.in);
     int adminChoice;
 
@@ -754,7 +750,7 @@ private static void Adminmenu(Admin loggedInUser){
             showAdminProfile(loggedInUser);
             break;
         case 7: // عرض قائمة الطلبات
-            //showRequestsList();
+            showRequestsList();
             break;
         case 8: // تسجيل الخروج
             logout();
@@ -767,10 +763,6 @@ private static void Adminmenu(Admin loggedInUser){
             break;
     }
 }
-
-
-
-
     private static void addNewUser() {
 
 
@@ -928,7 +920,6 @@ private static void Adminmenu(Admin loggedInUser){
         }
         Adminmenu(admin);
     }
-
     private static void showServicesAndDeleteOption() {
         logger.info("Please choose an action:\n1- Show Services\n2- Delete a Service\n");
         Scanner scanner = new Scanner(System.in);
@@ -967,7 +958,6 @@ private static void Adminmenu(Admin loggedInUser){
             }
         }
     }
-
     public static void deleteService(int id) {
         boolean removed = ServiceDB.deleteService(id);
         if (removed) {
@@ -977,7 +967,6 @@ private static void Adminmenu(Admin loggedInUser){
         }
 
     }
-
     private static void showAdminProfile(Admin loggedInUser) {
 
         Scanner scanner = new Scanner(System.in);
@@ -1040,6 +1029,68 @@ private static void Adminmenu(Admin loggedInUser){
         Adminmenu(admin);
 
     }
+    private static void showRequestsList() {
+        Scanner scanner = new Scanner(System.in);
+        List<Service> requests = RequestToAddServiceDB.getServices(); // الحصول على الطلبات
+
+        if (requests.isEmpty()) {
+            logger.info("\nThere are no pending service requests.\n");
+
+        }else{
+
+        // عرض الطلبات
+        RequestToAddServiceDB.displayServices(requests);
+
+        logger.info("Options:");
+        logger.info("1- Approve All Requests");
+        logger.info("2- Approve a Specific Request");
+        logger.info("3- Reject a Specific Request");
+        logger.info("4- Exit");
+        logger.info("Enter your choice:");
+
+        int choice = scanner.nextInt();
+        scanner.nextLine(); // تنظيف البافر بعد قراءة العدد
+
+        switch (choice) {
+            case 1:
+                RequestToAddServiceDB.getServices().forEach(ServiceDB::addService); // الموافقة على كل الطلبات
+                RequestToAddServiceDB.clearTheRequestList(); // مسح الطلبات
+                logger.info("All requests have been approved.");
+                break;
+            case 2:
+                logger.info("Enter the ID of the service to approve:");
+                int approveId = scanner.nextInt();
+                Service serviceToApprove = requests.stream()
+                        .filter(s -> s.getId() == approveId)
+                        .findFirst()
+                        .orElse(null);
+                if (serviceToApprove != null) {
+                    ServiceDB.addService(serviceToApprove); // إضافة الخدمة
+                    RequestToAddServiceDB.cancelRequest(approveId); // إزالة الطلب
+                    logger.info("Service with ID " + approveId + " has been approved.");
+                } else {
+                    logger.info("Service with ID " + approveId + " not found.");
+                }
+                break;
+            case 3:
+                logger.info("Enter the ID of the service to reject:");
+                int rejectId = scanner.nextInt();
+                if (RequestToAddServiceDB.getServices().removeIf(s -> s.getId() == rejectId)) {
+                    logger.info("Service with ID " + rejectId + " has been rejected.");
+                } else {
+                    logger.info("Service with ID " + rejectId + " not found.");
+                }
+                break;
+            case 4:showRequestsList();
+            default:
+                logger.info("Invalid choice.");
+                showRequestsList();
+                break;
+        }}
+        Adminmenu(admin);
+    }
+
+
 
 }
 
