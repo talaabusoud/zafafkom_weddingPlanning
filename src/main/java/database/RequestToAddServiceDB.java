@@ -27,28 +27,24 @@ public class RequestToAddServiceDB {
     }
 
     public static void displayService(Service service) {
-        logger.info("Type: " + service.getType() + "\n"
-                + "Name: " + service.getName() + "\n"
-                + "Price: " + service.getPrice() + "\n"
-                + "Phone: " + service.getPhone() + "\n"
-                + "Image: " + service.getImage() + "\n");
-
-        display();
-        logger.info("Reservations for this service:\n");
-        for (Reserve reservation : service.getReservations()) {
-            logger.info("Reservation ID: " + reservation.getId() + "\n"
-                    + "Service Name: " + reservation.getServiceName() + "\n"
-                    + "Customer Name: " + reservation.getCustomerName() + "\n"
-                    + "Event Date: " + reservation.getEventDate() + "\n"
-                    + "Event Location: " + reservation.getEventLocation() + "\n"
-                    + "Total Price: " + reservation.getTotalPrice() + "\n"
-                    + "Status: " + reservation.getStatus() + "\n");
-            display();
-        }
+        String dataFormat = "| %-15d | %-10s | %-20s | %-10.2f | %-15s | %-30s |\n";
+        logger.info(String.format(dataFormat,
+                service.getId(),
+                service.getType(),
+                service.getName(),
+                service.getPrice(),
+                service.getPhone(),
+                service.getImage()));
+        logger.info("+-----------------+------------+----------------------+------------+-----------------+--------------------------------+\n");
     }
 
+
     public static void displayServices(List<Service> services) {
-        logger.info("------------Services------------\n");
+        logger.info("-------------------------------------------------- Services ---------------------------------------------------------- \n");
+        String headerFormat = "| %-15s | %-10s | %-20s | %-10s | %-15s | %-30s |\n";
+        logger.info("+-----------------+------------+----------------------+------------+-----------------+--------------------------------+\n");
+        logger.info(String.format(headerFormat, "ID", "Type", "Name", "Price", "Phone", "Image"));
+        logger.info("+-----------------+------------+----------------------+------------+-----------------+--------------------------------+\n");
 
         for (Service service : services) {
             displayService(service);

@@ -16,6 +16,7 @@ import static database.ServiceProviderDB.displayServiceProvider;
 public class Main {
     private static User user;
     private static Admin admin;
+    private static ServiceProvider serviceProvider;
     private static final Logger logger = LoggerUtility.getLogger();
 
     public static void displayEnterValidNumber(){
@@ -575,19 +576,8 @@ public class Main {
 
             // login as service provider
             else if (option == 2) {
-                loginPage();
-
-                //                    logger.info("WELCOME service provider " + user.getName() + "\n");
-//                    while (true) {
-//                        logger.info("---------------service provider Options-----------------------------\n");
-//                        logger.info("| 1- add new service |\n");
-//                        logger.info("| 2- edit service (search + edit + delete)            |\n");
-//                        logger.info("| 3- show reservations (details + delete ) |\n");
-///                        logger.info("| 4- profile                        |\n");
-////                        logger.info("| 5- logout|\n");
-//                        logger.info("---------------------------------------------------------\n");
-//
-//                    }
+                String[] loginInfo = loginPage();
+                Service_Provider_Login(loginInfo[0], loginInfo[1]);
             }
 
 //___________USER_______________________________________________________________________________________________________
@@ -652,7 +642,10 @@ public class Main {
 
         }// end of while
     }// end of static main
-    //--------------------------------admin function--------------------------------
+
+
+
+    //--------------------------------admin function--------------------------------//
     public static void adminLogin(String email , String password) {
         LoginToMyAppAsAdmin adminlogin = new LoginToMyAppAsAdmin();
         admin = adminlogin.loggInCheck(email,password);
@@ -664,7 +657,7 @@ public class Main {
             displayUpLine();
             logger.warning("|   Login failed! Please check your email and password and try again.   |\n");
             logger.warning("|                 1- Re-enter email and password                        |\n");
-            logger.warning("|                 2- Back to home page                                  |\n");
+            logger.warning("|                 2- Back To Home Page                                  |\n");
             displayDownLine();
             logger.info("\n");
 
@@ -1038,23 +1031,22 @@ public class Main {
 
         }else{
 
-        // عرض الطلبات
         RequestToAddServiceDB.displayServices(requests);
 
-        logger.info("Options:");
-        logger.info("1- Approve All Requests");
-        logger.info("2- Approve a Specific Request");
-        logger.info("3- Reject a Specific Request");
-        logger.info("4- Exit");
+        logger.info("Options:\n");
+        logger.info("1- Approve All Requests\n");
+        logger.info("2- Approve a Specific Request\n");
+        logger.info("3- Reject a Specific Request\n");
+        logger.info("4- Exit\n");
         logger.info("Enter your choice:");
 
         int choice = scanner.nextInt();
-        scanner.nextLine(); // تنظيف البافر بعد قراءة العدد
+        scanner.nextLine();
 
         switch (choice) {
             case 1:
-                RequestToAddServiceDB.getServices().forEach(ServiceDB::addService); // الموافقة على كل الطلبات
-                RequestToAddServiceDB.clearTheRequestList(); // مسح الطلبات
+                RequestToAddServiceDB.getServices().forEach(ServiceDB::addService);
+                RequestToAddServiceDB.clearTheRequestList();
                 logger.info("All requests have been approved.");
                 break;
             case 2:
@@ -1065,7 +1057,7 @@ public class Main {
                         .findFirst()
                         .orElse(null);
                 if (serviceToApprove != null) {
-                    ServiceDB.addService(serviceToApprove); // إضافة الخدمة
+                    ServiceDB.addService(serviceToApprove);
                     RequestToAddServiceDB.cancelRequest(approveId); // إزالة الطلب
                     logger.info("Service with ID " + approveId + " has been approved.");
                 } else {
@@ -1081,16 +1073,186 @@ public class Main {
                     logger.info("Service with ID " + rejectId + " not found.");
                 }
                 break;
-            case 4:showRequestsList();
+            case 4: break;
             default:
                 logger.info("Invalid choice.");
-                showRequestsList();
                 break;
         }}
         Adminmenu(admin);
     }
 
+    //--------------------------------service provider function--------------------------------//
+    public static void Service_Provider_Login(String email, String password) {
+        LoginToMyAppAsServiceProvider serviceProviderLogin = new LoginToMyAppAsServiceProvider();
+        serviceProvider = serviceProviderLogin.loggInCheck(email, password);
+        if (serviceProvider != null) {
+            Service_Provider_Page(serviceProvider);
+        } else {
+            displayUpLine();
+            logger.warning("|   Login failed! Please check your email and password and try again.   |\n");
+            logger.warning("|                 1- Re-enter email and password                        |\n");
+            logger.warning("|                 2- Back To Home Page                                  |\n");
+            displayDownLine();
 
+            Scanner scanner = new Scanner(System.in);
+            int choice = scanner.nextInt();
+            switch (choice) {
+                case 1:
+                    String[] loginInfo = loginPage();
+                    Service_Provider_Login(loginInfo[0], loginInfo[1]);
+                    break;
+                case 2:
+                    menu();
+                    break;
+                default:
+                    displayUpLine();
+                    displayEnterValidNumber();
+                    displayDownLine();
+                    break;
+            }
+        }
+
+
+
+
+    }
+    public static void Service_Provider_Page(ServiceProvider loggedInUser) {
+        displayUpLine();
+        displayEmpty();
+        displayStarsLine();
+        logger.warning("|        *                   WELCOME " + loggedInUser.getEmail() + ":)                    *        |\n");
+        displayStarsLine();
+        displayEmpty();
+        logger.info("|              ENTER THE NUMBER OF ACTION YOU WANT TO TAKE              |\n");
+        displayStarsLine();
+        Service_Provider_menu(loggedInUser );
+    }
+    private static void Service_Provider_menu(ServiceProvider loggedInUser) {
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+
+        logger.info("\n" +
+                "|------------------- Service Provider Page -----------------------------|\n" +
+                "| 1- Add new service                                                    |\n" +
+                "| 2- Show services & delete                                             |\n" +
+                "| 3- Show reservations (details + delete)                               |\n" +
+                "| 4- Profile                                                            |\n" +
+                "| 5- Logout                                                             |\n" +
+                "|-----------------------------------------------------------------------|\n" +
+                "Please enter your choice:");
+
+        try {
+            choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline left-over
+        } catch (InputMismatchException e) {
+            scanner.nextLine(); // Clear buffer to avoid infinite loop
+            logger.warning("Invalid input. Please enter a number (1 to 5).");
+            return;
+        }
+
+        switch (choice) {
+            case 1:
+                addNewService(loggedInUser);
+                break;
+            case 2:
+                // Call method to show and delete services
+               // showAndDeleteServices(loggedInUser);
+                break;
+            case 3:
+                // Call method to show and delete reservations
+               // showAndDeleteReservations(loggedInUser);
+                break;
+            case 4:
+                // Call method to edit profile
+              //  editServiceProviderProfile(loggedInUser);
+                break;
+            case 5:
+                // Logout functionality
+              //  logoutServiceProvider();
+                break;
+            default:
+                logger.warning("Invalid choice. Please enter a number (1 to 5).");
+                break;
+        }
+    }
+
+    private static void addNewService(ServiceProvider loggedInUser) {
+        Scanner scanner = new Scanner(System.in);
+
+        String type;
+        do {
+            logger.info("Enter Service Type (e.g., Hall, Food, DJ, zaffa, decoration): ");
+            type = scanner.nextLine();
+            if (!Test_input.type(type)) {
+                logger.warning("Invalid type. Please enter a valid service type.");
+            }
+        } while (!Test_input.type(type));
+
+        String name;
+        do {
+            logger.info("Enter Service Name: ");
+            name = scanner.nextLine();
+            if (!Test_input.Name(name)) {
+                logger.warning("Invalid name. Names must not contain digits.");
+            }
+        } while (!Test_input.Name(name));
+
+        logger.info("Enter Service Location: ");
+        String location = scanner.nextLine(); // Assuming location does not need validation
+
+        String status;
+        logger.info("Enter Service Status: \n1- Available\n2- Not Available");
+        int statusChoice = scanner.nextInt();
+        scanner.nextLine();
+        status = (statusChoice == 2) ? "Not Available" : "Available";
+        String priceStr;
+        double price = 0;
+        do {
+            logger.info("Enter Service Price: ");
+             priceStr = scanner.nextLine();
+            if (Test_input.Price(priceStr)) {
+                price = Double.parseDouble(priceStr);
+            } else {
+                logger.warning("Invalid price. Please enter a numeric value.");
+            }
+        } while (!Test_input.Price(priceStr));
+
+        String phone;
+        do {
+            logger.info("Enter Service Phone: ");
+            phone = scanner.nextLine();
+            if (!Test_input.Phone(phone)) {
+                logger.warning("Invalid phone number. Please enter a 10-digit number.");
+            }
+        } while (!Test_input.Phone(phone));
+
+        String image;
+        do {
+            logger.info("Enter Service Image URL: ");
+            image = scanner.nextLine();
+            if (!Test_input.imge(image)) {
+                logger.warning("Invalid image URL. Please enter a valid URL ending with .png or .jpg.");
+            }
+        } while (!Test_input.imge(image));
+
+        // Creating a new service object
+        Service newService = new Service();
+        newService.setId(RequestToAddServiceDB.getServices().size() + 1 +ServiceDB.getServices().size() + 1); // Assuming IDs are sequential
+        newService.setType(type);
+        newService.setName(name);
+        newService.setLocation(location);
+        newService.setStatus(status);
+        newService.setPrice(price);
+        newService.setPhone(phone);
+        newService.setImage(image);
+        newService.setOwner(loggedInUser);
+
+        // Adding the service to the request list
+        RequestToAddServiceDB.addService(newService);
+
+        logger.info("\nNew service has been added to the request list successfully.\n");
+        Service_Provider_menu(serviceProvider);
+    }
 
 }
 
