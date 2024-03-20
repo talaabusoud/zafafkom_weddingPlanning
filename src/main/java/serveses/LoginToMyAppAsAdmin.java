@@ -48,25 +48,16 @@ public class LoginToMyAppAsAdmin {
     public Admin loggInCheck(String email, String password) {
 
         for (Admin a : AdminDB.getAdmins()) {
-            System.out.println("Checking Admin: " + a.getEmail());
-            System.out.println("Entered email: " + email);
-
-            if (a.getEmail().equalsIgnoreCase(email)) {
-                System.out.println("Email match found.");
-
-                if (verifyPassword(password, a.getPassword())) {
-                    System.out.println("Password match found. Login successful for user: " + email);
-                    return a;
-                } else {
-                    System.out.println("Incorrect password for user: " + email);
-                }
+            if (email.equalsIgnoreCase(a.getEmail()) && verifyPassword(password, a.getPassword())) {
+                isLoggedIn = true; // Update login state on successful authentication
+                logger.info("\nLogin successful for user: " + email+"\n");
+                return a;
             }
+        }
+        logger.info("\nUser not found or incorrect password for login: " + email+"\n");
+        return null;
 
         }
-        System.out.println("User not found for login: " + email);
-        return null;
-    }
-
 }
 
 

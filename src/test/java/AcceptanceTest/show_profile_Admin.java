@@ -36,7 +36,7 @@ public class show_profile_Admin {
         logger.info("\n");
 
     }
-    @Then("the admin profile appears with the following information:")
+    @Then("the admin profile appears with the following information")
     public void theAdminProfileAppearsWithTheFollowingInformation() {
         AdminDB.displayAdmin(admin);
     }
