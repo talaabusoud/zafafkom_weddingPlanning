@@ -94,12 +94,44 @@ public class ReservationDB {
         for (int i = 0; i < reservations.size(); i++) {
             if (reservations.get(i).getId().equals(reservationId)) {
                 reservations.remove(i);
-                LoggerUtility.getLogger().info("Reservation deleted: " + reservationId);
+                LoggerUtility.getLogger().info("\nReservation deleted: " + reservationId);
                 return;
             }
         }
-        LoggerUtility.getLogger().warning("No reservation found for deletion: " + reservationId);
+        LoggerUtility.getLogger().warning("\nNo reservation found for deletion: " + reservationId);
     }
 
+    public static void displayReservations(List<Reserve> reservations) {
 
+        String leftAlignFormat = "| %-5s | %-15s | %-10s | %-15s | %-10s | %-10s |\n";
+
+
+        logger.info("+-------+-----------------+------------+-----------------+------------+------------+\n");
+        logger.info("| ID    | Service Name    | Service ID | Customer Name   | Location   | Date       |\n");
+        logger.info("+-------+-----------------+------------+-----------------+------------+------------+\n");
+
+
+        for (Reserve reservation : reservations) {
+            logger.info(String.format(leftAlignFormat,
+                    reservation.getId(),
+                    reservation.getServiceName(),
+                    reservation.getServiceId(),
+                    reservation.getCustomerName(),
+                    reservation.getEventLocation(),
+                    reservation.getEventDate()));
+        }
+
+
+        logger.info("+-------+-----------------+------------+-----------------+------------+------------+\n");
+    }
+
+    public static List<Reserve> getReservationsForService(int serviceId) {
+        List<Reserve> reservationsForService = new ArrayList<>();
+        for (Reserve reservation : reservations) {
+            if (reservation.getServiceId() == serviceId) {
+                reservationsForService.add(reservation);
+            }
+        }
+        return reservationsForService;
+    }
 }

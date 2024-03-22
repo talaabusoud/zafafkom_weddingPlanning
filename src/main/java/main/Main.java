@@ -893,7 +893,7 @@ public class Main {
              showServicesAndDeleteOption();
             break;
         case 5: // عرض الحجوزات وخيار الحذف
-            //showReservationsAndDeleteOption();
+            showReservationsAndDeleteOption();
             break;
         case 6: // عرض الملف الشخصي للإدارة
             showAdminProfile(loggedInUser);
@@ -912,6 +912,9 @@ public class Main {
             break;
     }
 }
+
+
+
     private static void addNewUser() {
 
 
@@ -1048,6 +1051,62 @@ public class Main {
         }
         Adminmenu(admin);
     }
+    private static void showReservationsAndDeleteOption() {
+        Scanner scanner = new Scanner(System.in);
+        // Display all reservations
+        List<Reserve> reservations = ReservationDB.getReservations();
+        if (reservations.isEmpty()) {
+            logger.info("\nThere are no reservations to display.\n");
+            return;
+        }
+
+        logger.info("\nCurrent Reservations:\n");
+        String headerFormat = "| %-10s | %-15s | %-10s | %-25s | %-20s | %-10s |\n";
+        logger.info(String.format(headerFormat, "ID", "Service Name", "Service ID", "Customer Name", "Event Location", "Event Date"));
+        for (Reserve reservation : reservations) {
+            logger.info(String.format(headerFormat,
+                    reservation.getId(),
+                    reservation.getServiceName(),
+                    reservation.getServiceId(),
+                    reservation.getCustomerName(),
+                    reservation.getEventLocation(),
+                    reservation.getEventDate()));
+        }
+
+        // Options for the user
+        logger.info("\nOptions:");
+        logger.info("\n1 - Delete a reservation");
+        logger.info("\n2 - Exit");
+
+        logger.info("\nEnter your choice: ");
+        int choice = scanner.nextInt();
+        scanner.nextLine(); // consume newline
+
+        switch (choice) {
+            case 1:
+                logger.info("\nEnter the ID of the reservation you wish to delete: ");
+                String reservationId = scanner.nextLine();
+                Reserve reservationToDelete = ReservationDB.getReservationById(reservationId);
+                if (reservationToDelete != null) {
+                    ReservationDB.deleteReservation(reservationId);
+                    logger.info("\nReservation deleted successfully.");
+                    Adminmenu(admin);
+                } else {
+                    logger.info("\nNo reservation found with the ID: " + reservationId);
+                    showReservationsAndDeleteOption();
+                }
+
+                break;
+            case 2:
+                logger.info("\nExiting...");
+                break;
+            default:
+                logger.info("\nInvalid choice. Please enter 1 or 2.");
+                showReservationsAndDeleteOption();
+                break;
+        }
+    }
+
     private static void showUsers() {
         List<User> users = UserDB.getUsers();
         if (users.isEmpty()) {
@@ -1315,7 +1374,7 @@ public class Main {
                 break;
             case 3:
                 // Call method to show and delete reservations
-               // showAndDeleteReservations(loggedInUser);
+                showAndDeleteReservations(loggedInUser);
                 break;
             case 4:
                 // Call method to edit profile
@@ -1329,6 +1388,8 @@ public class Main {
                 break;
         }
     }
+
+
     private static void addNewService(ServiceProvider loggedInUser) {
         Scanner scanner = new Scanner(System.in);
 
@@ -1421,7 +1482,7 @@ public class Main {
             logger.info("-----------------------------------------------------------------------------------------------------------------------------------------------------\n");
 
             // طباعة الخدمات بشكل جدول
-            providerServices.forEach(service -> displayService(service));
+            providerServices.forEach(ServiceDB::displayService);
 
 
             boolean isRunning = true;
@@ -1463,6 +1524,50 @@ public class Main {
 
         }
     }
+    private static void showAndDeleteReservations(ServiceProvider loggedInUser) {
+        Scanner scanner = new Scanner(System.in);
+        boolean keepRunning = true;
+
+        while (keepRunning) {
+            List<Reserve> reservationsForProvider = ReservationDB.getReservationsForService(loggedInUser.getId());
+
+            if (reservationsForProvider.isEmpty()) {
+                logger.info("\nNo reservations found.\n");
+                break;
+            }
+
+            ReservationDB.displayReservations(reservationsForProvider);
+
+            logger.info("\nOptions:");
+            logger.info("\n1 - Delete a reservation");
+            logger.info("\n2 - Exit");
+
+            logger.info("\nEnter your choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1: // Delete a reservation
+                    logger.info("\nEnter reservation ID to delete: ");
+                    String reservationIdToDelete = scanner.nextLine();
+                    ReservationDB.deleteReservation(reservationIdToDelete);
+                    break;
+
+                case 2: // Exit
+                    keepRunning = false;
+                    break;
+
+                default:
+                    logger.info("\nInvalid option, please try again.");
+            }
+        }
+    }
+
+    private static ServiceProvider getLoggedInServiceProvider() {
+        return new ServiceProvider();
+    }
+
+
     private static void editService(ServiceProvider loggedInUser) {
         Scanner scanner = new Scanner(System.in);
         logger.info("\nEnter the ID of the service you want to edit:");
