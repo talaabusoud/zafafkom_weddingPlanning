@@ -3,24 +3,40 @@ package entity;
 import java.util.List;
 
 public class Reserve {
-    private int id;
+
+
+
+    private static Reserve defaultReserve;
+
+    private String id;
+    private int serviceId;
     private String serviceName;
     private String customerName;
     private String eventDate;
     private String eventLocation;
     private double totalPrice;
     private String status;
+    private String eventTime;
+    private String eventDuration;
 
     public Reserve() {
         // constructor without parameters
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
+    }
+
+    public int getServiceId() {
+        return serviceId;
+    }
+
+    public void setServiceId(int serviceId) {
+        this.serviceId = serviceId;
     }
 
     public String getServiceName() {
@@ -59,6 +75,14 @@ public class Reserve {
         return totalPrice;
     }
 
+//    public double getTotalPrice(List<Service> reservedServices) {
+//        double totalPrice = 0.0;
+//        for (Service service : reservedServices) {
+//            totalPrice += service.getPrice(); // Add the price of each reserved service to the total
+//        }
+//        return totalPrice;
+//    }
+
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
     }
@@ -70,4 +94,33 @@ public class Reserve {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public String getEventTime() {
+        return eventTime;
+    }
+
+    public void setEventTime(String eventTime) {
+        this.eventTime = eventTime;
+    }
+
+    public String getEventDuration() {
+        return eventDuration;
+    }
+
+    public void setEventDuration(String eventDuration) {
+        this.eventDuration = eventDuration;
+    }
+
+
+
+
+
+    public static Reserve getDefaultReserve() {
+        return defaultReserve;
+    }
+
+    public static void setDefaultReserve(Reserve reserve) {
+        defaultReserve = reserve;
+    }
+    
 }

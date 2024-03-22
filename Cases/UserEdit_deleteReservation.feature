@@ -3,7 +3,7 @@ Feature: User Reservation Management
   Actor: user
 
   Background:
-    Given the user with id "3" is logged in
+    Given the user with id "1" is logged in
     And there exists a reservation with id "45" for the user
 
   Scenario: Edit reservation
