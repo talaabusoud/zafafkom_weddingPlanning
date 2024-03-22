@@ -1,7 +1,7 @@
 package entity;
 
 import java.util.List;
-
+import java.util.ArrayList;
 public class User {
 
     private int id;
@@ -17,7 +17,9 @@ public class User {
     boolean hasServiceWindow;
     private List<String> service;
 
+    private List<Reserve> reservations;
     public User() {
+        this.reservations = new ArrayList<>();
         //construct without parameter
     }
 
@@ -95,6 +97,37 @@ public class User {
 
     public void setHasServiceWindow(boolean hasServiceWindow) {
         this.hasServiceWindow = hasServiceWindow;
+    }
+
+//    private List<Service> Reservations = new ArrayList<>();
+//
+//    public void addReservation(Service service) {
+//        Reservations.add(service);
+//    }
+
+//    private List<Reserve> reservations;
+
+    public List<Reserve> getReservations() {
+        return reservations;
+    }
+
+    public void addReservation(Reserve reservation) {
+        this.reservations.add(reservation);
+    }
+
+    public void setReservations(List<Reserve> reservations) {
+        this.reservations = reservations;
+    }
+
+    public boolean hasReservedService(int serviceId) {
+        if (reservations != null) {
+            for (Reserve reservation : reservations) {
+                if (reservation.getServiceId() == serviceId) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 }

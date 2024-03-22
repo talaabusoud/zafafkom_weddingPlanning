@@ -35,7 +35,6 @@ public class Main {
     public static void displayStarsLine(){
         logger.info("|        *******************************************************        |\n");
     }
-
     //Home Page
     public static void menu(){
         displayUpLine();
@@ -55,12 +54,10 @@ public class Main {
         displayDownLine();
         logger.info("\n");
     }
-
     // Hash the password using BCrypt and return the hashed value
     private static String hashPassword(String plainTextPassword) {
         return BCrypt.hashpw(plainTextPassword, BCrypt.gensalt());
     }
-
     // login page form
     public static String[] loginPage(){
         displayUpLine();
@@ -80,7 +77,6 @@ public class Main {
 
         return input;
     }
-
     //login page (for user)
     public static void userLogin(String email, String enteredPassword) {
         LoginAsUser userLogin = new LoginAsUser();
@@ -123,11 +119,17 @@ public class Main {
             }
         }// end of failed logging in
     }// end of login page for user
-
     // user page
     public static void userPage(User loggedInUser) {
         Scanner scanner = new Scanner(System.in);
         int userChoice;
+        // Check if loggedInUser is null
+        if (loggedInUser == null) {
+            displayUpLine();
+            logger.warning("| User not logged in. Please log in first.                              |\n");
+            displayDownLine();
+            return;
+        }
 
 //        while (true){
             displayUpLine();
@@ -140,10 +142,9 @@ public class Main {
             displayStarsLine();
             displayEmpty();
             logger.info("|------------------------------- User Page -----------------------------|\n");
-            logger.info("|               1- Show  Services                                       |\n");
-            logger.info("|               2- Show Details of my Reservations                      |\n");
-            logger.info("|               3- My Profile                                           |\n");
-            logger.info("|               4- Log out                                              |\n");
+            logger.info("|               1- Go To Services Page                                  |\n");
+            logger.info("|               2- My Profile                                           |\n");
+            logger.info("|               3- Log out                                              |\n");
             displayDownLine();
             logger.info("\n");
 
@@ -161,20 +162,27 @@ public class Main {
 
             switch (userChoice) {
                 case 1:
-                    // Show services
-                    // TODO: Add functionality for showing services
+                    if (user != null) {
+                        servicesPage(user);
+                    } else {
+                        displayUpLine();
+                        logger.warning("| User not logged in. Please log in first.                              |\n");
+                        displayDownLine();
+                    }
                     break;
 
                 case 2:
-                    // Show details of my reservations
-                    // TODO: Add functionality for showing reservations
+                    if (user != null) {
+                        userProfile(user);
+                    } else {
+                        displayUpLine();
+                        logger.warning("| User not logged in. Please log in first.                              |\n");
+                        displayDownLine();
+                    }
                     break;
+
 
                 case 3:
-                    userProfile(loggedInUser);
-                    break;
-
-                case 4:
                     // Log out
                     logout();
                     break;
@@ -187,7 +195,6 @@ public class Main {
             }
 //        }
     }
-
     //sign up page (register user)
     public static void signUpPage(){
         displayUpLine();
@@ -384,7 +391,6 @@ public class Main {
             logger.info("\n");
         }
     }
-
     // logout method
     public static void logout() {
         displayUpLine();
@@ -395,7 +401,6 @@ public class Main {
         // Clear user data
         user = null;
     }
-
     // user profile page
     public static void userProfile(User loggedInUser) {
         Scanner scanner = new Scanner(System.in);
@@ -405,14 +410,12 @@ public class Main {
             displayUpLine();
             displayEmpty();
             displayStarsLine();
-            logger.info("|         *               USER PROFILE - " + loggedInUser.getName() + "              *         |\n");
+            logger.info("|         *               USER PROFILE - " + loggedInUser.getName() + "                 *         |\n");
             displayStarsLine();
             displayDownLine();
-            logger.info("\n");
-
-            logger.info("|               1- Show Account Information                              |\n");
-            logger.info("|               2- Edit Information                                      |\n");
-            logger.info("|               3- Back to User Page                                     |\n");
+            logger.info("|               1- Show Account Information                             |\n");
+            logger.info("|               2- Edit Information                                     |\n");
+            logger.info("|               3- Back to User Page                                    |\n");
             displayDownLine();
             logger.info("\n");
 
@@ -455,7 +458,6 @@ public class Main {
             }
         } while (true);
     }
-
     // edit user profile page
     public static void editUserProfile(User loggedInUser) {
         Scanner scanner = new Scanner(System.in);
@@ -552,6 +554,194 @@ public class Main {
             }
         } while (true);
     }
+    public static void servicesPage(User loggedInUser){
+        Scanner scanner = new Scanner(System.in);
+        int serviceChoice;
+        do {
+            displayUpLine();
+            displayEmpty();
+            displayStarsLine();
+            logger.info("|         *                   SERVICES  PAGE                 *          |\n");
+            displayStarsLine();
+            displayDownLine();
+            logger.info("|              1- Show Wedding Planning Services                        |\n");
+            logger.info("|              2- Reserve a Service                                     |\n");
+            logger.info("|              3- Show Details of my Reservations                       |\n");
+            logger.info("|              4- Search for a Service                                  |\n");
+            logger.info("|              5- Back to User Page                                     |\n");
+            displayDownLine();
+            logger.info("\n");
+            try {
+                serviceChoice = scanner.nextInt();
+            } catch (InputMismatchException e) {
+                // Clear buffer (avoid infinite loop)
+                scanner.nextLine();
+                displayUpLine();
+                logger.warning("|                            Invalid input.                             |\n");
+                logger.warning("|                   Please enter a number (1, 2, 3, 4, or 5).           |\n");
+                displayDownLine();
+                serviceChoice = -1;
+            }
+
+            switch (serviceChoice) {
+                case 1:
+                    // Show Services
+                    displayUpLine();
+                    ServiceDB.displayServices(ServiceDB.getServices());
+                    displayDownLine();
+                    break;
+
+                case 2:
+                    // Reserve a Service
+                    displayUpLine();
+                    logger.warning("|          Please Enter the Id of the service you want to Reserve       |\n");
+                    displayDownLine();
+                    int serviceReserveID = scanner.nextInt();
+
+                    // if the service is available
+                    Service serviceToReserve = ServiceDB.getServiceById(serviceReserveID);
+                    if (serviceToReserve != null && isServiceAvailableForReservation(serviceToReserve)) {
+                        // if the user has already reserved this service
+                        if (loggedInUser.hasReservedService(serviceReserveID)) {
+                            logger.warning("| You have already reserved this service. |\n");
+                        } else {
+                            Reserve reserve = new Reserve();
+                            reserve.setServiceId(serviceReserveID);
+                            reserve.setCustomerName(loggedInUser.getName());
+                            reserve.setStatus("Reserved"); // Set status to "Reserved"
+
+                           // Save the reservation to the database
+                            ReservationDB.addReservation(reserve);
+                            // Add the reservation to the user's list of reservations
+                            loggedInUser.addReservation(reserve);
+
+                            logger.info("| Service reserved successfully. |\n");
+                        }
+                    } else {
+                        logger.warning("| The service is not available for reservation. |\n");
+                    }
+
+                    break;
+
+                case 3:
+                    // Show details of my reservations
+                    if (loggedInUser != null) {
+                        reservationDetails(loggedInUser);
+                    } else {
+                        displayUpLine();
+                        logger.warning("| User not logged in. Please log in first.                              |\n");
+                        displayDownLine();
+                    }
+                  break;
+
+                case 4:
+                    // Search for a service
+                    displayUpLine();
+                    logger.warning("|          Please Enter the name or type of the service you want to search for:       |\n");
+                    displayDownLine();
+                    String searchTerm = scanner.next();
+
+                    // Perform the search
+                    List<Service> searchResults = searchService(searchTerm);
+
+                    // Display search results
+                    if (!searchResults.isEmpty()) {
+                        displayUpLine();
+                        logger.info("|         Search Results:                   |\n");
+                        displayDownLine();
+                        ServiceDB.displayServices(searchResults);
+                    } else {
+                        displayUpLine();
+                        logger.warning("| No services found matching the search term. |\n");
+                        displayDownLine();
+                    }
+                    break;
+
+
+                case 5:
+                    // back
+                    userPage(loggedInUser);
+                    return;
+//                    break;
+
+                default:
+                    displayUpLine();
+                    displayEnterValidNumber();
+                    displayDownLine();
+                    break;
+            }
+        }while (true);
+    }
+
+
+    private static boolean isServiceAvailableForReservation(Service service) {
+        return service != null && service.getStatus() != null && service.getStatus().equalsIgnoreCase("Available");
+    }
+
+    public static void reservationDetails(User loggedInUser){
+        if (loggedInUser.getReservations() == null || loggedInUser.getReservations().isEmpty()) {
+            displayUpLine();
+            logger.warning("| No reservations found for user.                                |\n");
+            displayDownLine();
+            return;
+        }
+
+        Scanner scanner = new Scanner(System.in);
+
+        displayUpLine();
+        displayStarsLine();
+        logger.info("SERVICES RESERVED BY " + loggedInUser.getName() + ":)\n");
+        displayUpLine();
+        double totalPrice = 0.0;
+
+        int index = 1;
+        for (Reserve reservation : loggedInUser.getReservations()) {
+            Service reservedService = ServiceDB.getServiceById(reservation.getServiceId());
+            if (reservedService != null) {
+                displayUpLine();
+                logger.info("Service Name: " + reservedService.getName()+"\n");
+                logger.info("Event Date: " + reservation.getEventDate()+"\n");
+                logger.info("Event Location: " + reservation.getEventLocation()+"\n");
+                logger.info("Total Price: " + reservedService.getPrice()+"\n");
+                logger.info("Status: " + reservation.getStatus()+"\n");
+                displayDownLine();
+
+                // Add the price of the reserved service to the total price
+                totalPrice += reservedService.getPrice();
+                index++;
+            }
+        }
+
+        // Option to delete a reservation
+        logger.warning("Enter the number of the reservation you want to delete (or 0 to cancel): ");
+        int deleteChoice = scanner.nextInt();
+
+        if (deleteChoice > 0 && deleteChoice <= loggedInUser.getReservations().size()) {
+            // Remove the reservation at the selected index
+            loggedInUser.getReservations().remove(deleteChoice - 1);
+            logger.info("Reservation deleted successfully.\n");
+        } else if (deleteChoice != 0) {
+            logger.warning("Invalid selection. No reservation deleted.\n");
+        }
+
+        logger.info("Total Price for all reservations: " + totalPrice + "\n");
+        displayDownLine();
+    }
+
+    private static List<Service> searchService(String searchTerm) {
+        List<Service> services = ServiceDB.getServices();
+        List<Service> searchResults = new ArrayList<>();
+
+        for (Service service : services) {
+            // Perform case-insensitive search by name or type
+            if (service.getName().toLowerCase().contains(searchTerm.toLowerCase()) ||
+                    service.getType().toLowerCase().contains(searchTerm.toLowerCase())) {
+                searchResults.add(service);
+            }
+        }
+
+        return searchResults;
+    }
 
 
     public static void main(String[]args) {
@@ -562,6 +752,7 @@ public class Main {
             try {
                 menu();
                 option = scanner.nextInt();
+//                scanner.nextLine();
             } catch (InputMismatchException e) {
                 displayUpLine();
                 displayEnterValidNumber();
@@ -569,70 +760,35 @@ public class Main {
                 scanner.nextLine();
                 continue;
             }
+
+//___________ADMIN______________________________________________________________________________________________________
             // login as Admin
             if (option == 1){
                 String[] loginInfo = loginPage();
                 adminLogin(loginInfo[0], loginInfo[1]);
             }
 
+//___________SERVICE_PROVIDER___________________________________________________________________________________________
             // login as service provider
             else if (option == 2) {
                 String[] loginInfo = loginPage();
                 Service_Provider_Login(loginInfo[0], loginInfo[1]);
-            }
+            }// end of option 2 (login as service provider)
 
 //___________USER_______________________________________________________________________________________________________
             // login as user
             else if (option == 3 ) {
                 String[] loginInfo = loginPage();
                 userLogin(loginInfo[0], loginInfo[1]);
-
-                int userChoice = scanner.nextInt();
-                switch (userChoice) {
-                    //service page
-                    case 1:
-                        // Show services
-                        break;
-
-
-                    // user reservations
-                    case 2:
-                        break;
-
-
-                    // user profile
-                    case 3:
-                        if (user != null) {
-                            userProfile(user);
-                        } else {
-                            displayUpLine();
-                            logger.warning("| User not logged in. Please log in first.                              |\n");
-                            displayDownLine();
-                        }
-                        break;
-
-
-                    // Logout
-                    case 4:
-                        logout();
-                        return;
-
-                    default:
-                        displayUpLine();
-                        displayEnterValidNumber();
-                        displayDownLine();
-                        break;
-                }
             }// end of option 3 (login as user)
 
-
-//______________________________________________________________________________________________________________________
+//___________SIGNUP_____________________________________________________________________________________________________
             // sign up user
             else if (option == 4) {
                 signUpPage();
             }// end of option 4 (sing up)
-//______________________________________________________________________________________________________________________
 
+//______________________________________________________________________________________________________________________
             // wrong input
             else {
                 displayUpLine();
@@ -643,7 +799,6 @@ public class Main {
 
         }// end of while
     }// end of static main
-
 
 
     //--------------------------------admin function--------------------------------//
@@ -1174,7 +1329,6 @@ public class Main {
                 break;
         }
     }
-
     private static void addNewService(ServiceProvider loggedInUser) {
         Scanner scanner = new Scanner(System.in);
 
@@ -1309,7 +1463,6 @@ public class Main {
 
         }
     }
-
     private static void editService(ServiceProvider loggedInUser) {
         Scanner scanner = new Scanner(System.in);
         logger.info("\nEnter the ID of the service you want to edit:");
@@ -1396,7 +1549,6 @@ public class Main {
         ServiceDB.updateService(serviceToEdit);
         logger.info("\nService updated successfully.\n");
     }
-
     private static void editServiceProviderProfile(ServiceProvider loggedInUser) {
         Scanner scanner = new Scanner(System.in);
 

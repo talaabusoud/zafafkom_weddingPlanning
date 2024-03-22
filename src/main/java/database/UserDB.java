@@ -50,10 +50,10 @@ public class UserDB {
             logger.warning("This user does not exist");
         }
         else{
-            String userInfo = String.format("|%12s", user.getId()) +
-                    String.format("|%12s", user.getName()) +
-                    String.format("|%15s", user.getPhoneNumber()) +
-                    String.format("|%11s", user.getAddress()) +
+            String userInfo = String.format("|%3s", user.getId()) +
+                    String.format("|%10s", user.getName()) +
+                    String.format("|%12s", user.getPhoneNumber()) +
+                    String.format("|%8s", user.getAddress()) +
                     String.format("|%8s", user.getCity()) +
                     String.format("|%10s", user.getStreet()) +
                     String.format("|%30s", user.getService()) + "|\n";
@@ -102,6 +102,15 @@ public class UserDB {
         return false; // User does not exist
     }
 
+    public static User getUserByEmail(String email) {
+        for (User user : users) {
+            if (user.getEmail().equals(email)) {
+                return user;
+            }
+        }
+
+        return null; // no matching
+    }
 
     public static boolean authenticateUser(String username, String password) {
         // Logic to authenticate user

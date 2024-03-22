@@ -86,8 +86,23 @@ public class ServiceDB {
         SERVICES.replaceAll(service -> service.getId() == updatedService.getId() ? updatedService : service);
     }
 
-
-    public static void displaying() {
-        logger.info("------------------------------------------------------------\n");
+    public static Service getServiceById(int serviceId) {
+        for (Service service : SERVICES) {
+            if (service.getId() == serviceId) {
+                return service;
+            }
+        }
+        return null; // Service not found
     }
+
+    public static boolean isServiceAvailableAtTimeOrDuration(int serviceId, String time, String duration) {
+        // Fetch the service from the database
+        Service service = getServiceById(serviceId);
+        if (service != null) {
+            List<Reserve> conflictingReservations = ReservationDB.getConflictingReservations(serviceId, time, duration);
+            return conflictingReservations.isEmpty(); // no conflicts, service is available
+        }
+        return false; // Service not found
+    }
+
 }
