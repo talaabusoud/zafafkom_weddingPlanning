@@ -1,10 +1,15 @@
 Feature: owner login
 
-  Scenario: Successful log in
+  Scenario Outline: Successful log in
     Given that the owner is not logged in the app
-    And the username owner is "mo@gmail"
-    And the password owner is "123"
+    And the username owner is "<username>"
+    And the password owner is "<password>"
     Then  the owner is logged in the app successfully
+    Examples:
+      |username|password|
+      |mo@gmail|1|
+      |ta@gmail|000|
+
 
   Scenario: owner entered a wrong username
     Given that the owner is not logged in the app

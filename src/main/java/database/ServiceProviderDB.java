@@ -17,7 +17,7 @@ public class ServiceProviderDB {
     }
 
     static {
-        serviceProviders.add(new ServiceProvider("1", "1", "0655433", "hebron", "mohamad", 1));
+        serviceProviders.add(new ServiceProvider("1", "mo@gmail", "0655433", "hebron", "mohamad", 1));
         serviceProviders.add(new ServiceProvider("000", "ta@gmail", "098866", "nablus", "tala", 2));
     }
 

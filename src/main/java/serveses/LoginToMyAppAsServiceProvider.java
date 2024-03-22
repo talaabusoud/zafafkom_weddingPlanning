@@ -44,13 +44,16 @@ public class LoginToMyAppAsServiceProvider {
 
                 if (verifyPassword(password, a.getPassword())) {
                     System.out.println("Password match found. Login successful for user: " + email);
+                    login();
                     return a;
                 } else {
+                    errorInLogin();
                     System.out.println("Incorrect password for user: " + email);
                 }
             }
 
         }
+        errorInLogin();
         System.out.println("User not found for login: " + email);
         return null;
     }
