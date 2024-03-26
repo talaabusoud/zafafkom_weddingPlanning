@@ -1715,7 +1715,7 @@ public class Main {
         Service_Provider_menu(serviceProvider);
     }
 
-    private static void test(ServiceProvider loggedInUser) {
+    private static void testxx(ServiceProvider loggedInUser) {
         Scanner scanner = new Scanner(System.in);
 
         // Display current service provider profile
