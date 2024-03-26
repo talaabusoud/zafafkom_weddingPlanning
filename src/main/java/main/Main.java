@@ -1715,6 +1715,67 @@ public class Main {
         Service_Provider_menu(serviceProvider);
     }
 
+    private static void test(ServiceProvider loggedInUser) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Display current service provider profile
+        ServiceProviderDB.displayServiceProvider(loggedInUser);
+
+        // Ask if the service provider wants to update their information
+        logger.info("\nDo you want to update your profile information? (yes/no): ");
+        String response = scanner.nextLine().trim().toLowerCase();
+
+        if ("yes".equals(response)) {
+            // Name update
+            logger.info("\nEnter the new name (leave blank to keep current): ");
+            String newName = scanner.nextLine().trim();
+            if (!newName.isEmpty() && Test_input.Name(newName)) {
+                loggedInUser.setName(newName);
+            } else if (!newName.isEmpty()) {
+                logger.info("\nInvalid name. Keeping the current name.");
+            }
+
+            // Phone update
+            logger.info("\nEnter the new phone number (leave blank to keep current): ");
+            String newPhone = scanner.nextLine().trim();
+            if (!newPhone.isEmpty() && Test_input.Phone(newPhone)) {
+                loggedInUser.setPhone(newPhone);
+            } else if (!newPhone.isEmpty()) {
+                logger.info("\nInvalid phone number. Keeping the current phone number.");
+            }
+
+            // Address update
+            logger.info("\nEnter the new address (leave blank to keep current): ");
+            String newAddress = scanner.nextLine().trim();
+            if (!newAddress.isEmpty()) {
+                loggedInUser.setAddress(newAddress);
+            }
+
+            // Password update
+            logger.info("\nEnter the new password (leave blank to keep current): ");
+            String newPassword = scanner.nextLine().trim();
+            if (!newPassword.isEmpty()){
+                while (newPassword.length() < 6) {
+                    logger.warning("\nPassword must be at least 6 characters long. Please enter a stronger password:");
+                    newPassword = scanner.nextLine().trim();
+                }
+                loggedInUser.setPassword(newPassword);
+            }
+
+            // Update the service provider in the database
+            ServiceProviderDB.updateServiceProvider(loggedInUser);
+
+            logger.info("\nYour profile has been updated successfully.");
+        } else if ("no".equals(response)) {
+            logger.info("\nNo changes have been made to your profile.");
+        } else {
+            logger.info("\nInvalid response.\n");
+        }
+
+
+        Service_Provider_menu(serviceProvider);
+    }
+
 
 }
 
