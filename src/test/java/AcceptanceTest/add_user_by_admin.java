@@ -59,7 +59,7 @@ public class add_user_by_admin {
             assertEquals(email, admin.getEmail());
             assertEquals(phone, admin.getPhone());
             assertEquals(address, admin.getAddress());
-            assertEquals(name, Admin.getName());
+            assertEquals(name, admin.getName());
             assertEquals(id, admin.getId());
 
 
@@ -74,7 +74,7 @@ public class add_user_by_admin {
             assertEquals(email, admin.getEmail());
             assertEquals(phone, admin.getPhone());
             assertEquals(address, admin.getAddress());
-            assertEquals(name, Admin.getName());
+            assertEquals(name, admin.getName());
             assertEquals(id, admin.getId());
 
 

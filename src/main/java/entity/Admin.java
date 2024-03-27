@@ -50,7 +50,7 @@ public class Admin {
         this.address = address;
     }
 
-    public static String getName() {
+    public  String getName() {
         return name;
     }
 
