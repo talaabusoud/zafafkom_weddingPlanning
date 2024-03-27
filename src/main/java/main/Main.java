@@ -1052,18 +1052,7 @@ public class Main {
             return;
         }
 
-        logger.info("\nCurrent Reservations:\n");
-        String headerFormat = "| %-10s | %-15s | %-10s | %-25s | %-20s | %-10s |\n";
-        logger.info(String.format(headerFormat, "ID", "Service Name", "Service ID", "Customer Name", "Event Location", "Event Date"));
-        for (Reserve reservation : reservations) {
-            logger.info(String.format(headerFormat,
-                    reservation.getId(),
-                    reservation.getServiceName(),
-                    reservation.getServiceId(),
-                    reservation.getCustomerName(),
-                    reservation.getEventLocation(),
-                    reservation.getEventDate()));
-        }
+        ReservationDB.displayReservations(reservations);
 
         // Options for the user
         logger.info("\nOptions:");
