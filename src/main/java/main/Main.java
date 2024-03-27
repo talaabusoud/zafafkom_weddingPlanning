@@ -15,6 +15,13 @@ import static database.ServiceDB.displayService;
 import static database.ServiceProviderDB.displayServiceProvider;
 
 public class Main {
+    private static final String msg ="|              ENTER THE NUMBER OF ACTION YOU WANT TO TAKE              |\n" ;
+    private static final String msg2 ="|   Login failed! Please check your email and password and try again.   |\n" ;
+    private static final String msg3 ="|                 1- Re-enter email and password                        |\n" ;
+    private static final String msg4 ="| User not logged in. Please log in first.                              |\n" ;
+    private static final String msg5 ="|                            Invalid input.                             |\n" ;
+    private static final String stars ="         ****************************************************         \n" ;
+
     private static User user;
     private static Admin admin;
     private static ServiceProvider serviceProvider;
@@ -44,7 +51,7 @@ public class Main {
         logger.info("|        *               Wedding Planning System               *        |\n");
         displayStarsLine();
         displayEmpty();
-        logger.info("|              ENTER THE NUMBER OF ACTION YOU WANT TO TAKE              |\n");
+        logger.info(msg);
         displayStarsLine();
         displayEmpty();
         logger.info("|               1- Login to System as an Admin                          |\n");
@@ -88,8 +95,8 @@ public class Main {
         else {
             // Login failed due to incorrect password
             displayUpLine();
-            logger.warning("|   Login failed! Please check your email and password and try again.   |\n");
-            logger.warning("|                 1- Re-enter email and password                        |\n");
+            logger.warning(msg2);
+            logger.warning(msg3);
             logger.warning("|                 2- Don't have an account? Sign up for a new account   |\n");
             logger.warning("|                 3- Back to home page                                  |\n");
             displayDownLine();
@@ -126,7 +133,7 @@ public class Main {
         // Check if loggedInUser is null
         if (loggedInUser == null) {
             displayUpLine();
-            logger.warning("| User not logged in. Please log in first.                              |\n");
+            logger.warning(msg4);
             displayDownLine();
             return;
         }
@@ -138,7 +145,7 @@ public class Main {
             logger.warning("|        *                   WELCOME " + loggedInUser.getName() + ":)                    *        |\n");
             displayStarsLine();
             displayEmpty();
-            logger.info("|              ENTER THE NUMBER OF ACTION YOU WANT TO TAKE              |\n");
+            logger.info(msg);
             displayStarsLine();
             displayEmpty();
             logger.info("|------------------------------- User Page -----------------------------|\n");
@@ -154,7 +161,7 @@ public class Main {
                 // Clear buffer (avoid infinite loop)
                 scanner.nextLine();
                 displayUpLine();
-                logger.warning("|                            Invalid input.                             |\n");
+                logger.warning(msg5);
                 logger.warning("|                   Please enter a number (1 to 4).                    |\n");
                 displayDownLine();
                 userChoice = -1;
@@ -166,7 +173,7 @@ public class Main {
                         servicesPage(user);
                     } else {
                         displayUpLine();
-                        logger.warning("| User not logged in. Please log in first.                              |\n");
+                        logger.warning(msg4);
                         displayDownLine();
                     }
                     break;
@@ -176,7 +183,7 @@ public class Main {
                         userProfile(user);
                     } else {
                         displayUpLine();
-                        logger.warning("| User not logged in. Please log in first.                              |\n");
+                        logger.warning(msg4);
                         displayDownLine();
                     }
                     break;
@@ -325,9 +332,9 @@ public class Main {
         }
 
         displayUpLine();
-        logger.info("         ****************************************************         \n");
+        logger.info(stars);
         logger.info("         * Thank you for signing up! Here are your details: *         \n");
-        logger.info("         ****************************************************         \n");
+        logger.info(stars);
         logger.info("               ID: "+user.getId()+"                                                      \n");
         logger.info("               Name: "+user.getName()+"                                                    \n");
         logger.info("               Phone Number: "+user.getPhoneNumber()+"                                            \n");
@@ -340,9 +347,9 @@ public class Main {
         int choice;
         do {
             try {
-                logger.info("         ****************************************************         \n");
+                logger.info(stars);
                 logger.info("         *    ENTER THE NUMBER OF ACTION YOU WANT TO TAKE   *         \n");
-                logger.info("         ****************************************************         \n");
+                logger.info(stars);
                 logger.info("               1- Confirm Information to Sign Up                      \n");
                 logger.info("               2- Edit Information                                    \n");
                 logger.info("               3- Don't save and back Home                            \n");
@@ -354,7 +361,7 @@ public class Main {
                 // Clear buffer (avoid infinite loop)
                 scanner.nextLine();
                 displayUpLine();
-                logger.warning("|                            Invalid input.                             |\n");
+                logger.warning(msg5);
                 logger.warning("|                   Please enter a number (1, 2, or 3).                 |\n");
                 displayDownLine();
                 choice = -1;
@@ -425,7 +432,7 @@ public class Main {
                 // Clear buffer (avoid infinite loop)
                 scanner.nextLine();
                 displayUpLine();
-                logger.warning("|                            Invalid input.                             |\n");
+                logger.warning(msg5);
                 logger.warning("|                   Please enter a number (1, 2, or 3).                 |\n");
                 displayDownLine();
                 profileChoice = -1;
@@ -490,7 +497,7 @@ public class Main {
                 // Clear buffer (avoid infinite loop)
                 scanner.nextLine();
                 displayUpLine();
-                logger.warning("|                            Invalid input.                             |\n");
+                logger.warning(msg5);
                 logger.warning("|                   Please enter a number (1 to 8).                    |\n");
                 displayDownLine();
                 editChoice = -1;
@@ -577,7 +584,7 @@ public class Main {
                 // Clear buffer (avoid infinite loop)
                 scanner.nextLine();
                 displayUpLine();
-                logger.warning("|                            Invalid input.                             |\n");
+                logger.warning(msg5);
                 logger.warning("|                   Please enter a number (1, 2, 3, 4, or 5).           |\n");
                 displayDownLine();
                 serviceChoice = -1;
@@ -629,7 +636,7 @@ public class Main {
                         reservationDetails(loggedInUser);
                     } else {
                         displayUpLine();
-                        logger.warning("| User not logged in. Please log in first.                              |\n");
+                        logger.warning(msg4);
                         displayDownLine();
                     }
                   break;
@@ -810,8 +817,8 @@ public class Main {
         }
         else {
             displayUpLine();
-            logger.warning("|   Login failed! Please check your email and password and try again.   |\n");
-            logger.warning("|                 1- Re-enter email and password                        |\n");
+            logger.warning(msg2);
+            logger.warning(msg3);
             logger.warning("|                 2- Back To Home Page                                  |\n");
             displayDownLine();
             logger.info("\n");
@@ -844,7 +851,7 @@ public class Main {
         logger.warning("|        *                   WELCOME " + loggedInUser.getEmail() + ":)                    *        |\n");
         displayStarsLine();
         displayEmpty();
-        logger.info("|              ENTER THE NUMBER OF ACTION YOU WANT TO TAKE              |\n");
+        logger.info(msg);
         displayStarsLine();
         Adminmenu(loggedInUser );
     }
@@ -870,7 +877,7 @@ public class Main {
         // Clear buffer (avoid infinite loop)
         scanner.nextLine();
         displayUpLine();
-        logger.warning("|                            Invalid input.                             |\n");
+        logger.warning(msg5);
         logger.warning("|                   Please enter a number (1 to 8).                    |\n");
         displayDownLine();
         adminChoice = -1;
@@ -1284,8 +1291,8 @@ public class Main {
             Service_Provider_Page(serviceProvider);
         } else {
             displayUpLine();
-            logger.warning("|   Login failed! Please check your email and password and try again.   |\n");
-            logger.warning("|                 1- Re-enter email and password                        |\n");
+            logger.warning(msg2);
+            logger.warning(msg3);
             logger.warning("|                 2- Back To Home Page                                  |\n");
             displayDownLine();
 
@@ -1318,7 +1325,7 @@ public class Main {
         logger.warning("|        *                   WELCOME " + loggedInUser.getEmail() + ":)                    *        |\n");
         displayStarsLine();
         displayEmpty();
-        logger.info("|              ENTER THE NUMBER OF ACTION YOU WANT TO TAKE              |\n");
+        logger.info(msg);
         displayStarsLine();
         Service_Provider_menu(loggedInUser );
     }

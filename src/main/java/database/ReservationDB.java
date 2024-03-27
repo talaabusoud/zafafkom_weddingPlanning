@@ -105,10 +105,10 @@ public class ReservationDB {
 
         String leftAlignFormat = "| %-5s | %-15s | %-10s | %-15s | %-10s | %-10s |\n";
 
-
-        logger.info("+-------+-----------------+------------+-----------------+------------+------------+\n");
+String line = "+-------+-----------------+------------+-----------------+------------+------------+\n";
+        logger.info(line);
         logger.info("| ID    | Service Name    | Service ID | Customer Name   | Location   | Date       |\n");
-        logger.info("+-------+-----------------+------------+-----------------+------------+------------+\n");
+        logger.info(line);
 
 
         for (Reserve reservation : reservations) {
@@ -122,7 +122,7 @@ public class ReservationDB {
         }
 
 
-        logger.info("+-------+-----------------+------------+-----------------+------------+------------+\n");
+        logger.info(line);
     }
 
     public static List<Reserve> getReservationsForService(int serviceId) {
