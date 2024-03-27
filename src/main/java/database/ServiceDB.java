@@ -23,11 +23,6 @@ public class ServiceDB {
     }
 
     private static final Logger logger = LoggerUtility.getLogger();
-
-    private ServiceDB() {
-        throw new IllegalStateException("Utility class");
-    }
-
     public static void addService(Service service) {
         if (service != null) {
             SERVICES.add(service);
@@ -45,7 +40,6 @@ public class ServiceDB {
         int newSize = SERVICES.size();
         return initialSize > newSize; // إرجاع true إذا تغير حجم القائمة (أي تم حذف عنصر)
     }
-
 
     public static void displayService(Service service) {
         // Ensure the dataFormat string includes all the necessary placeholders for the service details

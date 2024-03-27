@@ -1,14 +1,15 @@
 package AcceptanceTest;
 
 import entity.Service;
+import database.ServiceDB;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import main.LoggerUtility;
 import serveses.LoginToMyAppAsServiceProvider;
 import database.RequestToAddServiceDB;
 import java.util.logging.Logger;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+
+import static org.junit.Assert.*;
 
 public class add_service_to_request_list {
     private static Logger logger = LoggerUtility.getLogger();
@@ -86,7 +87,17 @@ public class add_service_to_request_list {
     public void heFillInWithExtension(String string, String string2) {
         boolean flag = false;
         flag= main.Test_input.imge(string2);
-        if (flag==true) assertEquals(true,true);else assertEquals(false,false);
+        if (flag==true) assertEquals(true,true);
+        else assertEquals(false,false);
+
+        int serviceIdToCancel =4;
+
+        // Cancel the request
+        RequestToAddServiceDB.cancelRequest(serviceIdToCancel);
+        Service resultService = ServiceDB.getServiceById(serviceIdToCancel);
+        assertNull("Service with ID " + serviceIdToCancel + " should have been removed.", resultService);
+
+
     }
     @Then("the user shoude See {string}")
     public void theUserShoudeSee(String string) {
