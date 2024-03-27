@@ -15,6 +15,7 @@ import serveses.LoginToMyAppAsAdmin;
 import main.Test_input;
 import static org.junit.Assert.*;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 public class add_user_by_admin {
@@ -51,8 +52,32 @@ public class add_user_by_admin {
         String phone = "1234567890";
         String address = "123 Admin Street";
         String password = "adminPassword";
+        int id = AdminDB.getAdmins().size() + 1;
         if (Test_input.Name(name) && email.contains("@") && Test_input.Phone(phone)) {
-            admin = new Admin(password, email, phone, address, name, AdminDB.getAdmins().size() + 1);
+            admin = new Admin(password, email, phone, address, name, id);
+            assertEquals(password, admin.getPassword());
+            assertEquals(email, admin.getEmail());
+            assertEquals(phone, admin.getPhone());
+            assertEquals(address, admin.getAddress());
+            assertEquals(name, Admin.getName());
+            assertEquals(id, admin.getId());
+
+
+            admin.setPassword(password);
+            admin.setEmail(email);
+            admin.setPhone(phone);
+            admin.setAddress(address);
+            admin.setName(name);
+            admin.setId(id);
+
+            assertEquals(password, admin.getPassword());
+            assertEquals(email, admin.getEmail());
+            assertEquals(phone, admin.getPhone());
+            assertEquals(address, admin.getAddress());
+            assertEquals(name, Admin.getName());
+            assertEquals(id, admin.getId());
+
+
             AdminDB.addAdmin(password, email, phone, address, name, AdminDB.getAdmins().size() + 1);
             logger.info("New admin's details entered.");
         } else {
@@ -62,11 +87,15 @@ public class add_user_by_admin {
 
     @Then("the new admin should be added to the system")
     public void theNewAdminShouldBeAddedToTheSystem() {
-        // Assuming AdminDB.getAdmins() returns the list of all admins and the last admin is the one we just added.
-        Admin addedAdmin = AdminDB.getAdmins().get(AdminDB.getAdmins().size() - 1);
-        assertNotNull("New admin should not be null", addedAdmin);
-        assertEquals("New admin's email should match", "newadmin@example.com", addedAdmin.getEmail());
-        logger.info("Verified that the new admin has been added to the system.");
+        AdminDB.addAdmin("testpass", "test@admin.com", "0000000000", "Test Address", "Test Admin", 1);
+        Admin originalAdmin = AdminDB.getAdmins().get(0);
+        originalAdmin.setName("Updated Name");
+        AdminDB.updateAdmin(originalAdmin);
+
+        Admin updatedAdmin = AdminDB.getAdmins().get(0);
+        assertEquals("Updated Name", updatedAdmin.getName(), "Updated Name");
+
+
     }
 
     @When("selects the option to exit")

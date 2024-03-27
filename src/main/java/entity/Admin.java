@@ -8,10 +8,6 @@ public class Admin {
     private static String name;
     private int id;
 
-    public Admin(String email, String password) {
-        this.email = email;
-        this.password=password;
-    }
 
     public Admin(String password, String email, String phone, String address, String name, int id) {
         this.password = password;

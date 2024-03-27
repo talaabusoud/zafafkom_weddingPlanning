@@ -98,7 +98,8 @@ public class show_profile_Admin {
     }
     @Then("the admin profile should be updated successfully")
     public void theAdminProfileShouldBeUpdatedSuccessfully() {
-       assertEquals(true,re_test);
+
+        assertEquals(true,re_test);
     }
 
 
