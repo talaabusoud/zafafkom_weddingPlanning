@@ -17,8 +17,8 @@ public class ServiceDB {
     private static final List<Service> SERVICES = new ArrayList<>();
     static {
         SERVICES.add(new Service(1, "Hebron", "Hall", "available", "Royal", 15000, serviceProvider1));
-        SERVICES.add(new Service(2, "Hebron", "Food", "available", "Himuni", 10000, serviceProvider2));
-        SERVICES.add(new Service(3, "Hebron", "Food", "available", "Himuni", 10000, serviceProvider2));
+        SERVICES.add(new Service(2, "Bethlehem", "Food", "not available", "Himuni", 10000, serviceProvider2));
+        SERVICES.add(new Service(3, "Jenin", "Dj", "not_available", "Himxni", 10000, serviceProvider2));
 
     }
 
