@@ -12,9 +12,8 @@ public class Service {
    private double price; // Cost of the service
    private String phone; // Contact phone number for the service provider (optional)
    private String image; // URL or path to an image representing the service (optional)
-   private List<String> additionalServices; // List of any additional services offered (optional)
    private ServiceProvider owner; // Reference to the provider offering the service
-   private List<Reserve> reservations; // List of reservations for this service
+   
 
    public Service() {
       // Constructor without parameters, can be used for initialization

@@ -10,12 +10,9 @@ import main.LoggerUtility;
 import database.AdminDB;
 import database.ServiceProviderDB;
 import database.UserDB;
-import main.Main;
 import serveses.LoginToMyAppAsAdmin;
 import main.Test_input;
 import static org.junit.Assert.*;
-
-import java.util.List;
 import java.util.logging.Logger;
 
 public class add_user_by_admin {
@@ -93,7 +90,7 @@ public class add_user_by_admin {
         AdminDB.updateAdmin(originalAdmin);
 
         Admin updatedAdmin = AdminDB.getAdmins().get(0);
-        assertEquals("Updated Name", updatedAdmin.getName(), "Updated Name");
+        assertEquals("Updated Name",  "Updated Name",updatedAdmin.getName());
 
 
     }
@@ -141,7 +138,7 @@ public class add_user_by_admin {
             logger.info("New service provider's details entered.");
 
             ServiceProvider retrievedServiceProvider = ServiceProviderDB.getServiceProviderById(id);
-            assertEquals("Test Name", retrievedServiceProvider.getName(), "New ServiceProvider");
+            assertEquals("Test Name", "New ServiceProvider",retrievedServiceProvider.getName() );
 
             serviceProvider.setPassword(password);
             serviceProvider.setEmail(email);
@@ -169,7 +166,7 @@ public class add_user_by_admin {
 
         ServiceProvider updatedServiceProvider = ServiceProviderDB.getServiceProviderById(3);
         assertNotNull(updatedServiceProvider.getName(), "Should retrieve a service provider by ID.");
-        assertEquals("Updated Name", updatedServiceProvider.getName(), "Updated Name");
+        assertEquals("Updated Name",  "Updated Name",updatedServiceProvider.getName());
     }
 
     @When("selects the user user type")

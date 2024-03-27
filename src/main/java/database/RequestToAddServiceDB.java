@@ -1,14 +1,8 @@
 package database;
 
 import entity.Service;
-import entity.Reserve;
-import entity.ServiceProvider;
-import main.LoggerUtility;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
-
 public class RequestToAddServiceDB {
     private static List<Service> services = new ArrayList<>();
     public static void addService(Service service) {

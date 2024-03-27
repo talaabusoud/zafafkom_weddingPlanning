@@ -82,7 +82,7 @@ public class add_service_to_request_list {
     }
     @When("he fill in  {string} with extension {string}")
     public void heFillInWithExtension(String string, String string2) {
-        boolean flag = false;
+        boolean flag ;
         flag= main.Test_input.imge(string2);
         if (flag)   assertTrue(flag);
         else assertFalse(flag);

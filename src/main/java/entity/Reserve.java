@@ -3,11 +3,7 @@ package entity;
 import java.util.List;
 
 public class Reserve {
-
-
-
-    private static Reserve defaultReserve;
-
+    
     private String id;
     private int serviceId;
     private String serviceName;
