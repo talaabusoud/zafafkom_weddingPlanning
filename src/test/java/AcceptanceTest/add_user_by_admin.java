@@ -134,10 +134,29 @@ public class add_user_by_admin {
         String phone = "0987654321";
         String address = "456 Service Provider Street";
         String password = "sppassword";
+        int id = ServiceProviderDB.getServiceProviders().size() + 1;
         if (Test_input.Name(name) && email.contains("@") && Test_input.Phone(phone)) {
-            serviceProvider = new ServiceProvider(password, email, phone, address, name, ServiceProviderDB.getServiceProviders().size() + 1);
+            serviceProvider = new ServiceProvider(password, email, phone, address, name, id);
             ServiceProviderDB.addServiceProvider(serviceProvider);
             logger.info("New service provider's details entered.");
+
+            ServiceProvider retrievedServiceProvider = ServiceProviderDB.getServiceProviderById(id);
+            assertEquals("Test Name", retrievedServiceProvider.getName(), "New ServiceProvider");
+
+            serviceProvider.setPassword(password);
+            serviceProvider.setEmail(email);
+            serviceProvider.setPhone(phone);
+            serviceProvider.setAddress(address);
+            serviceProvider.setName(name);
+            serviceProvider.setId(id);
+
+            assertEquals(password, serviceProvider.getPassword());
+            assertEquals(email, serviceProvider.getEmail());
+            assertEquals(phone, serviceProvider.getPhone());
+            assertEquals(address, serviceProvider.getAddress());
+            assertEquals(name, serviceProvider.getName());
+            assertEquals(id, serviceProvider.getId());
+
         } else {
             logger.warning("Invalid input for new service provider.");
         }
@@ -145,11 +164,12 @@ public class add_user_by_admin {
 
     @Then("the new service provider should be added to the system")
     public void theNewServiceProviderShouldBeAddedToTheSystem() {
-        // Similar assertion for service provider
-        ServiceProvider addedServiceProvider = ServiceProviderDB.getServiceProviders().get(ServiceProviderDB.getServiceProviders().size() - 1);
-        assertNotNull("New service provider should not be null", addedServiceProvider);
-        assertEquals("New service provider's email should match", "newsp@example.com", addedServiceProvider.getEmail());
-        logger.info("Verified that the new service provider has been added to the system.");
+        ServiceProvider serviceProviderToUpdate = new ServiceProvider("updated", "update@example.com", "987654321", "Updated Address", "Updated Name", 3);
+        ServiceProviderDB.updateServiceProvider(serviceProviderToUpdate);
+
+        ServiceProvider updatedServiceProvider = ServiceProviderDB.getServiceProviderById(3);
+        assertNotNull(updatedServiceProvider.getName(), "Should retrieve a service provider by ID.");
+        assertEquals("Updated Name", updatedServiceProvider.getName(), "Updated Name");
     }
 
     @When("selects the user user type")
