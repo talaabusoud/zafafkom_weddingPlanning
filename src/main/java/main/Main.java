@@ -11,15 +11,15 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.util.*;
 import java.util.logging.Logger;
 
-import static database.ServiceDB.displayService;
+
 import static database.ServiceProviderDB.displayServiceProvider;
 
 public class Main {
     private static final String msg ="|              ENTER THE NUMBER OF ACTION YOU WANT TO TAKE              |\n" ;
-    private static final String msg2 ="|   Login failed! Please check your email and password and try again.   |\n" ;
-    private static final String msg3 ="|                 1- Re-enter email and password                        |\n" ;
-    private static final String msg4 ="| User not logged in. Please log in first.                              |\n" ;
-    private static final String msg5 ="|                            Invalid input.                             |\n" ;
+    private static final String msg_Login_failed ="|   Login failed! Please check your email and password and try again.   |\n" ;
+    private static final String msg_Re_enter ="|                 1- Re-enter email and password                        |\n" ;
+    private static final String msg_log_in_first ="| User not logged in. Please log in first.                              |\n" ;
+    private static final String msg_Invalid_input ="|                            Invalid input.                             |\n" ;
     private static final String stars ="         ****************************************************         \n" ;
 
     private static User user;
@@ -95,8 +95,8 @@ public class Main {
         else {
             // Login failed due to incorrect password
             displayUpLine();
-            logger.warning(msg2);
-            logger.warning(msg3);
+            logger.warning(msg_Login_failed);
+            logger.warning(msg_Re_enter);
             logger.warning("|                 2- Don't have an account? Sign up for a new account   |\n");
             logger.warning("|                 3- Back to home page                                  |\n");
             displayDownLine();
@@ -133,7 +133,7 @@ public class Main {
         // Check if loggedInUser is null
         if (loggedInUser == null) {
             displayUpLine();
-            logger.warning(msg4);
+            logger.warning(msg_log_in_first);
             displayDownLine();
             return;
         }
@@ -161,7 +161,7 @@ public class Main {
                 // Clear buffer (avoid infinite loop)
                 scanner.nextLine();
                 displayUpLine();
-                logger.warning(msg5);
+                logger.warning(msg_Invalid_input);
                 logger.warning("|                   Please enter a number (1 to 4).                    |\n");
                 displayDownLine();
                 userChoice = -1;
@@ -173,7 +173,7 @@ public class Main {
                         servicesPage(user);
                     } else {
                         displayUpLine();
-                        logger.warning(msg4);
+                        logger.warning(msg_log_in_first);
                         displayDownLine();
                     }
                     break;
@@ -183,7 +183,7 @@ public class Main {
                         userProfile(user);
                     } else {
                         displayUpLine();
-                        logger.warning(msg4);
+                        logger.warning(msg_log_in_first);
                         displayDownLine();
                     }
                     break;
@@ -361,7 +361,7 @@ public class Main {
                 // Clear buffer (avoid infinite loop)
                 scanner.nextLine();
                 displayUpLine();
-                logger.warning(msg5);
+                logger.warning(msg_Invalid_input);
                 logger.warning("|                   Please enter a number (1, 2, or 3).                 |\n");
                 displayDownLine();
                 choice = -1;
@@ -432,7 +432,7 @@ public class Main {
                 // Clear buffer (avoid infinite loop)
                 scanner.nextLine();
                 displayUpLine();
-                logger.warning(msg5);
+                logger.warning(msg_Invalid_input);
                 logger.warning("|                   Please enter a number (1, 2, or 3).                 |\n");
                 displayDownLine();
                 profileChoice = -1;
@@ -497,7 +497,7 @@ public class Main {
                 // Clear buffer (avoid infinite loop)
                 scanner.nextLine();
                 displayUpLine();
-                logger.warning(msg5);
+                logger.warning(msg_Invalid_input);
                 logger.warning("|                   Please enter a number (1 to 8).                    |\n");
                 displayDownLine();
                 editChoice = -1;
@@ -584,7 +584,7 @@ public class Main {
                 // Clear buffer (avoid infinite loop)
                 scanner.nextLine();
                 displayUpLine();
-                logger.warning(msg5);
+                logger.warning(msg_Invalid_input);
                 logger.warning("|                   Please enter a number (1, 2, 3, 4, or 5).           |\n");
                 displayDownLine();
                 serviceChoice = -1;
@@ -636,7 +636,7 @@ public class Main {
                         reservationDetails(loggedInUser);
                     } else {
                         displayUpLine();
-                        logger.warning(msg4);
+                        logger.warning(msg_log_in_first);
                         displayDownLine();
                     }
                   break;
@@ -817,8 +817,8 @@ public class Main {
         }
         else {
             displayUpLine();
-            logger.warning(msg2);
-            logger.warning(msg3);
+            logger.warning(msg_Login_failed);
+            logger.warning(msg_Re_enter);
             logger.warning("|                 2- Back To Home Page                                  |\n");
             displayDownLine();
             logger.info("\n");
@@ -877,7 +877,7 @@ public class Main {
         // Clear buffer (avoid infinite loop)
         scanner.nextLine();
         displayUpLine();
-        logger.warning(msg5);
+        logger.warning(msg_Invalid_input);
         logger.warning("|                   Please enter a number (1 to 8).                    |\n");
         displayDownLine();
         adminChoice = -1;
@@ -1291,8 +1291,8 @@ public class Main {
             Service_Provider_Page(serviceProvider);
         } else {
             displayUpLine();
-            logger.warning(msg2);
-            logger.warning(msg3);
+            logger.warning(msg_Login_failed);
+            logger.warning(msg_Re_enter);
             logger.warning("|                 2- Back To Home Page                                  |\n");
             displayDownLine();
 
