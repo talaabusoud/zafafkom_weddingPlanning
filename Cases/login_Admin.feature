@@ -1,28 +1,28 @@
-Feature: admin login
+Feature: Admin Login
 
-  Scenario: Successful log in
-    Given that the admin is not logged in the app
-    And the username is "mohamad"
-    And the password is "1234"
-    Then  the admin is logged in the app successfully
+  Scenario: Admin successfully logs in with valid credentials
+    Given the admin is not logged in to the app
+    When the admin logs in with email "admin@example.com" and password "correctpassword"
+    Then the admin should be directed to the admin page
 
-  Scenario: Admin entered a wrong username
-    Given that the admin is not logged in the app
-    And the username is "wrong"
-    And the password is "1234"
-    Then the admin will not login
-    And the message appear to tell the admin what's wrong
+  Scenario: Admin fails to log in with invalid email
+    Given the admin is not logged in to the app
+    When the admin logs in with email "wrongemail@example.com" and password "correctpassword"
+    Then the admin should see a login failed message
 
-  Scenario: Administrator entered a wrong password
-    Given that the admin is not logged in the app
-    And the username is "mohamad"
-    And the password is "wrong"
-    Then the admin will not login
-    And the message appear to tell the admin what's wrong
+  Scenario: Admin fails to log in with invalid password
+    Given the admin is not logged in to the app
+    When the admin logs in with email "admin@example.com" and password "wrongpassword"
+    Then the admin should see a login failed message
 
-  Scenario: Admin entered empty password or email
-    Given that the admin is not logged in the app
-    And the username is " "
-    And the password is " "
-    Then the admin will not login
-    And the message appear to tell the admin what's wrong
+  Scenario: Admin re-attempts login after failure
+    Given the admin is not logged in to the app
+    When the admin logs in with email "admin@example.com" and password "wrongpassword"
+    And the admin tries to log in again with email "admin@example.com" and password "correctpassword"
+    Then the admin should be directed to the admin page
+
+  Scenario: Admin returns to the home page after failed login
+    Given the admin is not logged in to the app
+    When the admin logs in with email "admin@example.com" and password "wrongpassword"
+    And the admin selects to return to the home page
+    Then the admin should see the home page
