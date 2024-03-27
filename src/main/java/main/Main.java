@@ -853,7 +853,7 @@ public class Main {
     int adminChoice;
 
     logger.info("\n|------------------------------- Admin Page -----------------------------|\n");
-    logger.info("|                 1- add new user / service provider                     |\n");
+    logger.info("|                 1- add new user / service provider / Admin             |\n");
     logger.info("|                 2- Show service provider                               |\n");
     logger.info("|                 3- Show users                                          |\n");
     logger.info("|                 4- Show services & delete                              |\n");
@@ -1020,7 +1020,7 @@ public class Main {
         ServiceProviderDB.addServiceProvider(newServiceProvider);
         displayServiceProvider(newServiceProvider);
     }
-    private static void showServiceProviders() {
+    public static void showServiceProviders() {
         List<ServiceProvider> serviceProviders = ServiceProviderDB.getServiceProviders();
         if (serviceProviders.isEmpty()) {
             logger.info("No service providers found.");

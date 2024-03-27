@@ -37,7 +37,6 @@ public class add_user_by_admin {
     @When("the admin chooses to add a new user")
     public void theAdminChoosesToAddANewUser() {
         logger.info("Admin chooses to add a new user.");
-      //  Main.signUpPage();
     }
 
     @When("selects the admin user type")
