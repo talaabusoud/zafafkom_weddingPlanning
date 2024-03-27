@@ -598,7 +598,7 @@ public class Main {
                     displayDownLine();
                     int serviceReserveID = scanner.nextInt();
 
-                    // if the service is available
+
                     Service serviceToReserve = ServiceDB.getServiceById(serviceReserveID);
                     if (serviceToReserve != null && isServiceAvailableForReservation(serviceToReserve)) {
                         // if the user has already reserved this service

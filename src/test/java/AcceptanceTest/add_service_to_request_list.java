@@ -25,7 +25,6 @@ public class add_service_to_request_list {
 
 
          if (string.equals(true)) assertTrue(myApp.isLoggedIn());
-         else assertEquals(false,false);
     }
     @Then("the field {string} should be with error")
     public void theFieldShouldBeWithError(String string) {
@@ -99,7 +98,6 @@ public class add_service_to_request_list {
     @Then("the user shoude See {string}")
     public void theUserShoudeSee(String string) {
         logger.info(string);
-        assertEquals(false,false);
 
     }
 }
