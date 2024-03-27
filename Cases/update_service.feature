@@ -1,22 +1,26 @@
-Feature: Admin updates a service
+Feature: Update Service Information
+  As a service provider
 
-  Scenario Outline: Successful update process
-    Given the service list has a service with ID <ExistingID>
-    When the admin updates the service with ID <ExistingID> to have a new price <NewPrice> and status <NewStatus>
-    Then the service with ID <ExistingID> should have its price updated to <NewPrice> and its status updated to <NewStatus>
+
+  Scenario Outline: Successfully updating service information
+    Given the service provider is logged into their account
+    And the service list has a service with ID <ServiceID> belonging to the provider
+    When the service provider chooses to update the service with ID <ServiceID>
+    And enters "<NewName>" for the new name
+    And enters "<NewType>" for the new type
+    And enters "<NewLocation>" for the new location
+    And chooses "<StatusChoice>" for the new status
+    And enters "<NewPrice>" for the new price
+    And enters "<NewPhone>" for the new phone
+    And enters "<NewImageURL>" for the new image URL
+    Then the service should be updated successfully with the new information
 
     Examples:
-      | ExistingID | NewPrice | NewStatus |
-      | 1          | 150.0    | available |
-      | 1          | 40.0     | discontinued |
+      | ServiceID | NewName     | NewType | NewLocation | StatusChoice | NewPrice | NewPhone   | NewImageURL          |
+      | 1         | Event Hall  | Hall    | Downtown    | 1            | 2000     | 1234567890 | http://example.com/hall.jpg |
+      | 2         | Catering    | Food    | Uptown      | 2            | 1500     | 0987654321 | http://example.com/food.jpg |
 
-  Scenario Outline: Update existing service with invalid price and status
-    Given that the admin wants to update the service with ID <ExistingID> to have an invalid <NewPrice> and/or invalid <NewStatus>
-    When the admin updates the service with ID <ExistingID>
-    Then the error message should be equal to "<Message>"
-
-    Examples:
-      | ExistingID | NewPrice | NewStatus | Message                           |
-      | 1          | -20.0    | available | Invalid Price!                    |
-      | 1          | 19.5     | available | Invalid Price!                    |
-      | 1          | 100      |           | Both Price and Status are missing|
+  Scenario: Attempting to update service with invalid ID
+    Given the service provider is logged into their account
+    When the service provider attempts to update a service with an invalid ID <InvalidID>
+    Then an error message is displayed indicating no service was found with that ID

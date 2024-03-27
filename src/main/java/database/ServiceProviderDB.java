@@ -51,15 +51,6 @@ public class ServiceProviderDB {
         }
     }
 
-    public static void displayServiceProviders(List<ServiceProvider> serviceProviders) {
-        logger.info("----------------------------------Service Providers----------------------------\n");
-        logger.info("|     id     |    Name    |    Phone   |    Address   |    Email   |\n");
-
-        for (ServiceProvider sp : serviceProviders) {
-            displayServiceProvider(sp);
-        }
-
-    }
     public static void updateServiceProvider(ServiceProvider updatedServiceProvider) {
         for (int i = 0; i < serviceProviders.size(); i++) {
             ServiceProvider sp = serviceProviders.get(i);

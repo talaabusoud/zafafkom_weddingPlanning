@@ -29,6 +29,7 @@ public class show_Reservations_And_Delete_by_admin {
         assertNotNull("Reservations should not be null", reservations);
         ReservationDB.displayReservations(reservations);
 
+
     }
 
     @Given("the admin is viewing the list of reservations")
@@ -40,6 +41,7 @@ public class show_Reservations_And_Delete_by_admin {
     @When("the admin chooses to delete a reservation")
     public void theAdminChoosesToDeleteAReservation() {
         logger.info("\nEnter the ID of the reservation you wish to delete: ");
+
     }
 
     @When("the admin enters the ID of the reservation to delete")

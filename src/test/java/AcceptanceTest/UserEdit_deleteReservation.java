@@ -33,16 +33,14 @@ public class UserEdit_deleteReservation {
         if (user != null && reservation != null) {
             user.addReservation(reservation);
         }
-//        throw new io.cucumber.java.PendingException();
     }
 
 
     @When("the user wants to edit reservation number {string}")
     public void theUserWantsToEditReservationNumber(String reservationId) {
-        // Write code here that turns the phrase above into concrete actions
         user = UserDB.getUserByEmail("test@example.com");
         reservation = ReservationDB.getReservationById(reservationId);
-//        throw new io.cucumber.java.PendingException();
+
     }
 
     @When("updates the reservation with new date {string}, time {string}, and duration {string}")
@@ -55,7 +53,6 @@ public class UserEdit_deleteReservation {
 
             ReservationDB.updateReservation(reservation);
         }
-//        throw new io.cucumber.java.PendingException();
     }
 
     @Then("the reservation is successfully updated")
@@ -98,7 +95,7 @@ public class UserEdit_deleteReservation {
         if (!ServiceDB.isServiceAvailableAtTimeOrDuration(reservation.getServiceId(), time, duration)) {
             reservation = null;
         }
-//        throw new io.cucumber.java.PendingException();
+
     }
 
     @Then("the user cannot update this service to that time or duration")

@@ -75,13 +75,6 @@ public class Reserve {
         return totalPrice;
     }
 
-//    public double getTotalPrice(List<Service> reservedServices) {
-//        double totalPrice = 0.0;
-//        for (Service service : reservedServices) {
-//            totalPrice += service.getPrice(); // Add the price of each reserved service to the total
-//        }
-//        return totalPrice;
-//    }
 
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
@@ -112,15 +105,5 @@ public class Reserve {
     }
 
 
-
-
-
-    public static Reserve getDefaultReserve() {
-        return defaultReserve;
-    }
-
-    public static void setDefaultReserve(Reserve reserve) {
-        defaultReserve = reserve;
-    }
     
 }

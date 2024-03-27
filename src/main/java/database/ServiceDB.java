@@ -18,6 +18,8 @@ public class ServiceDB {
     static {
         SERVICES.add(new Service(1, "Hebron", "Hall", "available", "Royal", 15000, serviceProvider1));
         SERVICES.add(new Service(2, "Hebron", "Food", "available", "Himuni", 10000, serviceProvider2));
+        SERVICES.add(new Service(3, "Hebron", "Food", "available", "Himuni", 10000, serviceProvider2));
+
     }
 
     private static final Logger logger = LoggerUtility.getLogger();
@@ -92,7 +94,7 @@ public class ServiceDB {
                 return service;
             }
         }
-        return null; // Service not found
+        return null;
     }
 
     public static boolean isServiceAvailableAtTimeOrDuration(int serviceId, String time, String duration) {
