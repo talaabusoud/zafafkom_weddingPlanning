@@ -1,7 +1,4 @@
 package entity;
-
-import java.util.List;
-
 public class Service {
 
    private int id; // Unique identifier for the service
@@ -13,7 +10,7 @@ public class Service {
    private String phone; // Contact phone number for the service provider (optional)
    private String image; // URL or path to an image representing the service (optional)
    private ServiceProvider owner; // Reference to the provider offering the service
-   
+
 
    public Service() {
       // Constructor without parameters, can be used for initialization
