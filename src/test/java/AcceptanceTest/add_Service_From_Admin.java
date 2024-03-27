@@ -19,7 +19,6 @@ public class add_Service_From_Admin {
     LoginToMyAppAsAdmin myApp ;
     Service service;
     private static Logger logger = LoggerUtility.getLogger();
-
     public add_Service_From_Admin()
 
     {
@@ -27,7 +26,6 @@ public class add_Service_From_Admin {
         myApp.login();
         AppLogger.setLevel(logger);
     }
-
 
     @Given("that the administrator is logged in")
     public void thatTheAdministratorIsLoggedIn() {

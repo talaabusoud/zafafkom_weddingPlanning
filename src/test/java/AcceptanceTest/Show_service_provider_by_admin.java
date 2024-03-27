@@ -10,6 +10,8 @@ import main.Main;
 import java.util.List;
 import java.util.logging.Logger;
 
+import static org.junit.Assert.assertFalse;
+
 public class Show_service_provider_by_admin {
 
     private static final Logger logger = LoggerUtility.getLogger();
@@ -20,27 +22,8 @@ public class Show_service_provider_by_admin {
     }
     @Then("the admin should see a list of all service providers")
     public void theAdminShouldSeeAListOfAllServiceProviders() {
-        List<ServiceProvider> serviceProviders = ServiceProviderDB.getServiceProviders();
-        if (serviceProviders.isEmpty()) {
-            logger.info("No service providers found.");
-        } else {
-            String format = "|%-12s|%12s|%15s|%14s|%20s|%20s|\n";
-            logger.info(String.format(format, "ID", "Name", "Phone", "Address", "Email", "password"));
-
-            logger.info(new String(new char[100]).replace('\0', '-'));
-            logger.info("\n");
-            for (ServiceProvider serviceProvider : serviceProviders) {
-                logger.info(String.format(format,
-                        serviceProvider.getId(),
-                        serviceProvider.getName(),
-                        serviceProvider.getPhone(),
-                        serviceProvider.getAddress(),
-                        serviceProvider.getEmail(),
-                        serviceProvider.getPassword()
-                ));
-            }
-        }
-
+        List<ServiceProvider> providers = ServiceProviderDB.getServiceProviders();
+        assertFalse("The list of service providers should not be empty", providers.isEmpty());
     }
 
 

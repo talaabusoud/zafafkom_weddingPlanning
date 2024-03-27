@@ -1226,7 +1226,7 @@ public class Main {
 
         }else{
 
-        RequestToAddServiceDB.displayServices(requests);
+        ServiceDB.displayServices(requests);
 
         logger.info("Options:\n");
         logger.info("1- Approve All Requests\n");

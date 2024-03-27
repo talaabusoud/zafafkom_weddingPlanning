@@ -21,6 +21,8 @@ public class add_service_to_request_list {
     }
     @When("user click on insert order and flag is {string}")
     public void userClickOnInsertOrderAndFlagIs(String string) {
+
+
          if (string.equals(true)) assertTrue(myApp.isLoggedIn());
          else assertEquals(false,false);
     }

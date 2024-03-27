@@ -10,8 +10,6 @@ public class Service {
    private String status; // Current state of the service (e.g., Available, Discontinued, On Hold)
    private String name; // Descriptive name of the service
    private double price; // Cost of the service
-
-   // Additional attributes may be added based on your specific requirements
    private String phone; // Contact phone number for the service provider (optional)
    private String image; // URL or path to an image representing the service (optional)
    private List<String> additionalServices; // List of any additional services offered (optional)
@@ -97,14 +95,6 @@ public class Service {
       this.image = image;
    }
 
-   public List<String> getAdditionalServices() {
-      return additionalServices;
-   }
-
-   public void setAdditionalServices(List<String> additionalServices) {
-      this.additionalServices = additionalServices;
-   }
-
    public ServiceProvider getOwner() {
       return owner;
    }
@@ -113,13 +103,6 @@ public class Service {
       this.owner = owner;
    }
 
-   public List<Reserve> getReservations() {
-      return reservations;
-   }
-
-   public void setReservations(List<Reserve> reservations) {
-      this.reservations = reservations;
-   }
 
    @Override
    public String toString() {

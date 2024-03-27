@@ -2,6 +2,7 @@ package AcceptanceTest;
 
 import database.ServiceDB;
 import entity.Service;
+import entity.ServiceProvider;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -32,8 +33,8 @@ public class show_Services_And_Delete_Option_by_admin {
     public void theAdminChoosesToViewTheListOfServices() {
         servicesBeforeAction = ServiceDB.getServices();
         assertNotNull("Service list should not be null", servicesBeforeAction);
-
     }
+
     @Then("the admin should see a list of all services")
     public void theAdminShouldSeeAListOfAllServices() {
         assertFalse("Service list should not be empty", servicesBeforeAction.isEmpty());
