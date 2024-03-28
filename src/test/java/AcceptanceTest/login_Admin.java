@@ -1,5 +1,6 @@
 package AcceptanceTest;
 
+import database.AdminDB;
 import entity.Admin;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -35,7 +36,7 @@ public class login_Admin {
     public void theAdminShouldBeDirectedToTheAdminPage() {
         assertNotNull(admin);
         assertTrue(myApp.isLoggedIn());
-       // Main.adminPage(admin);
+        AdminDB.displayAdmin(admin);
     }
 
     @Then("the admin should see a login failed message")
