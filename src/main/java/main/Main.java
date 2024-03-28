@@ -561,6 +561,7 @@ public class Main {
             }
         } while (true);
     }
+
     public static void servicesPage(User loggedInUser){
         Scanner scanner = new Scanner(System.in);
         int serviceChoice;
@@ -1160,7 +1161,6 @@ public class Main {
         } else {
             logger.warning("\nService with ID " + id + " could not be found or deleted.\n");
         }
-
     }
     private static void showAdminProfile(Admin loggedInUser) {
 
@@ -1461,6 +1461,7 @@ public class Main {
 
         if (providerServices.isEmpty()) {
             logger.info("\nYou have no services listed.\n");
+            Service_Provider_menu(serviceProvider);
             return;
         } else {
             logger.info("-----------------------------------------------------------------------------------------------------------------------------------------------------\n");
@@ -1515,12 +1516,12 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         boolean keepRunning = true;
 
-        while (keepRunning) {
+
             List<Reserve> reservationsForProvider = ReservationDB.getReservationsForService(loggedInUser.getId());
 
             if (reservationsForProvider.isEmpty()) {
                 logger.info("\nNo reservations found.\n");
-                break;
+                Service_Provider_menu(serviceProvider);
             }
 
             ReservationDB.displayReservations(reservationsForProvider);
@@ -1541,13 +1542,14 @@ public class Main {
                     break;
 
                 case 2: // Exit
-                    keepRunning = false;
+
                     break;
 
                 default:
                     logger.info("\nInvalid option, please try again.");
             }
-        }
+        Service_Provider_menu(serviceProvider);
+
     }
 
     private static ServiceProvider getLoggedInServiceProvider() {

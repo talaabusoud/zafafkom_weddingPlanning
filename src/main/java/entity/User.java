@@ -99,14 +99,6 @@ public class User {
         this.hasServiceWindow = hasServiceWindow;
     }
 
-//    private List<Service> Reservations = new ArrayList<>();
-//
-//    public void addReservation(Service service) {
-//        Reservations.add(service);
-//    }
-
-//    private List<Reserve> reservations;
-
     public List<Reserve> getReservations() {
         return reservations;
     }
