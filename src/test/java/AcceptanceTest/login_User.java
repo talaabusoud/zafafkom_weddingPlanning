@@ -31,8 +31,8 @@ public class login_User {
 
     @When("the user enters valid username and password")
     public void the_user_enters_valid_username_and_password() {
-        // Write code here that turns the phrase above into concrete actions
-        //throw new io.cucumber.java.PendingException();
+
+    
     }
 
     @When("the username for user is {string}")
@@ -57,29 +57,26 @@ public class login_User {
 
     @Then("the user is logged in the app successfully {string} login successfully {string}")
     public void the_user_is_logged_in_the_app_successfully_login_successfully(String string, String string2) {
-        // Write code here that turns the phrase above into concrete actions
+
       System.out.println("Username: " + username);
       System.out.println("Password: " + password);
-      //system.loggInCheck(username,password);
       System.out.println("Is logged in: " + system.isLoggedIn());
-      //assertTrue(system.isLoggedIn());
-
       system.setCredentials(username, password);
-      system.login();  // Add this line to invoke the login method
+      system.login();
       assertTrue(system.isLoggedIn());
-        //throw new io.cucumber.java.PendingException();
+
     }
 
     @Given("that the user is not logged in the app")
     public void that_the_user_is_not_logged_in_the_app() {
-        // Write code here that turns the phrase above into concrete actions
+
       assertFalse(system.isLoggedIn());
-        //throw new io.cucumber.java.PendingException();
+
     }
 
     @Then("the user will not login")
     public void the_user_will_not_login() {
-        // Write code here that turns the phrase above into concrete actions
+
       system.loggInCheck(username,password);
       assertFalse(system.isLoggedIn());
        // throw new io.cucumber.java.PendingException();
@@ -94,16 +91,16 @@ public class login_User {
 
     @Then("the message appear to tell the user what's wrong {string} Wrong password {string}")
     public void the_message_appear_to_tell_the_user_what_s_wrong_wrong_password(String string, String string2) {
-        // Write code here that turns the phrase above into concrete actions
+
       system.errorInLogin();
-        //throw new io.cucumber.java.PendingException();
+
     }
 
     @Then("error message will be displayed prompting the user to enter both username and password")
     public void error_message_will_be_displayed_prompting_the_user_to_enter_both_username_and_password() {
-        // Write code here that turns the phrase above into concrete actions
+
       system.errorInLogin();
-        //throw new io.cucumber.java.PendingException();
+
     }
 
     // New Scenario

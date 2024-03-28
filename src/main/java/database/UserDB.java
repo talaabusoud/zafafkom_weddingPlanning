@@ -37,7 +37,6 @@ public class UserDB {
     public static void addUser(User user) {
         users.add(user);
     }
-
     public static List<User> getUsers() {
         return users;
     }
@@ -72,29 +71,18 @@ public class UserDB {
             }
         }
 
-        // If the user is not found, log a warning
+
         LoggerUtility.getLogger().warning("User not found for update: " + updatedUser.getEmail());
     }
-    public static User getUserByUsernameAndPassword(String username, String password) {
-        // Iterate through the list of users and find the matching user
-        for (User user : users) {
-            if (user.getEmail().equals(username) && BCrypt.checkpw(password, user.getPassword()))  {
-                // Return the matching user
-                LoggerUtility.getLogger().info("User found for login: " + username);
-                return user;
-            }
-        }
-        LoggerUtility.getLogger().warning("User not found for login: " + username);
-        return null;
-    }
+
 
     public static boolean isUserExists(int userId, String email) {
         for (User existingUser : users) {
             if (existingUser.getId() == userId || existingUser.getEmail().equals(email)) {
-                return true; // User with the same ID or email already exists
+                return true;
             }
         }
-        return false; // User does not exist
+        return false;
     }
 
     public static User getUserByEmail(String email) {

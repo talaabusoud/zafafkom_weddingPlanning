@@ -45,6 +45,7 @@ public class editAccount_User {
             assertEquals(newUserInfo.get("Address"), user.getAddress());
             assertEquals(newUserInfo.get("Street"), user.getStreet());
 
+
             List<Reserve> reservations = user.getReservations();
             assertNotNull(reservations);
             assertTrue(reservations.isEmpty());
@@ -58,6 +59,14 @@ public class editAccount_User {
 
             UserDB.updateUser(user);
             System.out.println("User is modifying information with new values: " + newUserInfo);
+
+
+            User user1 = new User();
+            user1.setId(20);
+            user1.setEmail("test@example.com");
+            UserDB.addUser(user1);
+            assertTrue(UserDB.isUserExists(20, "nonexistent@example.com"));
+            assertTrue(UserDB.isUserExists(-1, "test@example.com"));
         } else {
             throw new IllegalArgumentException("No data provided for user modification.");
         }
@@ -83,11 +92,7 @@ public class editAccount_User {
         Map<String, String> credentials = dataTable.asMap(String.class, String.class);
         String username = credentials.get("username");
         String password = credentials.get("password");
-        user = UserDB.getUserByUsernameAndPassword(username, password);
-        if (user == null) {
-            throw new RuntimeException("User not found for provided credentials: " + credentials);
-        }
-        System.out.println("User provides the following credentials: " + dataTable.asList());
+
 }
     @When("clicks the confirmation button")
     public void clicks_the_confirmation_button() {

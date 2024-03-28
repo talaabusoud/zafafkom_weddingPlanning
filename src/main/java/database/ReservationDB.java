@@ -110,7 +110,6 @@ String line = "+-------+-----------------+------------+-----------------+-------
         logger.info("| ID    | Service Name    | Service ID | Customer Name   | Location   | Date       |\n");
         logger.info(line);
 
-
         for (Reserve reservation : reservations) {
             logger.info(String.format(leftAlignFormat,
                     reservation.getId(),

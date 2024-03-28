@@ -18,10 +18,6 @@ public class LoginAsUser {
         AppLogger.setLevel(logger);
     }
 
-    public LoginAsUser(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
 
     public boolean isLoggedIn() {
         return isLoggedIn;
@@ -58,16 +54,6 @@ public class LoginAsUser {
         return BCrypt.checkpw(enteredPassword, hashedPassword);
     }
 
-//    public User loggInCheck(String enteredEmail, String enteredPassword) {
-//        for (User u : UserDB.getUsers()) {
-//            if (u.getEmail().equalsIgnoreCase(enteredEmail)) {
-//                if (verifyPassword(enteredPassword, u.getPassword())) {
-//                    return u; // Successfully logged in
-//                }
-//            }
-//        }
-//        return null; // Login failed
-//    }
 
     public User loggInCheck(String enteredEmail, String enteredPassword) {
         for (User u : UserDB.getUsers()) {

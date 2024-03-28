@@ -44,6 +44,23 @@ public class show_Services_And_Delete_Option_by_admin {
 
     @Given("a list of services is displayed")
     public void aListOfServicesIsDisplayed() {
+
+        Service service = new Service();
+        service.setId(12000);
+        service.setLocation("Hebron");
+        service.setType("Hall");
+        service.setStatus("available");
+        service.setName("Royal");
+        service.setPrice(15000);
+
+        // When
+        String result = service.toString();
+
+        // Then
+        String expected = "Service{id=12000, location='Hebron', type='Hall', status='available', name='Royal', price=15000.0}";
+        assertEquals(expected, result);
+
+
         servicesBeforeAction = ServiceDB.getServices();
         assertFalse(servicesBeforeAction.isEmpty());
 

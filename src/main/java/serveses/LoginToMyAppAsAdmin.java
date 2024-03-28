@@ -34,13 +34,6 @@ public class LoginToMyAppAsAdmin {
         isLoggedIn = true;
     }
 
-    public void errorInLogin() {
-
-        logger.info("___________________________________________________________________________________\n");
-        logger.warning("|             Something WRONG!,The username or the password is not correct        |\n");
-        logger.info("|_________________________________________________________________________________|\n");
-    }
-
     public boolean verifyPassword(String enteredPassword, String storedPassword) {
         return enteredPassword.equals(storedPassword);
     }

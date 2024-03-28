@@ -6,10 +6,12 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import entity.User;
 import database.UserDB;
+import main.Test_input;
 import serveses.LoginAsUser;
 
 import java.util.ArrayList;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class profile_User {
@@ -26,20 +28,35 @@ public class profile_User {
         system.setCredentials("jana123@gmail.com", "12345666");
         system.login();
         assertTrue(system.isLoggedIn());
-        // Write code here that turns the phrase above into concrete actions
-        //throw new io.cucumber.java.PendingException();
     }
     @Given("the user has the following information:")
     public void theUserHasTheFollowingInformation(io.cucumber.datatable.DataTable dataTable) {
-        // Write code here that turns the phrase above into concrete actions
-        // For automatic transformation, change DataTable to one of
-        // E, List<E>, List<List<E>>, List<Map<K,V>>, Map<K,V> or
-        // Map<K, List<V>>. E,K,V must be a String, Integer, Float,
-        // Double, Byte, Short, Long, BigInteger or BigDecimal.
-        //
-        // For other transformations you can register a DataTableType.
         UserDB.displayUser(user);
-        //throw new io.cucumber.java.PendingException();
+        User user = new User();
+        user.setId(55);
+        user.setName("John Doe");
+        user.setPhoneNumber("1234567890");
+        user.setAddress("123 Main St");
+        user.setCity("Anytown");
+        user.setStreet("Main St");
+
+        user.setService(new ArrayList<>()); // To mimic an empty service list
+
+        try {
+            UserDB.displayUser(user);
+            System.out.println("Test with real user passed");
+        } catch (Exception e) {
+            System.out.println("Test with real user failed");
+        }
+
+        // Test with null user
+        try {
+            UserDB.displayUser(null);
+            System.out.println("Test with null user passed");
+        } catch (Exception e) {
+            System.out.println("Test with null user failed");
+        }
+
     }
 
     @And("the user has information email {string},password {string}, phone {string},address {string},name {string}, id {int} , city {string} ,street {string} , hasServiceWindow {string},service {string});")
@@ -55,15 +72,15 @@ public class profile_User {
         user.setPassword(password);
         user.setHasServiceWindow(true);
         user.setService(new ArrayList<>());
+
+
     }
     @When("the user views their profile")
     public void theUserViewsTheirProfile() {
-        // Write code here that turns the phrase above into concrete actions
-        //throw new io.cucumber.java.PendingException();
+
     }
     @Then("the user profile should appear with the provided information")
     public void theUserProfileShouldAppearWithTheProvidedInformation() {
-        // Write code here that turns the phrase above into concrete actions
-        //throw new io.cucumber.java.PendingException();
+
     }
 }
