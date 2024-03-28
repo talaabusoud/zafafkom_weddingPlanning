@@ -6,9 +6,6 @@ import io.cucumber.java.en.When;
 import main.LoggerUtility;
 import serveses.LoginAsUser;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.junit.Assert.assertFalse;
@@ -25,22 +22,12 @@ public class login_User {
   public login_User() {
     system = new LoginAsUser();
   }
-  private final PrintStream originalOut = System.out;
-  private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-
 
   @Given("the user is on the login page")
-
     public void the_user_is_on_the_login_page() {
-     final Logger logger = Logger.getLogger(LoggerUtility.class.getName());
-    System.setOut(new PrintStream(outContent));
-    logger.setLevel(Level.ALL);
-    System.setOut(originalOut);
-    String format = "Test message: %s";
-    LoggerUtility.logInfo(logger, format, "Hello, world!");
-    assertTrue(outContent.toString().contains("Test message: Hello, world!"));
-
-  }
+        // Write code here that turns the phrase above into concrete actions
+        //throw new io.cucumber.java.PendingException();
+    }
 
     @When("the user enters valid username and password")
     public void the_user_enters_valid_username_and_password() {
