@@ -606,6 +606,11 @@ public class Main {
                     displayDownLine();
                     int serviceReserveID = scanner.nextInt();
 
+                    // Ensure that there's a logged-in user before proceeding
+                    if (loggedInUser == null) {
+                        logger.warning("| You must be logged in to reserve a service. |\n");
+                        break; // Exit the case block
+                    }
 
                     Service serviceToReserve = ServiceDB.getServiceById(serviceReserveID);
                     if (serviceToReserve != null && isServiceAvailableForReservation(serviceToReserve)) {
@@ -618,7 +623,7 @@ public class Main {
                             reserve.setCustomerName(loggedInUser.getName());
                             reserve.setStatus("Reserved"); // Set status to "Reserved"
 
-                           // Save the reservation to the database
+                            // Save the reservation to the database
                             ReservationDB.addReservation(reserve);
                             // Add the reservation to the user's list of reservations
                             loggedInUser.addReservation(reserve);
@@ -630,17 +635,6 @@ public class Main {
                     }
 
                     break;
-
-                case 3:
-                    // Show details of my reservations
-                    if (loggedInUser != null) {
-                        reservationDetails(loggedInUser);
-                    } else {
-                        displayUpLine();
-                        logger.warning(msg_log_in_first);
-                        displayDownLine();
-                    }
-                  break;
 
                 case 4:
                     // Search for a service
@@ -756,19 +750,22 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         int option = 0;
 
-        while(true) {
+        while (true) {
             try {
-                menu();
+                menu(); // Display the menu options
                 option = scanner.nextInt();
-//                scanner.nextLine();
+                scanner.nextLine(); // Consume newline left-over
             } catch (InputMismatchException e) {
                 displayUpLine();
                 displayEnterValidNumber();
                 displayDownLine();
-                scanner.nextLine();
+                scanner.nextLine(); // Clear scanner's buffer
                 continue;
             }
-
+            if (option == 0) {
+                System.out.println("Exiting program...");
+                break;
+            }
 //___________ADMIN______________________________________________________________________________________________________
             // login as Admin
             if (option == 1){
@@ -1514,7 +1511,7 @@ public class Main {
     }
     private static void showAndDeleteReservations(ServiceProvider loggedInUser) {
         Scanner scanner = new Scanner(System.in);
-        boolean keepRunning = true;
+
 
 
             List<Reserve> reservationsForProvider = ReservationDB.getReservationsForService(loggedInUser.getId());
