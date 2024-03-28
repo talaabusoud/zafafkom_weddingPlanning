@@ -4,10 +4,10 @@ import entity.Service;
 import java.util.ArrayList;
 import java.util.List;
 public class RequestToAddServiceDB {
-    private RequestToAddServiceDB() {
+   // private RequestToAddServiceDB() {
 
-        throw new UnsupportedOperationException("This class is not intended to be instantiated");
-    }
+     //   throw new UnsupportedOperationException("This class is not intended to be instantiated");
+   // }
     private static List<Service> services = new ArrayList<>();
     public static void addService(Service service) {
         services.add(service);
