@@ -15,12 +15,12 @@ import java.util.logging.Logger;
 import static database.ServiceProviderDB.displayServiceProvider;
 
 public class Main {
-    private static final String msg ="|              ENTER THE NUMBER OF ACTION YOU WANT TO TAKE              |\n" ;
-    private static final String msg_Login_failed ="|   Login failed! Please check your email and password and try again.   |\n" ;
-    private static final String msg_Re_enter ="|                 1- Re-enter email and password                        |\n" ;
-    private static final String msg_log_in_first ="| User not logged in. Please log in first.                              |\n" ;
-    private static final String msg_Invalid_input ="|                            Invalid input.                             |\n" ;
-    private static final String stars ="         ****************************************************         \n" ;
+    private static final String MSG ="|              ENTER THE NUMBER OF ACTION YOU WANT TO TAKE              |\n" ;
+    private static final String MSG_LOGIN_FAILED ="|   Login failed! Please check your email and password and try again.   |\n" ;
+    private static final String MSG_RE_ENTER ="|                 1- Re-enter email and password                        |\n" ;
+    private static final String MSG_lOG_IN_FIRST ="| User not logged in. Please log in first.                              |\n" ;
+    private static final String MSG_INVALID_INPUT ="|                            Invalid input.                             |\n" ;
+    private static final String STARS ="         ****************************************************         \n" ;
 
     private static User user;
     private static Admin admin;
@@ -39,20 +39,20 @@ public class Main {
     public static void displayEmpty(){
         logger.info("|                                                                       |\n");
     }
-    public static void displayStarsLine(){
+    public static void displaySTARSLine(){
         logger.info("|        *******************************************************        |\n");
     }
     //Home Page
     public static void menu(){
         displayUpLine();
         displayEmpty();
-        displayStarsLine();
+        displaySTARSLine();
         logger.info("|        *               Welcome to Zafafcom  :)               *        |\n");
         logger.info("|        *               Wedding Planning System               *        |\n");
-        displayStarsLine();
+        displaySTARSLine();
         displayEmpty();
-        logger.info(msg);
-        displayStarsLine();
+        logger.info(MSG);
+        displaySTARSLine();
         displayEmpty();
         logger.info("|               1- Login to System as an Admin                          |\n");
         logger.info("|               2- Login to System as a Service Provider                |\n");
@@ -69,9 +69,9 @@ public class Main {
     public static String[] loginPage(){
         displayUpLine();
         displayEmpty();
-        displayStarsLine();
+        displaySTARSLine();
         logger.warning("|        *               WELCOME TO LOGIN PAGE:)               *        |\n");
-        displayStarsLine();
+        displaySTARSLine();
         displayDownLine();
         logger.info("\n");
 
@@ -95,8 +95,8 @@ public class Main {
         else {
             // Login failed due to incorrect password
             displayUpLine();
-            logger.warning(msg_Login_failed);
-            logger.warning(msg_Re_enter);
+            logger.warning(MSG_LOGIN_FAILED);
+            logger.warning(MSG_RE_ENTER);
             logger.warning("|                 2- Don't have an account? Sign up for a new account   |\n");
             logger.warning("|                 3- Back to home page                                  |\n");
             displayDownLine();
@@ -133,7 +133,7 @@ public class Main {
         // Check if loggedInUser is null
         if (loggedInUser == null) {
             displayUpLine();
-            logger.warning(msg_log_in_first);
+            logger.warning(MSG_lOG_IN_FIRST);
             displayDownLine();
             return;
         }
@@ -141,12 +141,12 @@ public class Main {
 //        while (true){
             displayUpLine();
             displayEmpty();
-            displayStarsLine();
+            displaySTARSLine();
             logger.warning("|        *                   WELCOME " + loggedInUser.getName() + ":)                    *        |\n");
-            displayStarsLine();
+            displaySTARSLine();
             displayEmpty();
-            logger.info(msg);
-            displayStarsLine();
+            logger.info(MSG);
+            displaySTARSLine();
             displayEmpty();
             logger.info("|------------------------------- User Page -----------------------------|\n");
             logger.info("|               1- Go To Services Page                                  |\n");
@@ -161,7 +161,7 @@ public class Main {
                 // Clear buffer (avoid infinite loop)
                 scanner.nextLine();
                 displayUpLine();
-                logger.warning(msg_Invalid_input);
+                logger.warning(MSG_INVALID_INPUT);
                 logger.warning("|                   Please enter a number (1 to 4).                    |\n");
                 displayDownLine();
                 userChoice = -1;
@@ -173,7 +173,7 @@ public class Main {
                         servicesPage(user);
                     } else {
                         displayUpLine();
-                        logger.warning(msg_log_in_first);
+                        logger.warning(MSG_lOG_IN_FIRST);
                         displayDownLine();
                     }
                     break;
@@ -183,7 +183,7 @@ public class Main {
                         userProfile(user);
                     } else {
                         displayUpLine();
-                        logger.warning(msg_log_in_first);
+                        logger.warning(MSG_lOG_IN_FIRST);
                         displayDownLine();
                     }
                     break;
@@ -206,9 +206,9 @@ public class Main {
     public static void signUpPage(){
         displayUpLine();
         displayEmpty();
-        displayStarsLine();
+        displaySTARSLine();
         logger.warning("|        *               WELCOME TO SIGNUP PAGE FOR USER:)              *        |\n");
-        displayStarsLine();
+        displaySTARSLine();
         displayDownLine();
         logger.info("\n");
 
@@ -332,9 +332,9 @@ public class Main {
         }
 
         displayUpLine();
-        logger.info(stars);
+        logger.info(STARS);
         logger.info("         * Thank you for signing up! Here are your details: *         \n");
-        logger.info(stars);
+        logger.info(STARS);
         logger.info("               ID: "+user.getId()+"                                                      \n");
         logger.info("               Name: "+user.getName()+"                                                    \n");
         logger.info("               Phone Number: "+user.getPhoneNumber()+"                                            \n");
@@ -347,9 +347,9 @@ public class Main {
         int choice;
         do {
             try {
-                logger.info(stars);
+                logger.info(STARS);
                 logger.info("         *    ENTER THE NUMBER OF ACTION YOU WANT TO TAKE   *         \n");
-                logger.info(stars);
+                logger.info(STARS);
                 logger.info("               1- Confirm Information to Sign Up                      \n");
                 logger.info("               2- Edit Information                                    \n");
                 logger.info("               3- Don't save and back Home                            \n");
@@ -361,7 +361,7 @@ public class Main {
                 // Clear buffer (avoid infinite loop)
                 scanner.nextLine();
                 displayUpLine();
-                logger.warning(msg_Invalid_input);
+                logger.warning(MSG_INVALID_INPUT);
                 logger.warning("|                   Please enter a number (1, 2, or 3).                 |\n");
                 displayDownLine();
                 choice = -1;
@@ -416,9 +416,9 @@ public class Main {
         do {
             displayUpLine();
             displayEmpty();
-            displayStarsLine();
+            displaySTARSLine();
             logger.info("|         *               USER PROFILE - " + loggedInUser.getName() + "                 *         |\n");
-            displayStarsLine();
+            displaySTARSLine();
             displayDownLine();
             logger.info("|               1- Show Account Information                             |\n");
             logger.info("|               2- Edit Information                                     |\n");
@@ -432,7 +432,7 @@ public class Main {
                 // Clear buffer (avoid infinite loop)
                 scanner.nextLine();
                 displayUpLine();
-                logger.warning(msg_Invalid_input);
+                logger.warning(MSG_INVALID_INPUT);
                 logger.warning("|                   Please enter a number (1, 2, or 3).                 |\n");
                 displayDownLine();
                 profileChoice = -1;
@@ -474,9 +474,9 @@ public class Main {
         do {
             displayUpLine();
             displayEmpty();
-            displayStarsLine();
+            displaySTARSLine();
             logger.info("|      *               EDIT USER PROFILE - " + loggedInUser.getName() + "          *      |\n");
-            displayStarsLine();
+            displaySTARSLine();
             displayDownLine();
             logger.info("\n");
 
@@ -497,7 +497,7 @@ public class Main {
                 // Clear buffer (avoid infinite loop)
                 scanner.nextLine();
                 displayUpLine();
-                logger.warning(msg_Invalid_input);
+                logger.warning(MSG_INVALID_INPUT);
                 logger.warning("|                   Please enter a number (1 to 8).                    |\n");
                 displayDownLine();
                 editChoice = -1;
@@ -568,9 +568,9 @@ public class Main {
         do {
             displayUpLine();
             displayEmpty();
-            displayStarsLine();
+            displaySTARSLine();
             logger.info("|         *                   SERVICES  PAGE                 *          |\n");
-            displayStarsLine();
+            displaySTARSLine();
             displayDownLine();
             logger.info("|              1- Show Wedding Planning Services                        |\n");
             logger.info("|              2- Reserve a Service                                     |\n");
@@ -585,7 +585,7 @@ public class Main {
                 // Clear buffer (avoid infinite loop)
                 scanner.nextLine();
                 displayUpLine();
-                logger.warning(msg_Invalid_input);
+                logger.warning(MSG_INVALID_INPUT);
                 logger.warning("|                   Please enter a number (1, 2, 3, 4, or 5).           |\n");
                 displayDownLine();
                 serviceChoice = -1;
@@ -691,7 +691,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         displayUpLine();
-        displayStarsLine();
+        displaySTARSLine();
         logger.info("SERVICES RESERVED BY " + loggedInUser.getName() + ":)\n");
         displayUpLine();
         double totalPrice = 0.0;
@@ -815,8 +815,8 @@ public class Main {
         }
         else {
             displayUpLine();
-            logger.warning(msg_Login_failed);
-            logger.warning(msg_Re_enter);
+            logger.warning(MSG_LOGIN_FAILED);
+            logger.warning(MSG_RE_ENTER);
             logger.warning("|                 2- Back To Home Page                                  |\n");
             displayDownLine();
             logger.info("\n");
@@ -845,12 +845,12 @@ public class Main {
     public static void adminPage(Admin loggedInUser) {
         displayUpLine();
         displayEmpty();
-        displayStarsLine();
+        displaySTARSLine();
         logger.warning("|        *                   WELCOME " + loggedInUser.getEmail() + ":)                    *        |\n");
-        displayStarsLine();
+        displaySTARSLine();
         displayEmpty();
-        logger.info(msg);
-        displayStarsLine();
+        logger.info(MSG);
+        displaySTARSLine();
         Adminmenu(loggedInUser );
     }
     private static void Adminmenu(Admin loggedInUser){
@@ -875,7 +875,7 @@ public class Main {
         // Clear buffer (avoid infinite loop)
         scanner.nextLine();
         displayUpLine();
-        logger.warning(msg_Invalid_input);
+        logger.warning(MSG_INVALID_INPUT);
         logger.warning("|                   Please enter a number (1 to 8).                    |\n");
         displayDownLine();
         adminChoice = -1;
@@ -1159,68 +1159,63 @@ public class Main {
             logger.warning("\nService with ID " + id + " could not be found or deleted.\n");
         }
     }
+
+
     private static void showAdminProfile(Admin loggedInUser) {
-
         Scanner scanner = new Scanner(System.in);
-
-        // عرض معلومات الإداري
         AdminDB.displayAdmin(loggedInUser);
 
-        // سؤال الإداري إذا كان يرغب في تعديل معلوماته
         logger.info("Do you want to update your profile information? (yes/no): ");
         String response = scanner.nextLine().trim().toLowerCase();
 
-
         if ("yes".equals(response)) {
-
-            logger.info("Enter the new name (leave blank to keep current): ");
-            String newName = scanner.nextLine().trim();
-            if (!newName.isEmpty()) {
-                if (Test_input.Name(newName)) {
-                    loggedInUser.setName(newName);
-                } else {
-                    logger.warning("Invalid name. Keeping the current name.\n");
-                }
-            }
-
-            // رقم هاتف جديد
-            logger.info("Enter the new phone number (leave blank to keep current): ");
-            String newPhone = scanner.nextLine().trim();
-            if (!newPhone.isEmpty()) {
-                if (Test_input.Phone(newPhone)) {
-                    loggedInUser.setPhone(newPhone);
-                } else {
-                    logger.warning("Invalid phone number. Keeping the current phone number.\n");
-                }
-            }
-
-            logger.info("Enter the new address (leave blank to keep current): ");
-            String newAddress = scanner.nextLine().trim();
-            if (!newAddress.isEmpty()) {
-                loggedInUser.setAddress(newAddress);
-            }
-            logger.info("Enter the new password (leave blank to keep current): ");
-
-            String newPassword = scanner.nextLine().trim();
-            if (!newPassword.isEmpty()){
-            while (newPassword.length() < 6) {
-                logger.warning("Password must be at least 6 characters long. Please enter a stronger password:");
-                newPassword = scanner.nextLine().trim();
-            }
-
-                loggedInUser.setPassword(newPassword);
-            }
+            updateAdminProfile(loggedInUser, scanner);
             AdminDB.updateAdmin(loggedInUser);
-
             logger.info("Your profile has been updated successfully.");
         } else if ("no".equals(response)) {
             logger.info("No changes have been made to your profile.");
         } else {
             logger.info("\nInvalid response.\n");
         }
-        Adminmenu(admin);
-
+        Adminmenu(admin); // Assuming this is meant to call some kind of menu display method for the admin.
     }
+
+    private static void updateAdminProfile(Admin loggedInUser, Scanner scanner) {
+        updatePhone(loggedInUser, scanner);
+        updateAddress(loggedInUser, scanner);
+        updatePassword(loggedInUser, scanner);
+    }
+
+    private static void updatePhone(Admin admin, Scanner scanner) {
+        logger.info("Enter the new phone number (leave blank to keep current): ");
+        String newPhone = scanner.nextLine().trim();
+        if (!newPhone.isEmpty() && Test_input.Phone(newPhone)) {
+            admin.setPhone(newPhone);
+        } else if (!newPhone.isEmpty()) {
+            logger.warning("Invalid phone number. Keeping the current phone number.\n");
+        }
+    }
+
+    private static void updateAddress(Admin admin, Scanner scanner) {
+        logger.info("Enter the new address (leave blank to keep current): ");
+        String newAddress = scanner.nextLine().trim();
+        if (!newAddress.isEmpty()) {
+            admin.setAddress(newAddress);
+        }
+    }
+
+    private static void updatePassword(Admin admin, Scanner scanner) {
+        logger.info("Enter the new password (leave blank to keep current): ");
+        String newPassword = scanner.nextLine().trim();
+        if (!newPassword.isEmpty()) {
+            while (newPassword.length() < 6) {
+                logger.warning("Password must be at least 6 characters long. Please enter a stronger password:");
+                newPassword = scanner.nextLine().trim();
+            }
+            admin.setPassword(newPassword);
+        }
+    }
+
     private static void showRequestsList() {
         Scanner scanner = new Scanner(System.in);
         List<Service> requests = RequestToAddServiceDB.getServices(); // الحصول على الطلبات
@@ -1288,8 +1283,8 @@ public class Main {
             Service_Provider_Page(serviceProvider);
         } else {
             displayUpLine();
-            logger.warning(msg_Login_failed);
-            logger.warning(msg_Re_enter);
+            logger.warning(MSG_LOGIN_FAILED);
+            logger.warning(MSG_RE_ENTER);
             logger.warning("|                 2- Back To Home Page                                  |\n");
             displayDownLine();
 
@@ -1318,12 +1313,12 @@ public class Main {
     public static void Service_Provider_Page(ServiceProvider loggedInUser) {
         displayUpLine();
         displayEmpty();
-        displayStarsLine();
+        displaySTARSLine();
         logger.warning("|        *                   WELCOME " + loggedInUser.getEmail() + ":)                    *        |\n");
-        displayStarsLine();
+        displaySTARSLine();
         displayEmpty();
-        logger.info(msg);
-        displayStarsLine();
+        logger.info(MSG);
+        displaySTARSLine();
         Service_Provider_menu(loggedInUser );
     }
     private static void Service_Provider_menu(ServiceProvider loggedInUser) {

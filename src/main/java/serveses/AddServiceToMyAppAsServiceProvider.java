@@ -8,6 +8,5 @@ public class AddServiceToMyAppAsServiceProvider {
     public static void addServiceToRequestList(Service s) {
         addService(s);
     }
-    private AddServiceToMyAppAsServiceProvider() {
-    }
+
     }
