@@ -13,7 +13,6 @@ public class UserDB {
     private static final Logger logger = LoggerUtility.getLogger();
     static List<User> users= new ArrayList<>();
     private UserDB() {
-
         throw new IllegalStateException("Utility class");
     }
     static{
@@ -76,7 +75,6 @@ public class UserDB {
         // If the user is not found, log a warning
         LoggerUtility.getLogger().warning("User not found for update: " + updatedUser.getEmail());
     }
-
     public static User getUserByUsernameAndPassword(String username, String password) {
         // Iterate through the list of users and find the matching user
         for (User user : users) {
@@ -86,13 +84,10 @@ public class UserDB {
                 return user;
             }
         }
-
-        // If no matching user is found, log a warning and return null
         LoggerUtility.getLogger().warning("User not found for login: " + username);
         return null;
     }
 
-    // Add this method to UserDB class
     public static boolean isUserExists(int userId, String email) {
         for (User existingUser : users) {
             if (existingUser.getId() == userId || existingUser.getEmail().equals(email)) {
@@ -112,21 +107,5 @@ public class UserDB {
         return null; // no matching
     }
 
-    public static boolean authenticateUser(String username, String password) {
-        // Logic to authenticate user
-        // For example, fetching user from the database and checking credentials
-        User user = getUserByUsernameAndPassword(username,password);
-        return user != null && user.getPassword().equals(password);
-    }
-
-    public static void displayUsers(List<User> users) {
-        logger.info("-------------------------------------------------User----------------------------------------------\n");
-        logger.info("|  id   |    Name    |PhoneNumber|  Address  |  City  |  Street  |            Service             |\n");
-        for(User t:users)
-        {
-            displayUser(t);
-        }
-
-    }
 
 }
