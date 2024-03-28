@@ -27,8 +27,18 @@ public class show_Reservations_And_Delete_by_admin {
     @Then("the admin should see a list of all reservations")
     public void theAdminShouldSeeAListOfAllReservations() {
         assertNotNull("Reservations should not be null", reservations);
+        Reserve reserve = new Reserve();
+        reserve.setId("450");
+        reserve.setServiceId(2);
+        reserve.setServiceName("tst");
+        reserve.setCustomerName("jana");
+        reserve.setEventLocation("nablus");
+        reserve.setEventDate("26/5/2024");
+        reserve.setEventTime("3 PM");
+        reserve.setEventDuration("1.5h");
+        reservations.add(reserve);
         ReservationDB.displayReservations(reservations);
-
+        ReservationDB.getReservationsForService(1);
 
     }
 
