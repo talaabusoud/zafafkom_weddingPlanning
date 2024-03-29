@@ -8,8 +8,12 @@ import serveses.LoginAsUser;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 
 import static database.ServiceProviderDB.displayServiceProvider;
@@ -190,7 +194,6 @@ public class Main {
 
 
                 case 3:
-                    // Log out
                     logout();
                     break;
 
@@ -562,172 +565,198 @@ public class Main {
         } while (true);
     }
 
-    public static void servicesPage(User loggedInUser){
+    public static void servicesPage(User loggedInUser) {
         Scanner scanner = new Scanner(System.in);
         int serviceChoice;
-        do {
-            displayUpLine();
-            displayEmpty();
-            displaySTARSLine();
-            logger.info("|         *                   SERVICES  PAGE                 *          |\n");
-            displaySTARSLine();
-            displayDownLine();
-            logger.info("|              1- Show Wedding Planning Services                        |\n");
-            logger.info("|              2- Reserve a Service                                     |\n");
-            logger.info("|              3- Show Details of my Reservations                       |\n");
-            logger.info("|              4- Search for a Service                                  |\n");
-            logger.info("|              5- Back to User Page                                     |\n");
-            displayDownLine();
-            logger.info("\n");
-            try {
-                serviceChoice = scanner.nextInt();
-            } catch (InputMismatchException e) {
-                // Clear buffer (avoid infinite loop)
-                scanner.nextLine();
-                displayUpLine();
-                logger.warning(MSG_INVALID_INPUT);
-                logger.warning("|                   Please enter a number (1, 2, 3, 4, or 5).           |\n");
-                displayDownLine();
-                serviceChoice = -1;
-            }
+        while (true) {
+            displayServicesMenu();
+            serviceChoice = getUserChoice(scanner);
 
             switch (serviceChoice) {
                 case 1:
-                    // Show Services
-                    displayUpLine();
-                    ServiceDB.displayServices(ServiceDB.getServices());
-                    displayDownLine();
+                    displayAllServices();
                     break;
-
                 case 2:
-                    // Reserve a Service
-                    displayUpLine();
-                    logger.warning("|          Please Enter the Id of the service you want to Reserve       |\n");
-                    displayDownLine();
-                    int serviceReserveID = scanner.nextInt();
-
-                    // Ensure that there's a logged-in user before proceeding
-                    if (loggedInUser == null) {
-                        logger.warning("| You must be logged in to reserve a service. |\n");
-                        break; // Exit the case block
-                    }
-
-                    Service serviceToReserve = ServiceDB.getServiceById(serviceReserveID);
-                    if (serviceToReserve != null && isServiceAvailableForReservation(serviceToReserve)) {
-                        // if the user has already reserved this service
-                        if (loggedInUser.hasReservedService(serviceReserveID)) {
-                            logger.warning("| You have already reserved this service. |\n");
-                        } else {
-                            Reserve reserve = new Reserve();
-                            reserve.setServiceId(serviceReserveID);
-                            reserve.setCustomerName(loggedInUser.getName());
-                            reserve.setStatus("Reserved"); // Set status to "Reserved"
-
-                            // Save the reservation to the database
-                            ReservationDB.addReservation(reserve);
-                            // Add the reservation to the user's list of reservations
-                            loggedInUser.addReservation(reserve);
-
-                            logger.info("| Service reserved successfully. |\n");
-                        }
-                    } else {
-                        logger.warning("| The service is not available for reservation. |\n");
-                    }
-
+                    reserveService(loggedInUser, scanner);
                     break;
-
+                case 3:
+                    showUserReservations(loggedInUser);
+                    break;
                 case 4:
-                    // Search for a service
-                    displayUpLine();
-                    logger.warning("|          Please Enter the name or type of the service you want to search for:       |\n");
-                    displayDownLine();
-                    String searchTerm = scanner.next();
-
-                    // Perform the search
-                    List<Service> searchResults = searchService(searchTerm);
-
-                    // Display search results
-                    if (!searchResults.isEmpty()) {
-                        displayUpLine();
-                        logger.info("|         Search Results:                   |\n");
-                        displayDownLine();
-                        ServiceDB.displayServices(searchResults);
-                    } else {
-                        displayUpLine();
-                        logger.warning("| No services found matching the search term. |\n");
-                        displayDownLine();
-                    }
+                    searchForService(scanner);
                     break;
-
-
                 case 5:
-                    // back
                     userPage(loggedInUser);
                     return;
-//                    break;
-
                 default:
-                    displayUpLine();
-                    displayEnterValidNumber();
-                    displayDownLine();
+                    displayInvalidOptionWarning();
                     break;
             }
-        }while (true);
+        }
     }
 
-
-    private static boolean isServiceAvailableForReservation(Service service) {
-        return service != null && service.getStatus() != null && service.getStatus().equalsIgnoreCase("Available");
+    private static void displayServicesMenu() {
+        displayUpLine();
+        logger.info("|         *                   SERVICES  PAGE                 *          |\n");
+        logger.info("|              1- Show Wedding Planning Services                        |\n");
+        logger.info("|              2- Reserve a Service                                     |\n");
+        logger.info("|              3- Show Details of my Reservations                       |\n");
+        logger.info("|              4- Search for a Service                                  |\n");
+        logger.info("|              5- Back to User Page                                     |\n");
+        displayDownLine();
+        logger.info("\n");
     }
 
-    public static void reservationDetails(User loggedInUser){
-        if (loggedInUser.getReservations() == null || loggedInUser.getReservations().isEmpty()) {
-            displayUpLine();
-            logger.warning("| No reservations found for user.                                |\n");
-            displayDownLine();
+    private static int getUserChoice(Scanner scanner) {
+        int choice;
+        try {
+            choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline left-over
+        } catch (InputMismatchException e) {
+            scanner.nextLine(); // Clear buffer to avoid infinite loop
+            displayInvalidInputWarning();
+            choice = -1;
+        }
+        return choice;
+    }
+
+    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+    private static void reserveService(User loggedInUser, Scanner scanner) {
+        if (loggedInUser == null) {
+            logger.warning("| You must be logged in to reserve a service. |\n");
             return;
         }
 
-        Scanner scanner = new Scanner(System.in);
+        displayAllServices();
+        logger.info("| Please Enter the ID of the service you want to Reserve: |\n");
+        int serviceReserveID = scanner.nextInt();
+        scanner.nextLine(); // Clear the buffer
 
+        Service serviceToReserve = ServiceDB.getServiceById(serviceReserveID);
+        if (serviceToReserve == null) {
+            logger.warning("| The service does not exist. |\n");
+            return;
+        }
+
+        if ("not available".equalsIgnoreCase(serviceToReserve.getStatus())) {
+            logger.warning("| The service is currently not available. |\n");
+            return;
+        }
+
+        logger.info("What day do you want to book? (format: dd/MM/yyyy): ");
+        String bookingDateStr = scanner.nextLine();
+
+        LocalDate bookingDate;
+        try {
+            bookingDate = LocalDate.parse(bookingDateStr, dateFormatter);
+        } catch (DateTimeParseException e) {
+            logger.warning("| The date format is incorrect. Please use the format dd/MM/yyyy. |\n");
+            return;
+        }
+
+        if (bookingDate.isBefore(LocalDate.now())) {
+            logger.warning("| You cannot book a service in the past. |\n");
+            return;
+        }
+
+        if (ReservationDB.isServiceReservedOnDate(serviceReserveID, bookingDateStr)) {
+            logger.warning("| Reservation failed: The service is already booked on this date. |\n");
+            return;
+        }
+
+        Reserve newReservation = new Reserve();
+        // Assuming Reserve has a method to automatically generate and set an ID
+        String reservationId = generateNewReservationId();
+        newReservation.setId(reservationId);
+        newReservation.setServiceId(serviceReserveID);
+        newReservation.setServiceName(serviceToReserve.getName());
+        newReservation.setCustomerName(loggedInUser.getName());
+        newReservation.setEventDate(bookingDateStr);
+        newReservation.setEventLocation(serviceToReserve.getLocation()); // Assuming Service has a getLocation() method
+        newReservation.setTotalPrice(serviceToReserve.getPrice()); // Assuming Service has a getPrice() method
+        newReservation.setStatus("Reserved");
+        // Assuming additional details are set here
+
+        ReservationDB.addReservation(newReservation);
+        logger.info("| Reservation successful: Service is booked for " + bookingDateStr + ". |\n");
+    }
+
+    private static String generateNewReservationId() {
+        // Generate a new ID based on the size of the current reservations list
+        return String.valueOf(ReservationDB.getReservations().size() + 1);
+    }
+
+    private static boolean isValidDateFormat(String date) {
+        // Validate the date format (basic check)
+        return date.matches("\\d{2}/\\d{2}/\\d{4}");
+    }
+
+    private static void displayAllServices() {
         displayUpLine();
-        displaySTARSLine();
-        logger.info("SERVICES RESERVED BY " + loggedInUser.getName() + ":)\n");
+        ServiceDB.displayServices(ServiceDB.getServices());
+        displayDownLine();
+    }
+
+    private static void searchForService(Scanner scanner) {
+        logger.info("| Please Enter the name or type of the service you want to search for: |\n");
+        String searchTerm = scanner.nextLine();
+        List<Service> searchResults = searchService(searchTerm);
+        if (searchResults.isEmpty()) {
+            logger.warning("| No services found matching the search term. |\n");
+        } else {
+            ServiceDB.displayServices(searchResults);
+        }
+    }
+
+    private static void displayInvalidInputWarning() {
         displayUpLine();
-        double totalPrice = 0.0;
+        logger.warning(MSG_INVALID_INPUT);
+        logger.warning("| Please enter a number (1 to 5). |\n");
+        displayDownLine();
+    }
 
-        int index = 1;
-        for (Reserve reservation : loggedInUser.getReservations()) {
-            Service reservedService = ServiceDB.getServiceById(reservation.getServiceId());
-            if (reservedService != null) {
-                displayUpLine();
-                logger.info("Service Name: " + reservedService.getName()+"\n");
-                logger.info("Event Date: " + reservation.getEventDate()+"\n");
-                logger.info("Event Location: " + reservation.getEventLocation()+"\n");
-                logger.info("Total Price: " + reservedService.getPrice()+"\n");
-                logger.info("Status: " + reservation.getStatus()+"\n");
-                displayDownLine();
+    private static void displayInvalidOptionWarning() {
+        displayUpLine();
+        displayEnterValidNumber();
+        displayDownLine();
+    }
 
-                // Add the price of the reserved service to the total price
-                totalPrice += reservedService.getPrice();
-                index++;
+    private static void showUserReservations(User loggedInUser) {
+        List<Reserve> userReservations = getUserReservations(loggedInUser);
+        if (userReservations.isEmpty()) {
+            logger.info("| You have no reservations. |\n");
+        } else {
+            displayReservationsHeader();
+            for (Reserve reservation : userReservations) {
+                displayReservation(reservation);
             }
         }
+    }
 
-        // Option to delete a reservation
-        logger.warning("Enter the number of the reservation you want to delete (or 0 to cancel): ");
-        int deleteChoice = scanner.nextInt();
+    private static List<Reserve> getUserReservations(User loggedInUser) {
+        // Assuming each Reserve object has a customerName or userId to identify the user who made the reservation
+        return ReservationDB.getReservations().stream()
+                .filter(reservation -> reservation.getCustomerName().equals(loggedInUser.getName()))
+                .collect(Collectors.toList());
+    }
 
-        if (deleteChoice > 0 && deleteChoice <= loggedInUser.getReservations().size()) {
-            // Remove the reservation at the selected index
-            loggedInUser.getReservations().remove(deleteChoice - 1);
-            logger.info("Reservation deleted successfully.\n");
-        } else if (deleteChoice != 0) {
-            logger.warning("Invalid selection. No reservation deleted.\n");
-        }
+    private static void displayReservationsHeader() {
+        logger.info("+-------+-----------------+------------+-----------------+------------+------------+\n");
+        logger.info("| ID    | Service Name    | Service ID | Customer Name   | Location   | Date       |\n");
+        logger.info("+-------+-----------------+------------+-----------------+------------+------------+\n");
+    }
 
-        logger.info("Total Price for all reservations: " + totalPrice + "\n");
-        displayDownLine();
+    private static void displayReservation(Reserve reservation) {
+        String leftAlignFormat = "| %-5s | %-15s | %-10s | %-15s | %-10s | %-10s |\n";
+        logger.info(String.format(leftAlignFormat,
+                reservation.getId(),
+                reservation.getServiceName(),
+                reservation.getServiceId(),
+                reservation.getCustomerName(),
+                reservation.getEventLocation(),
+                reservation.getEventDate()));
+        logger.info("+-------+-----------------+------------+-----------------+------------+------------+\n");
     }
 
     private static List<Service> searchService(String searchTerm) {
@@ -744,8 +773,6 @@ public class Main {
 
         return searchResults;
     }
-
-
     public static void main(String[]args) {
         Scanner scanner = new Scanner(System.in);
         int option = 0;
@@ -1050,7 +1077,7 @@ public class Main {
     }
     private static void showReservationsAndDeleteOption() {
         Scanner scanner = new Scanner(System.in);
-        // Display all reservations
+
         List<Reserve> reservations = ReservationDB.getReservations();
         if (reservations.isEmpty()) {
             logger.info("\nThere are no reservations to display.\n");
@@ -1091,6 +1118,7 @@ public class Main {
                 showReservationsAndDeleteOption();
                 break;
         }
+        Adminmenu(admin);
     }
     private static void showUsers() {
         List<User> users = UserDB.getUsers();

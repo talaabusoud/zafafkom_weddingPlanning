@@ -25,13 +25,13 @@ public class UserDB {
         user.setStreet("rafedya");
         user.setEmail("jana123@gmail.com");
 
-        // Hash pass before storing it
         String hashedPassword = BCrypt.hashpw("12345666", BCrypt.gensalt());
         user.setPassword(hashedPassword);
 
         user.setHasServiceWindow(false);
         user.setService(new ArrayList<>());
         users.add(user);
+
     }
 
     public static void addUser(User user) {

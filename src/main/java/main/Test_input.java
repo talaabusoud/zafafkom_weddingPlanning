@@ -47,7 +47,6 @@ public class Test_input {
         }
         return re;
 
-
     }
 
     public static boolean imge(String img) {

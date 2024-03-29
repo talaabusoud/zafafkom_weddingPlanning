@@ -3,7 +3,7 @@ package entity;
 import java.util.List;
 
 public class Reserve {
-    
+
     private String id;
     private int serviceId;
     private String serviceName;
@@ -16,7 +16,7 @@ public class Reserve {
     private String eventDuration;
 
     public Reserve() {
-        // constructor without parameters
+
     }
 
     public String getId() {
@@ -99,7 +99,6 @@ public class Reserve {
     public void setEventDuration(String eventDuration) {
         this.eventDuration = eventDuration;
     }
-
 
     
 }

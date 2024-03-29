@@ -2,8 +2,10 @@ package AcceptanceTest;//package AcceptanceTest;
 
 import database.ServiceDB;
 import database.UserDB;
+import entity.Reserve;
 import entity.Service;
 import entity.User;
+import database.ReservationDB;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -56,18 +58,14 @@ public class reservation_User {
 
     @Given("the user want to show all services in different categories")
     public void the_user_want_to_show_all_services_in_different_categories() {
-        // Write code here that turns the phrase above into concrete actions
         List<Service> services = ServiceDB.getServices();
         assertNotNull(services);
         assertFalse(services.isEmpty());
-//        throw new io.cucumber.java.PendingException();
     }
 
     @Then("the services appear to him")
     public void the_services_appear_to_him() {
-        // Write code here that turns the phrase above into concrete actions
         System.out.println("Services are displayed to the user.");
-//        throw new io.cucumber.java.PendingException();
     }
 
     @Given("the user with number {string} is logged in")
@@ -203,9 +201,10 @@ public class reservation_User {
     }
     @Then("the application acknowledges receipt, and the debt is paid")
     public void theApplicationAcknowledgesReceiptAndTheDebtIsPaid() {
-        // Write code here that turns the phrase above into concrete actions
+
         System.out.println("Application acknowledges receipt, and the debt is paid");
-//        throw new io.cucumber.java.PendingException();
+
+
     }
 
 }

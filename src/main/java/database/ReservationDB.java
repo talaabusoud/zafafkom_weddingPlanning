@@ -133,4 +133,10 @@ String line = "+-------+-----------------+------------+-----------------+-------
         }
         return reservationsForService;
     }
+    public static boolean isServiceReservedOnDate(int serviceId, String date) {
+        return reservations.stream()
+                .anyMatch(reservation -> reservation.getServiceId() == serviceId &&
+                        reservation.getEventDate().equals(date));
+    }
+
 }
