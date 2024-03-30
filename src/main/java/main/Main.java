@@ -791,7 +791,7 @@ public class Main {
             // login as service provider
             else if (option == 2) {
                 String[] loginInfo = loginPage();
-                Service_Provider_Login(loginInfo[0], loginInfo[1]);
+                ServiceProviderLogin(loginInfo[0], loginInfo[1]);
             }// end of option 2 (login as service provider)
 
 //___________USER_______________________________________________________________________________________________________
@@ -1291,11 +1291,11 @@ public class Main {
     }
 
     //--------------------------------service provider function--------------------------------//
-    public static void Service_Provider_Login(String email, String password) {
+    public static void ServiceProviderLogin(String email, String password) {
         LoginToMyAppAsServiceProvider serviceProviderLogin = new LoginToMyAppAsServiceProvider();
         serviceProvider = serviceProviderLogin.loggInCheck(email, password);
         if (serviceProvider != null) {
-            Service_Provider_Page(serviceProvider);
+            ServiceProviderPage(serviceProvider);
         } else {
             displayUpLine();
             logger.warning(MSG_LOGIN_FAILED);
@@ -1308,7 +1308,7 @@ public class Main {
             switch (choice) {
                 case 1:
                     String[] loginInfo = loginPage();
-                    Service_Provider_Login(loginInfo[0], loginInfo[1]);
+                    ServiceProviderLogin(loginInfo[0], loginInfo[1]);
                     break;
                 case 2:
                     menu();
@@ -1325,7 +1325,7 @@ public class Main {
 
 
     }
-    public static void Service_Provider_Page(ServiceProvider loggedInUser) {
+    public static void ServiceProviderPage(ServiceProvider loggedInUser) {
         displayUpLine();
         displayEmpty();
         displaySTARSLine();
