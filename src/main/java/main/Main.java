@@ -395,8 +395,6 @@ public class Main {
             signUpPage(); // Re-run the sign-up page for editing
         } else {
             //Home
-            //logger.info("No action taken. Returning to the Home page.");
-            //menu();
             logger.info("\n");
         }
     }
