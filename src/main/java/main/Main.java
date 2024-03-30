@@ -1334,9 +1334,9 @@ public class Main {
         displayEmpty();
         logger.info(MSG);
         displaySTARSLine();
-        Service_Provider_menu(loggedInUser );
+        ServiceProviderMenu(loggedInUser );
     }
-    private static void Service_Provider_menu(ServiceProvider loggedInUser) {
+    private static void ServiceProviderMenu(ServiceProvider loggedInUser) {
         Scanner scanner = new Scanner(System.in);
         int choice;
 
@@ -1459,7 +1459,7 @@ public class Main {
         RequestToAddServiceDB.addService(newService);
 
         logger.info("\nNew service has been added to the request list successfully.\n");
-        Service_Provider_menu(serviceProvider);
+        ServiceProviderMenu(serviceProvider);
     }
     private static void showAndDeleteServices(ServiceProvider loggedInUser) {
         Scanner scanner = new Scanner(System.in);
@@ -1468,8 +1468,7 @@ public class Main {
 
         if (providerServices.isEmpty()) {
             logger.info("\nYou have no services listed.\n");
-            Service_Provider_menu(serviceProvider);
-            return;
+            ServiceProviderMenu(serviceProvider);
         } else {
             logger.info("-----------------------------------------------------------------------------------------------------------------------------------------------------\n");
             String headerFormat = "| %-5s | %-15s | %-10s | %-12s | %-15s | %-15s | %-30s | %-15s |\n";
@@ -1479,8 +1478,6 @@ public class Main {
             // طباعة الخدمات بشكل جدول
             providerServices.forEach(ServiceDB::displayService);
 
-
-            boolean isRunning = true;
 
                 logger.info("Options: \n1- Edit a Service\n2- Delete a Service\n3- Exit\n");
                 logger.info("Enter your choice: ");
@@ -1515,7 +1512,7 @@ public class Main {
                         logger.info("Invalid option. Please enter a valid choice.");
                         break;
                 }
-            Service_Provider_menu(serviceProvider);
+            ServiceProviderMenu(serviceProvider);
 
         }
     }
@@ -1528,7 +1525,7 @@ public class Main {
 
             if (reservationsForProvider.isEmpty()) {
                 logger.info("\nNo reservations found.\n");
-                Service_Provider_menu(serviceProvider);
+                ServiceProviderMenu(serviceProvider);
             }
 
             ReservationDB.displayReservations(reservationsForProvider);
@@ -1555,7 +1552,7 @@ public class Main {
                 default:
                     logger.info("\nInvalid option, please try again.");
             }
-        Service_Provider_menu(serviceProvider);
+        ServiceProviderMenu(serviceProvider);
 
     }
 
@@ -1703,7 +1700,7 @@ public class Main {
         }
 
 
-        Service_Provider_menu(serviceProvider);
+        ServiceProviderMenu(serviceProvider);
     }
 
 
