@@ -46,7 +46,6 @@ public class add_Service_From_Admin {
     }
     @Then("the requests list will be empty")
     public void theRequestsListWillBeEmpty() {
-        // Write code here that turns the phrase above into concrete actions
         assertEquals(0, getServices().size());
     }
 

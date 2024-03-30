@@ -11,9 +11,6 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class ServiceDB {
-  //  private ServiceDB() {
-    //    throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
-  //  }
     static ServiceProvider serviceProvider1 =ServiceProviderDB.getServiceProviderById(1);
     static ServiceProvider serviceProvider2 = ServiceProviderDB.getServiceProviderById(2);
 

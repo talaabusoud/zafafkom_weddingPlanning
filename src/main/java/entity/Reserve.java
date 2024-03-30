@@ -16,7 +16,9 @@ public class Reserve {
     private String eventDuration;
 
     public Reserve() {
-
+// No properties are initialized here, which means that
+        // the object will be created with default values for its fields
+        // (null for objects, zero for numeric types, false for boolean, etc.).
     }
 
     public String getId() {

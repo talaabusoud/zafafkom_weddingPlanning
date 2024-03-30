@@ -22,9 +22,10 @@ public class Main {
     private static final String MSG ="|              ENTER THE NUMBER OF ACTION YOU WANT TO TAKE              |\n" ;
     private static final String MSG_LOGIN_FAILED ="|   Login failed! Please check your email and password and try again.   |\n" ;
     private static final String MSG_RE_ENTER ="|                 1- Re-enter email and password                        |\n" ;
-    private static final String MSG_lOG_IN_FIRST ="| User not logged in. Please log in first.                              |\n" ;
+    private static final String MSG_LOG_IN_FIRST ="| User not logged in. Please log in first.                              |\n" ;
     private static final String MSG_INVALID_INPUT ="|                            Invalid input.                             |\n" ;
     private static final String STARS ="         ****************************************************         \n" ;
+    private static final String LINE ="+-------+-----------------+------------+-----------------+------------+------------+\n" ;
 
     private static User user;
     private static Admin admin;
@@ -137,7 +138,7 @@ public class Main {
         // Check if loggedInUser is null
         if (loggedInUser == null) {
             displayUpLine();
-            logger.warning(MSG_lOG_IN_FIRST);
+            logger.warning(MSG_LOG_IN_FIRST);
             displayDownLine();
             return;
         }
@@ -177,7 +178,7 @@ public class Main {
                         servicesPage(user);
                     } else {
                         displayUpLine();
-                        logger.warning(MSG_lOG_IN_FIRST);
+                        logger.warning(MSG_LOG_IN_FIRST);
                         displayDownLine();
                     }
                     break;
@@ -187,7 +188,7 @@ public class Main {
                         userProfile(user);
                     } else {
                         displayUpLine();
-                        logger.warning(MSG_lOG_IN_FIRST);
+                        logger.warning(MSG_LOG_IN_FIRST);
                         displayDownLine();
                     }
                     break;
@@ -679,17 +680,12 @@ public class Main {
         // Assuming additional details are set here
 
         ReservationDB.addReservation(newReservation);
-        logger.info("| Reservation successful: Service is booked for " + bookingDateStr + ". |\n");
+        logger.info(String.format("Reservation successful: Service is booked for %s%n", bookingDateStr));
     }
 
     private static String generateNewReservationId() {
         // Generate a new ID based on the size of the current reservations list
         return String.valueOf(ReservationDB.getReservations().size() + 1);
-    }
-
-    private static boolean isValidDateFormat(String date) {
-        // Validate the date format (basic check)
-        return date.matches("\\d{2}/\\d{2}/\\d{4}");
     }
 
     private static void displayAllServices() {
@@ -742,10 +738,8 @@ public class Main {
     }
 
     private static void displayReservationsHeader() {
-        logger.info("+-------+-----------------+------------+-----------------+------------+------------+\n");
-        logger.info("| ID    | Service Name    | Service ID | Customer Name   | Location   | Date       |\n");
-        logger.info("+-------+-----------------+------------+-----------------+------------+------------+\n");
-    }
+        logger.info(LINE);        logger.info("| ID    | Service Name    | Service ID | Customer Name   | Location   | Date       |\n");
+        logger.info(LINE);    }
 
     private static void displayReservation(Reserve reservation) {
         String leftAlignFormat = "| %-5s | %-15s | %-10s | %-15s | %-10s | %-10s |\n";
@@ -756,8 +750,7 @@ public class Main {
                 reservation.getCustomerName(),
                 reservation.getEventLocation(),
                 reservation.getEventDate()));
-        logger.info("+-------+-----------------+------------+-----------------+------------+------------+\n");
-    }
+        logger.info(LINE);    }
 
     private static List<Service> searchService(String searchTerm) {
         List<Service> services = ServiceDB.getServices();
@@ -790,7 +783,7 @@ public class Main {
                 continue;
             }
             if (option == 0) {
-                System.out.println("Exiting program...");
+                logger.info("Exiting program...");
                 break;
             }
 //___________ADMIN______________________________________________________________________________________________________
