@@ -143,7 +143,6 @@ public class Main {
             return;
         }
 
-//        while (true){
             displayUpLine();
             displayEmpty();
             displaySTARSLine();
