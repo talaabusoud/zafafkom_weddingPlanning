@@ -203,7 +203,6 @@ public class Main {
                     displayDownLine();
                     break;
             }
-//        }
     }
     //sign up page (register user)
     public static void signUpPage(){
