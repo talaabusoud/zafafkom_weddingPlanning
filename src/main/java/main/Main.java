@@ -1561,11 +1561,6 @@ public class Main {
 
     }
 
-    private static ServiceProvider getLoggedInServiceProvider() {
-        return new ServiceProvider();
-    }
-
-
     private static void editService(ServiceProvider loggedInUser) {
         Scanner scanner = new Scanner(System.in);
         logger.info("\nEnter the ID of the service you want to edit:");
