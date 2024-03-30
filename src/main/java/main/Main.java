@@ -454,8 +454,6 @@ public class Main {
                 case 3:
                     userPage(loggedInUser);
                     return;
-//                  break;
-
 
                 default:
                     displayUpLine();
