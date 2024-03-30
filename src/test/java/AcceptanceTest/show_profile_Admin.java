@@ -5,8 +5,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import main.LoggerUtility;
-import main.Test_input;
-import serveses.AppLogger;
+import main.TestInput;
 import serveses.LoginToMyAppAsAdmin;
 import java.util.logging.Logger;
 import database.AdminDB;
@@ -50,7 +49,7 @@ public class show_profile_Admin {
     public void theAdminChangesTheirTo(String field, String value) {
         switch (field) {
             case "name":
-                if(Test_input.Name(value)) {
+                if(TestInput.isValidName(value)) {
                     re_test = true;
                     newName=value;
                 } else {
@@ -59,7 +58,7 @@ public class show_profile_Admin {
                 }
                 break;
             case "phone number":
-                if(Test_input.Phone(value)) {
+                if(TestInput.isValidPhone(value)) {
                     re_test = true;
                     newPhone=value;
                 } else {
@@ -68,7 +67,7 @@ public class show_profile_Admin {
                 }
                 break;
             case "address":
-                if(Test_input.Name(value)) {
+                if(TestInput.isValidName(value)) {
                     re_test = true;
                     newAddress=value;
                 } else { re_test = false;

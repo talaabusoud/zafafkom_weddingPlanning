@@ -42,11 +42,8 @@ public class ServiceDB {
     }
 
     public static void displayService(Service service) {
-        // Ensure the dataFormat string includes all the necessary placeholders for the service details
         String dataFormat = "| %-5d | %-15s | %-10.2f | %-12s | %-15s | %-15s | %-30s | %-15s |\n";
-
-        // Log the service details. Make sure to include the service's status and location in the output
-        logger.info(String.format(dataFormat,
+        String temp = String.format(dataFormat,
                 service.getId(),          // Service ID
                 service.getName(),        // Service Name
                 service.getPrice(),       // Service Price
@@ -54,16 +51,18 @@ public class ServiceDB {
                 service.getLocation(),    // Service Location
                 service.getOwner().getName(), // Service Owner
                 service.getImage(),       // Service Image URL
-                service.getType()));      // Service Type
+                service.getType());
+        logger.info(temp);
 
-        // Header and Footer for better readability
+
         logger.info("+------+-----------------+----------+--------------+-----------------+-----------------+--------------------------------+-----------------+\n");
     }
 
     public static void displayServices(List<Service> services) {
         logger.info("-----------------------------------------------------------------------------------------------------------------------------------------------------\n");
         String headerFormat = "| %-5s | %-15s | %-10s | %-12s | %-15s | %-15s | %-30s | %-15s |\n";
-        logger.info(String.format(headerFormat, "ID", "Name", "Price", "Status", "Location", "Owner", "Image URL", "Type"));
+        String temp =String.format(headerFormat, "ID", "Name", "Price", "Status", "Location", "Owner", "Image URL", "Type");
+        logger.info(temp);
         logger.info("-----------------------------------------------------------------------------------------------------------------------------------------------------\n");
 
         for (Service service : services) {

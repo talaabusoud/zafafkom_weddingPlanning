@@ -6,7 +6,6 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import entity.User;
 import database.UserDB;
-import main.Test_input;
 import serveses.LoginAsUser;
 
 import java.util.ArrayList;

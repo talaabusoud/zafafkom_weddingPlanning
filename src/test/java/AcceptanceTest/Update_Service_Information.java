@@ -1,14 +1,12 @@
 package AcceptanceTest;
 
 import database.ServiceDB;
-import entity.Reserve;
 import entity.Service;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import main.LoggerUtility;
-import main.Test_input;
-import serveses.AppLogger;
+import main.TestInput;
 import serveses.LoginToMyAppAsServiceProvider;
 
 import java.util.logging.Logger;
@@ -46,7 +44,7 @@ public class Update_Service_Information {
     }
     @When("enters {string} for the new name")
     public void entersForTheNewName(String newName) {
-        if(Test_input.Name(newName)) {
+        if(TestInput.isValidName(newName)) {
             service.setName(newName);
         } else {
             logger.info("Invalid name. Keeping the current name.");
@@ -54,7 +52,7 @@ public class Update_Service_Information {
     }
     @When("enters {string} for the new type")
     public void entersForTheNewType(String newType) {
-        if (Test_input.type(newType)) {
+        if (TestInput.type(newType)) {
             service.setType(newType);
         } else {
             logger.info("\nInvalid type. No changes made.");
@@ -79,7 +77,7 @@ public class Update_Service_Information {
     }
     @When("enters {string} for the new price")
     public void entersForTheNewPrice(String newPriceStr) {
-        if (Test_input.Price(newPriceStr)) {
+        if (TestInput.isValidPrice(newPriceStr)) {
             double newPrice = Double.parseDouble(newPriceStr);
             service.setPrice(newPrice);
         } else {
@@ -88,7 +86,7 @@ public class Update_Service_Information {
     }
     @When("enters {string} for the new phone")
     public void entersForTheNewPhone(String newPhone) {
-        if (Test_input.Phone(newPhone)) {
+        if (TestInput.isValidPhone(newPhone)) {
             service.setPhone(newPhone);
         } else {
             logger.info("\nInvalid phone format. No changes made.");
@@ -97,7 +95,7 @@ public class Update_Service_Information {
     }
     @When("enters {string} for the new image URL")
     public void entersForTheNewImageURL(String newImageURL) {
-        if (Test_input.imge(newImageURL)) {
+        if (TestInput.imge(newImageURL)) {
             service.setImage(newImageURL);
         } else {
             logger.info("\nInvalid image URL. No changes made.");

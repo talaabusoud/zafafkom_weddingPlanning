@@ -1,10 +1,6 @@
 package database;
-
 import entity.Reserve;
-import entity.User;
 import main.LoggerUtility;
-import org.mindrot.jbcrypt.BCrypt;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -13,6 +9,7 @@ public class ReservationDB {
 
 
     private String id;
+     static String temp;
     private static final Logger logger = LoggerUtility.getLogger();
     private static List<Reserve> reservations = new ArrayList<>();
 
@@ -94,11 +91,13 @@ public class ReservationDB {
         for (int i = 0; i < reservations.size(); i++) {
             if (reservations.get(i).getId().equals(reservationId)) {
                 reservations.remove(i);
-                LoggerUtility.getLogger().info("\nReservation deleted: " + reservationId);
+                 temp = "\nReservation deleted: " + reservationId;
+                LoggerUtility.getLogger().info(temp);
                 return;
             }
         }
-        LoggerUtility.getLogger().warning("\nNo reservation found for deletion: " + reservationId);
+        temp= "\nNo reservation found for deletion: " + reservationId;
+        LoggerUtility.getLogger().warning(temp);
     }
 
     public static void displayReservations(List<Reserve> reservations) {
@@ -111,13 +110,14 @@ String line = "+-------+-----------------+------------+-----------------+-------
         logger.info(line);
 
         for (Reserve reservation : reservations) {
-            logger.info(String.format(leftAlignFormat,
+            temp=String.format(leftAlignFormat,
                     reservation.getId(),
                     reservation.getServiceName(),
                     reservation.getServiceId(),
                     reservation.getCustomerName(),
                     reservation.getEventLocation(),
-                    reservation.getEventDate()));
+                    reservation.getEventDate());
+            logger.info(temp);
         }
 
 

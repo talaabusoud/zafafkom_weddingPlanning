@@ -35,19 +35,19 @@ public class ServiceProviderDB {
         } else {
 
             String format = "|%-12s|%12s|%15s|%14s|%20s|%20s|\n";
+            String temp=String.format(format, "ID", "Name", "Phone", "Address", "Email", "password");
 
+            logger.info(temp);
 
-            logger.info(String.format(format, "ID", "Name", "Phone", "Address", "Email", "password"));
-
-
-            logger.info(String.format(format,
-                    serviceProvider.getId(),
-                    serviceProvider.getName(),
-                    serviceProvider.getPhone(),
-                    serviceProvider.getAddress(),
-                    serviceProvider.getEmail(),
-                    serviceProvider.getPassword()
-            ));
+temp= String.format(format,
+        serviceProvider.getId(),
+        serviceProvider.getName(),
+        serviceProvider.getPhone(),
+        serviceProvider.getAddress(),
+        serviceProvider.getEmail(),
+        serviceProvider.getPassword()
+);
+            logger.info(temp);
         }
     }
 

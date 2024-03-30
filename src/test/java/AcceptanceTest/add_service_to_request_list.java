@@ -5,6 +5,7 @@ import database.ServiceDB;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import main.LoggerUtility;
+import main.TestInput;
 import serveses.LoginToMyAppAsServiceProvider;
 import database.RequestToAddServiceDB;
 import java.util.logging.Logger;
@@ -41,28 +42,28 @@ public class add_service_to_request_list {
      boolean flag ;
         service= new Service();
        if(string.equals("Type")){
-        flag= main.Test_input.type(string2);
+        flag= TestInput.type(string2);
         if (flag)
         { service.setType(string2);result_test_input = true;}
         else{ result_test_input = false;}
        } else if (string.equals("Name")) {
-           flag= main.Test_input.Name(string2);
+           flag= TestInput.isValidName(string2);
            if (flag){ service.setName(string2);result_test_input = true;}
            else {result_test_input = false;}
 
        }else if (string.equals("Phone")) {
-           flag= main.Test_input.Phone(string2);
+           flag= TestInput.isValidPhone(string2);
            if (flag) {service.setPhone(string2);result_test_input = true;}
            else {result_test_input = false;}
 
        }else if (string.equals("Price")) {
-           flag= main.Test_input.Price(string2);
+           flag= TestInput.isValidPrice(string2);
            if (flag) {service.setPrice(Double.parseDouble(string2));result_test_input = true;}
            else{result_test_input = false;}
 
        }
        else if (string.equals("Id")) {
-           flag= main.Test_input.Price(string2);
+           flag= TestInput.isValidPrice(string2);
            if (flag) {service.setId(Integer.parseInt(string2));result_test_input = true;}
            else{result_test_input = false;}}
 
@@ -82,7 +83,7 @@ public class add_service_to_request_list {
     @When("he fill in  {string} with extension {string}")
     public void heFillInWithExtension(String string, String string2) {
         boolean flag ;
-        flag= main.Test_input.imge(string2);
+        flag= TestInput.imge(string2);
         if (flag)   assertTrue(flag);
         else assertFalse(flag);
 

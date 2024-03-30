@@ -970,7 +970,7 @@ public class Main {
 
         logger.info("Enter Admin's Name:");
         String name = scanner.nextLine();
-        while (!Test_input.Name(name)) {
+        while (!TestInput.isValidName(name)) {
             logger.info("Invalid name. Please enter a valid name (characters only):");
             name = scanner.nextLine();
         }
@@ -984,7 +984,7 @@ public class Main {
 
         logger.info("Enter Admin's Phone:");
         String phone = scanner.nextLine();
-        while (!Test_input.Phone(phone)) {
+        while (!TestInput.isValidPhone(phone)) {
             logger.info("Invalid phone number. Please enter a valid phone number (10 digits):");
             phone = scanner.nextLine();
         }
@@ -1011,7 +1011,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         logger.info("Enter ServiceProvider's Name:");
         String name = scanner.nextLine();
-        while (!Test_input.Name(name)) {
+        while (!TestInput.isValidName(name)) {
             logger.info("Invalid name. Please enter a valid name (characters only):");
             name = scanner.nextLine();
         }
@@ -1025,7 +1025,7 @@ public class Main {
 
         logger.info("Enter ServiceProvider's Phone:");
         String phone = scanner.nextLine();
-        while (!Test_input.Phone(phone)) {
+        while (!TestInput.isValidPhone(phone)) {
             logger.info("Invalid phone number. Please enter a valid phone number (10 digits):");
             phone = scanner.nextLine();
         }
@@ -1210,7 +1210,7 @@ public class Main {
     private static void updatePhone(Admin admin, Scanner scanner) {
         logger.info("Enter the new phone number (leave blank to keep current): ");
         String newPhone = scanner.nextLine().trim();
-        if (!newPhone.isEmpty() && Test_input.Phone(newPhone)) {
+        if (!newPhone.isEmpty() && TestInput.isValidPhone(newPhone)) {
             admin.setPhone(newPhone);
         } else if (!newPhone.isEmpty()) {
             logger.warning("Invalid phone number. Keeping the current phone number.\n");
@@ -1397,19 +1397,19 @@ public class Main {
         do {
             logger.info("Enter Service Type (e.g., Hall, Food, DJ, zaffa, decoration): ");
             type = scanner.nextLine();
-            if (!Test_input.type(type)) {
+            if (!TestInput.type(type)) {
                 logger.warning("Invalid type. Please enter a valid service type.");
             }
-        } while (!Test_input.type(type));
+        } while (!TestInput.type(type));
 
         String name;
         do {
             logger.info("Enter Service Name: ");
             name = scanner.nextLine();
-            if (!Test_input.Name(name)) {
+            if (!TestInput.isValidName(name)) {
                 logger.warning("Invalid name. Names must not contain digits.");
             }
-        } while (!Test_input.Name(name));
+        } while (!TestInput.isValidName(name));
 
         logger.info("Enter Service Location: ");
         String location = scanner.nextLine(); // Assuming location does not need validation
@@ -1424,30 +1424,30 @@ public class Main {
         do {
             logger.info("Enter Service Price: ");
              priceStr = scanner.nextLine();
-            if (Test_input.Price(priceStr)) {
+            if (TestInput.isValidPrice(priceStr)) {
                 price = Double.parseDouble(priceStr);
             } else {
                 logger.warning("Invalid price. Please enter a numeric value.");
             }
-        } while (!Test_input.Price(priceStr));
+        } while (!TestInput.isValidPrice(priceStr));
 
         String phone;
         do {
             logger.info("Enter Service Phone: ");
             phone = scanner.nextLine();
-            if (!Test_input.Phone(phone)) {
+            if (!TestInput.isValidPhone(phone)) {
                 logger.warning("Invalid phone number. Please enter a 10-digit number.");
             }
-        } while (!Test_input.Phone(phone));
+        } while (!TestInput.isValidPhone(phone));
 
         String image;
         do {
             logger.info("Enter Service Image URL: ");
             image = scanner.nextLine();
-            if (!Test_input.imge(image)) {
+            if (!TestInput.imge(image)) {
                 logger.warning("Invalid image URL. Please enter a valid URL ending with .png or .jpg.");
             }
-        } while (!Test_input.imge(image));
+        } while (!TestInput.imge(image));
 
         // Creating a new service object
         Service newService = new Service();
@@ -1593,7 +1593,7 @@ public class Main {
         // تعديل اسم الخدمة
         logger.info("\nEnter the new name (leave blank to keep current):");
         String newName = scanner.nextLine().trim();
-        if (!newName.isEmpty() && Test_input.Name(newName)) {
+        if (!newName.isEmpty() && TestInput.isValidName(newName)) {
             serviceToEdit.setName(newName);
         } else if (!newName.isEmpty()) {
             logger.info("\nInvalid name. Keeping the current name.");
@@ -1602,7 +1602,7 @@ public class Main {
         // تعديل نوع الخدمة
         logger.info("\nEnter the new type (e.g., Hall, Food, DJ, Zaffa, Decoration) (leave blank to keep current):");
         String newType = scanner.nextLine().trim();
-        if (!newType.isEmpty() && Test_input.type(newType)) {
+        if (!newType.isEmpty() && TestInput.type(newType)) {
             serviceToEdit.setType(newType);
         } else if (!newType.isEmpty()) {
             logger.info("\nInvalid type. Keeping the current type.");
@@ -1627,7 +1627,7 @@ public class Main {
         // تعديل السعر
         logger.info("\nEnter the new price (leave blank to keep current):");
         String newPriceStr = scanner.nextLine().trim();
-        if (!newPriceStr.isEmpty() && Test_input.Price(newPriceStr)) {
+        if (!newPriceStr.isEmpty() && TestInput.isValidPrice(newPriceStr)) {
             double newPrice = Double.parseDouble(newPriceStr);
             serviceToEdit.setPrice(newPrice);
         } else if (!newPriceStr.isEmpty()) {
@@ -1637,7 +1637,7 @@ public class Main {
         // تعديل الهاتف
         logger.info("\nEnter the new phone (leave blank to keep current):");
         String newPhone = scanner.nextLine().trim();
-        if (!newPhone.isEmpty() && Test_input.Phone(newPhone)) {
+        if (!newPhone.isEmpty() && TestInput.isValidPhone(newPhone)) {
             serviceToEdit.setPhone(newPhone);
         } else if (!newPhone.isEmpty()) {
             logger.info("\nInvalid phone. Keeping the current phone.");
@@ -1646,7 +1646,7 @@ public class Main {
         // تعديل URL الصورة
         logger.info("\nEnter the new image URL (leave blank to keep current):");
         String newImageURL = scanner.nextLine().trim();
-        if (!newImageURL.isEmpty() && Test_input.imge(newImageURL)) {
+        if (!newImageURL.isEmpty() && TestInput.imge(newImageURL)) {
             serviceToEdit.setImage(newImageURL);
         } else if (!newImageURL.isEmpty()) {
             logger.info("\nInvalid image URL. Keeping the current image URL.");
@@ -1670,7 +1670,7 @@ public class Main {
             // Name update
             logger.info("\nEnter the new name (leave blank to keep current): ");
             String newName = scanner.nextLine().trim();
-            if (!newName.isEmpty() && Test_input.Name(newName)) {
+            if (!newName.isEmpty() && TestInput.isValidName(newName)) {
                 loggedInUser.setName(newName);
             } else if (!newName.isEmpty()) {
                 logger.info("\nInvalid name. Keeping the current name.");
@@ -1679,7 +1679,7 @@ public class Main {
             // Phone update
             logger.info("\nEnter the new phone number (leave blank to keep current): ");
             String newPhone = scanner.nextLine().trim();
-            if (!newPhone.isEmpty() && Test_input.Phone(newPhone)) {
+            if (!newPhone.isEmpty() && TestInput.isValidPhone(newPhone)) {
                 loggedInUser.setPhone(newPhone);
             } else if (!newPhone.isEmpty()) {
                 logger.info("\nInvalid phone number. Keeping the current phone number.");

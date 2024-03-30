@@ -1,15 +1,12 @@
 package AcceptanceTest;
 
-import database.AdminDB;
 import database.ServiceProviderDB;
-import entity.Admin;
 import entity.ServiceProvider;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import main.LoggerUtility;
-import main.Test_input;
-import serveses.LoginToMyAppAsAdmin;
+import main.TestInput;
 import serveses.LoginToMyAppAsServiceProvider;
 
 import java.util.logging.Logger;
@@ -54,7 +51,7 @@ public class show_Service_provider_profile {
     public void theServiceProviderChangesTheirTo(String field, String value) {
             switch (field) {
                 case "name":
-                    if(Test_input.Name(field)) {
+                    if(TestInput.isValidName(field)) {
                         re_test = true;
                         newName=value;
                     } else {
@@ -63,7 +60,7 @@ public class show_Service_provider_profile {
                     }
                     break;
                 case "phone number":
-                    if(Test_input.Phone(value)) {
+                    if(TestInput.isValidPhone(value)) {
                         re_test = true;
                         newPhone=value;
                     } else {
@@ -72,7 +69,7 @@ public class show_Service_provider_profile {
                     }
                     break;
                 case "address":
-                    if(Test_input.Name(value)) {
+                    if(TestInput.isValidName(value)) {
                         re_test = true;
                         newAddress=value;
                     } else { re_test = false;

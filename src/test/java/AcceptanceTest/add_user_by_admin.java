@@ -11,7 +11,7 @@ import database.AdminDB;
 import database.ServiceProviderDB;
 import database.UserDB;
 import serveses.LoginToMyAppAsAdmin;
-import main.Test_input;
+import main.TestInput;
 import static org.junit.Assert.*;
 import java.util.logging.Logger;
 
@@ -50,7 +50,7 @@ public class add_user_by_admin {
         String address = "123 Admin Street";
         String password = "adminPassword";
         int id = AdminDB.getAdmins().size() + 1;
-        if (Test_input.Name(name) && email.contains("@") && Test_input.Phone(phone)) {
+        if (TestInput.isValidName(name) && email.contains("@") && TestInput.isValidPhone(phone)) {
             admin = new Admin(password, email, phone, address, name, id);
             assertEquals(password, admin.getPassword());
             assertEquals(email, admin.getEmail());
@@ -132,7 +132,7 @@ public class add_user_by_admin {
         String address = "456 Service Provider Street";
         String password = "sppassword";
         int id = ServiceProviderDB.getServiceProviders().size() + 1;
-        if (Test_input.Name(name) && email.contains("@") && Test_input.Phone(phone)) {
+        if (TestInput.isValidName(name) && email.contains("@") && TestInput.isValidPhone(phone)) {
             serviceProvider = new ServiceProvider(password, email, phone, address, name, id);
             ServiceProviderDB.addServiceProvider(serviceProvider);
             logger.info("New service provider's details entered.");
@@ -187,7 +187,7 @@ public class add_user_by_admin {
         user.setStreet("Main Street");
         user.setPassword("userPassword"); // Assuming hashPassword is a static method in UserDB for hashing passwords
 
-        if (Test_input.Name(user.getName()) && user.getEmail().contains("@") && Test_input.Phone(user.getPhoneNumber())) {
+        if (TestInput.isValidName(user.getName()) && user.getEmail().contains("@") && TestInput.isValidPhone(user.getPhoneNumber())) {
             UserDB.addUser(user);
             logger.info("New user's sign-up form filled with valid data.");
         } else {

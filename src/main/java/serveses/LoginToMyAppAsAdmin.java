@@ -1,11 +1,10 @@
 package serveses;
 
 import database.AdminDB;
-import database.UserDB;
+
 import entity.Admin;
-import entity.User;
+
 import main.LoggerUtility ;
-import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.logging.Logger;
 
@@ -39,15 +38,16 @@ public class LoginToMyAppAsAdmin {
     }
 
     public Admin loggInCheck(String email, String password) {
-
+String x = "\nLogin successful for user: " + email+"\n" ;
         for (Admin a : AdminDB.getAdmins()) {
             if (email.equalsIgnoreCase(a.getEmail()) && verifyPassword(password, a.getPassword())) {
                 isLoggedIn = true; // Update login state on successful authentication
-                logger.info("\nLogin successful for user: " + email+"\n");
+                logger.info(x);
                 return a;
             }
         }
-        logger.info("\nUser not found or incorrect password for login: " + email+"\n");
+        x="\nUser not found or incorrect password for login: " + email+"\n";
+        logger.info(x);
         return null;
 
         }

@@ -12,6 +12,7 @@ public class LoginAsUser {
     private boolean isLoggedIn;
     private String username;
     private String password;
+     String temp;
 
     public LoginAsUser() {
         this.isLoggedIn = false;
@@ -24,10 +25,11 @@ public class LoginAsUser {
     }
     public void logout() {
         isLoggedIn = false;
-        //System.out.println("User logged out.");
+
+
     }
     public void login() {
-            //isLoggedIn = true;
+
 
         if (!isLoggedIn && loggInCheck(username, password) != null) {
             isLoggedIn = true;
@@ -57,27 +59,30 @@ public class LoginAsUser {
 
     public User loggInCheck(String enteredEmail, String enteredPassword) {
         for (User u : UserDB.getUsers()) {
-            System.out.println("Checking user: " + u.getEmail());
-            System.out.println("Entered email: " + enteredEmail);
+            logger.info("Checking user: " + u.getEmail());
+            temp = "Entered email: " + enteredEmail;
+            logger.info(temp);
 
             if (u.getEmail().equalsIgnoreCase(enteredEmail)) {
-                System.out.println("Email match found.");
+                logger.info("Email match found.");
 
                 if (verifyPassword(enteredPassword, u.getPassword())) {
-                    System.out.println("Password match found. Login successful for user: " + enteredEmail);
+                    temp="Password match found. Login successful for user: " + enteredEmail;
+                    logger.info(temp);
                     return u; // Successfully logged in
                 } else {
-                    System.out.println("Incorrect password for user: " + enteredEmail);
+                    temp="Incorrect password for user: " + enteredEmail;
+                    logger.info(temp);
                 }
             }
         }
-
-        System.out.println("User not found for login: " + enteredEmail);
-        return null; // Login failed
+temp="User not found for login: " + enteredEmail;
+        logger.info(temp);
+        return null;
     }
 
     public boolean validateUserInformation(User user) {
         return user != null && user.getEmail() != null && !user.getEmail().isEmpty();
-//        return false;
+
     }
 }

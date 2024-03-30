@@ -1,8 +1,8 @@
 package serveses;
 
-import database.AdminDB;
+
 import database.ServiceProviderDB;
-import entity.Admin;
+
 import entity.ServiceProvider;
 import main.LoggerUtility;
 
@@ -36,25 +36,25 @@ public class LoginToMyAppAsServiceProvider {
     public ServiceProvider loggInCheck(String email, String password) {
 
         for (ServiceProvider a : ServiceProviderDB.getServiceProviders()) {
-            System.out.println("Checking Service Provider: " + a.getEmail());
-            System.out.println("Entered email: " + email);
+            logger.warning("Checking Service Provider: " + a.getEmail());
+            String x = "Entered email: " + email;
+            logger.info(x);
 
             if (a.getEmail().equalsIgnoreCase(email)) {
-                System.out.println("Email match found.");
+                logger.warning("Email match found.");
 
                 if (verifyPassword(password, a.getPassword())) {
-                    System.out.println("Password match found. Login successful for user: " + email);
+                    x="Password match found. Login successful for user: " + email;
+                    logger.warning(x);
                     login();
                     return a;
                 } else {
                     errorInLogin();
-                    System.out.println("Incorrect password for user: " + email);
                 }
             }
 
         }
         errorInLogin();
-        System.out.println("User not found for login: " + email);
         return null;
     }
 }

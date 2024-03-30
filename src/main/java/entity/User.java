@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class User {
     private int id;
     private String name;
-    private String PhoneNumber;
+    private String phoneNumber;
     private String address;
     private String city;
     private String street;
@@ -41,10 +41,10 @@ public class User {
         this.name = name;
     }
     public String getPhoneNumber() {
-        return PhoneNumber;
+        return phoneNumber;
     }
     public void setPhoneNumber(String phoneNumber) {
-        PhoneNumber = phoneNumber;
+        this.phoneNumber = phoneNumber;
     }
     public String getAddress() {
         return address;
