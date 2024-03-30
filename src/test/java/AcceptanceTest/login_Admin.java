@@ -18,6 +18,7 @@ public class login_Admin {
     private LoginToMyAppAsAdmin myApp;
     private Admin admin;
 
+
     public login_Admin() {
         myApp = new LoginToMyAppAsAdmin();
     }
@@ -37,6 +38,9 @@ public class login_Admin {
         assertNotNull(admin);
         assertTrue(myApp.isLoggedIn());
         AdminDB.displayAdmin(admin);
+
+
+
     }
 
     @Then("the admin should see a login failed message")

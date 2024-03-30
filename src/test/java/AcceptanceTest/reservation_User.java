@@ -1,11 +1,13 @@
 package AcceptanceTest;//package AcceptanceTest;
 
+import database.ReservationDB;
 import database.ServiceDB;
 import database.UserDB;
+
 import entity.Reserve;
 import entity.Service;
 import entity.User;
-import database.ReservationDB;
+
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -28,7 +30,29 @@ public class reservation_User {
     private String serviceId;
     private boolean isServiceAvailable;
     private Map<String, String> reservations = new HashMap<>();
+    private Reserve testReservation;
     private String getReservationState(String userId, String reservationId) {
+
+        testReservation = new Reserve();
+        testReservation.setId("NewID123");
+        testReservation.setServiceId(1);
+        testReservation.setServiceName("Test Service");
+        testReservation.setCustomerName("Test Customer");
+        testReservation.setEventDate("01/01/2023");
+        testReservation.setEventLocation("Test Location");
+        testReservation.setTotalPrice(100.0);
+        testReservation.setStatus("Reserved");
+        testReservation.setEventTime("12:00");
+        testReservation.setEventDuration("2 hours");
+
+        ReservationDB.addReservation(testReservation);
+
+        // Verify the reservation was added by checking the list's size
+        assertEquals(1, ReservationDB.getReservations().size());
+
+        // Verify the added reservation's ID matches the test reservation's ID
+        assertEquals("NewID123", ReservationDB.getReservations().get(0).getId());
+
         Map<String, String> reservations = new HashMap<>();
         reservations.put("1", "ready");
         reservations.put("2", "pending");
@@ -194,7 +218,17 @@ public class reservation_User {
     }
     @When("the user with number {string} requests to receive reservation number {string} and pay the debt")
     public void theUserWithNumberRequestsToReceiveReservationNumberAndPayTheDebt(String userId, String reservationId) {
-        // Write code here that turns the phrase above into concrete actions
+
+        assertTrue(ReservationDB.isServiceReservedOnDate(1, "01/01/2023"));
+
+        // Test a date that does not have a reservation for service 1
+        assertFalse(ReservationDB.isServiceReservedOnDate(1, "2023-01-03"));
+
+        // Test a service that does not have any reservation on the given date
+        assertFalse(ReservationDB.isServiceReservedOnDate(3, "2023-01-01"));
+
+
+
         boolean receiptAcknowledged = receiveReservationAndPayDebt(userId, reservationId);
         assertTrue(receiptAcknowledged);
 //        throw new io.cucumber.java.PendingException();
