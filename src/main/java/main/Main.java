@@ -27,6 +27,7 @@ public class Main {
     private static final String MSG_LOG_IN_FIRST ="| User not logged in. Please log in first.                              |\n" ;
     private static final String MSG_INVALID_INPUT ="|                            Invalid input.                             |\n" ;
     private static final String PASSWORD_WARNING_MESSAGE = "Password must be at least 6 characters long. Please enter a stronger password:";
+    private static final String SERVICE_ID_MESSAGE_PREFIX = "Service with ID ";
     private static final String STARS ="         ****************************************************         \n" ;
     private static final String LINE ="+-------+-----------------+------------+-----------------+------------+------------+\n" ;
 
@@ -1253,18 +1254,18 @@ public class Main {
                     if (serviceToApprove != null) {
                         ServiceDB.addService(serviceToApprove);
                         RequestToAddServiceDB.cancelRequest(approveId);
-                        logger.info("Service with ID " + approveId + " has been approved.");
+                        logger.info(SERVICE_ID_MESSAGE_PREFIX  + approveId + " has been approved.");
                     } else {
-                        logger.info("Service with ID " + approveId + " not found.");
+                        logger.info(SERVICE_ID_MESSAGE_PREFIX  + approveId + " not found.");
                     }
                     break;
                 case 3:
                     logger.info("Enter the ID of the service to reject:");
                     int rejectId = scanner.nextInt();
                     if (RequestToAddServiceDB.getServices().removeIf(s -> s.getId() == rejectId)) {
-                        logger.info("Service with ID " + rejectId + " has been rejected.");
+                        logger.info(SERVICE_ID_MESSAGE_PREFIX  + rejectId + " has been rejected.");
                     } else {
-                        logger.info("Service with ID " + rejectId + " not found.");
+                        logger.info(SERVICE_ID_MESSAGE_PREFIX  + rejectId + " not found.");
                     }
                     break;
                 case 4: break;
