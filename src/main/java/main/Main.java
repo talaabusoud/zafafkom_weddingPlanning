@@ -1415,7 +1415,7 @@ public class Main {
         String phone = getInputWithValidation(scanner, "Enter Service Phone: ", TestInput::isValidPhone, INVALID_PHONE_MESSAGE);
         String image = getInputWithValidation(scanner, "Enter Service Image URL: ", TestInput::imge, INVALID_IMAGE_MESSAGE);
 
-        Service newService = createService(loggedInUser, type, name, location, status, price, phone, image);
+        Service newService = createService(loggedInUser, new Object[]{type, name, location, status, price, phone, image});
         RequestToAddServiceDB.addService(newService);
 
         logger.info("\nNew service has been added to the request list successfully.\n");
@@ -1462,16 +1462,20 @@ public class Main {
         return input;
     }
 
-    private static Service createService(ServiceProvider loggedInUser, String type, String name, String location, String status, double price, String phone, String image) {
+    private static Service createService(ServiceProvider loggedInUser, Object[] params) {
+        if (params.length < 7) {
+            throw new IllegalArgumentException("Insufficient parameters provided");
+        }
+
         Service newService = new Service();
         newService.setId(RequestToAddServiceDB.getServices().size() + 1 + ServiceDB.getServices().size() + 1); // Assuming IDs are sequential
-        newService.setType(type);
-        newService.setName(name);
-        newService.setLocation(location);
-        newService.setStatus(status);
-        newService.setPrice(price);
-        newService.setPhone(phone);
-        newService.setImage(image);
+        newService.setType((String) params[0]);
+        newService.setName((String) params[1]);
+        newService.setLocation((String) params[2]);
+        newService.setStatus((String) params[3]);
+        newService.setPrice((Double) params[4]);
+        newService.setPhone((String) params[5]);
+        newService.setImage((String) params[6]);
         newService.setOwner(loggedInUser);
         return newService;
     }
