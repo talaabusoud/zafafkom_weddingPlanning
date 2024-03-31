@@ -945,7 +945,7 @@ public class Main {
                 adminMenu(admin);
                 break;
             default:
-                System.out.println("Invalid choice. Please enter a number between 1 and 3.");
+                logger.info("Invalid choice. Please enter a number between 1 and 3.");
                 break;
         }
     }
