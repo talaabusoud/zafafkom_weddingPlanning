@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
+import java.util.function.Supplier;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -730,14 +731,16 @@ public class Main {
 
     private static void displayReservation(Reserve reservation) {
         String leftAlignFormat = "| %-5s | %-15s | %-10s | %-15s | %-10s | %-10s |\n";
-        logger.info(String.format(leftAlignFormat,
+        Supplier<String> logMessageSupplier = () -> String.format(leftAlignFormat,
                 reservation.getId(),
                 reservation.getServiceName(),
                 reservation.getServiceId(),
                 reservation.getCustomerName(),
                 reservation.getEventLocation(),
-                reservation.getEventDate()));
-        logger.info(LINE);    }
+                reservation.getEventDate());
+        logger.info(logMessageSupplier);
+        logger.info(LINE);
+    }
 
     private static List<Service> searchService(String searchTerm) {
         List<Service> services = ServiceDB.getServices();
