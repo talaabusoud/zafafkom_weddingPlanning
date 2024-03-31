@@ -1286,7 +1286,7 @@ public class Main {
         LoginToMyAppAsServiceProvider serviceProviderLogin = new LoginToMyAppAsServiceProvider();
         serviceProvider = serviceProviderLogin.loggInCheck(email, password);
         if (serviceProvider != null) {
-            ServiceProviderPage(serviceProvider);
+            serviceProviderPage(serviceProvider);
         } else {
             displayUpLine();
             logger.warning(MSG_LOGIN_FAILED);
@@ -1316,7 +1316,7 @@ public class Main {
 
 
     }
-    public static void ServiceProviderPage(ServiceProvider loggedInUser) {
+    public static void serviceProviderPage(ServiceProvider loggedInUser) {
         displayUpLine();
         displayEmpty();
         displaySTARSLine();
