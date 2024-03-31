@@ -1450,65 +1450,73 @@ public class Main {
     }
     // end of add new service
 
-    private static void showAndDeleteServices(ServiceProvider loggedInUser) {
-        Scanner scanner = new Scanner(System.in);
-
-        List<Service> providerServices = ServiceDB.getServicesByProvider(loggedInUser.getId()); // تنفيذ هذه الدالة لتحصل على الخدمات
+//show and delete services
+       private static void showAndDeleteServices(ServiceProvider loggedInUser) {
+        List<Service> providerServices = ServiceDB.getServicesByProvider(loggedInUser.getId());
 
         if (providerServices.isEmpty()) {
             logger.info("\nYou have no services listed.\n");
-            ServiceProviderMenu(serviceProvider);
-        } else {
-            logger.info("-----------------------------------------------------------------------------------------------------------------------------------------------------\n");
-            String headerFormat = "| %-5s | %-15s | %-10s | %-12s | %-15s | %-15s | %-30s | %-15s |\n";
-            logger.info(String.format(headerFormat, "ID", "Name", "Price", "Status", "Location", "Owner", "Image URL", "Type"));
-            logger.info("-----------------------------------------------------------------------------------------------------------------------------------------------------\n");
-
-            // طباعة الخدمات بشكل جدول
-            providerServices.forEach(ServiceDB::displayService);
-
-
-            logger.info("Options: \n1- Edit a Service\n2- Delete a Service\n3- Exit\n");
-            logger.info("Enter your choice: ");
-            int choice = scanner.nextInt();
-
-            switch (choice) {
-                case 1:
-                    editService(loggedInUser);
-                    break;
-                case 2:
-                    // حذف خدمة
-                    logger.info("Enter the ID of the service you want to delete:");
-                    int deleteId = scanner.nextInt();
-                    scanner.nextLine(); // تنظيف البافر
-                    boolean serviceExists = false;
-                    for (Service service : providerServices) {
-                        if (service.getId() == deleteId) {
-                            serviceExists = true;
-                            break;
-                        }
-                    }
-                    if (serviceExists && ServiceDB.deleteService(deleteId)) {
-                        logger.info("Service deleted successfully.");
-                    } else {
-                        logger.info("Service could not be found or does not belong to you.");
-                    }
-
-                    break;
-                case 3:
-                    break;
-                default:
-                    logger.info("Invalid option. Please enter a valid choice.");
-                    break;
-            }
-            ServiceProviderMenu(serviceProvider);
-
+            ServiceProviderMenu(loggedInUser);
+            return;
         }
+
+        displayServiceTableHeader();
+        displayServiceTable(providerServices);
+
+        int choice = getUProviderChoice();
+
+        switch (choice) {
+            case 1:
+                editService(loggedInUser);
+                break;
+            case 2:
+                deleteService(providerServices);
+                break;
+            case 3:
+                // Exit
+                break;
+            default:
+                logger.info("Invalid option. Please enter a valid choice.");
+                break;
+        }
+
+        ServiceProviderMenu(loggedInUser);
     }
+
+    private static void displayServiceTableHeader() {
+        String headerFormat = "| %-5s | %-15s | %-10s | %-12s | %-15s | %-15s | %-30s | %-15s |\n";
+        logger.info("-----------------------------------------------------------------------------------------------------------------------------------------------------\n");
+        logger.info(String.format(headerFormat, "ID", "Name", "Price", "Status", "Location", "Owner", "Image URL", "Type"));
+        logger.info("-----------------------------------------------------------------------------------------------------------------------------------------------------\n");
+    }
+
+    private static void displayServiceTable(List<Service> services) {
+        services.forEach(ServiceDB::displayService);
+    }
+
+    private static int getUProviderChoice() {
+        Scanner scanner = new Scanner(System.in);
+        logger.info("Options: \n1- Edit a Service\n2- Delete a Service\n3- Exit\n");
+        logger.info("Enter your choice: ");
+        return scanner.nextInt();
+    }
+
+    private static void deleteService(List<Service> providerServices) {
+        Scanner scanner = new Scanner(System.in);
+        logger.info("Enter the ID of the service you want to delete:");
+        int deleteId = scanner.nextInt();
+        scanner.nextLine(); // Clean buffer
+        boolean serviceExists = providerServices.stream().anyMatch(service -> service.getId() == deleteId);
+        if (serviceExists && ServiceDB.deleteService(deleteId)) {
+            logger.info("Service deleted successfully.");
+        } else {
+            logger.info("Service could not be found or does not belong to you.");
+        }
+    } 
+// end of show / delete service
+
     private static void showAndDeleteReservations(ServiceProvider loggedInUser) {
         Scanner scanner = new Scanner(System.in);
-
-
 
         List<Reserve> reservationsForProvider = ReservationDB.getReservationsForService(loggedInUser.getId());
 
