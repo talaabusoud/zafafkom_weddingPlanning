@@ -1035,25 +1035,28 @@ public class Main {
         ServiceProviderDB.addServiceProvider(newServiceProvider);
         displayServiceProvider(newServiceProvider);
     }
-    public static void showServiceProviders() {
+   public static void showServiceProviders() {
         List<ServiceProvider> serviceProviders = ServiceProviderDB.getServiceProviders();
         if (serviceProviders.isEmpty()) {
             logger.info("No service providers found.");
         } else {
             String format = "|%-12s|%12s|%15s|%14s|%20s|%20s|\n";
-            logger.info(String.format(format, "ID", "Name", "Phone", "Address", "Email", "password"));
+            Supplier<String> headerFormatSupplier = () -> String.format(format, "ID", "Name", "Phone", "Address", "Email", "Password");
 
+            logger.info(headerFormatSupplier.get());
             logger.info(new String(new char[100]).replace('\0', '-'));
             logger.info("\n");
+
             for (ServiceProvider serviceProvider : serviceProviders) {
-                logger.info(String.format(format,
+                Supplier<String> serviceProviderFormatSupplier = () -> String.format(format,
                         serviceProvider.getId(),
                         serviceProvider.getName(),
                         serviceProvider.getPhone(),
                         serviceProvider.getAddress(),
                         serviceProvider.getEmail(),
-                        serviceProvider.getPassword()
-                ));
+                        serviceProvider.getPassword());
+
+                logger.info(serviceProviderFormatSupplier.get());
             }
         }
         adminMenu(admin);
