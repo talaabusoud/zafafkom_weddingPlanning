@@ -205,7 +205,7 @@ public class Main {
             }
     }
     //sign up page (register user)
-    public static void signUpPage(){
+    private static void displaySignUpHeader() {
         displayUpLine();
         displayEmpty();
         displaySTARSLine();
@@ -213,18 +213,33 @@ public class Main {
         displaySTARSLine();
         displayDownLine();
         logger.info("\n");
-
-        user = new User();
+    }
+    private static User getUserInformation() {
+        User user = new User();
         Scanner scanner = new Scanner(System.in);
 
-        boolean validId = false;
-        boolean validPhoneNumber = false;
-        boolean validEmail = false;
+        user.setId(getValidId(scanner));
+        logger.info(" - Enter your Name: ");
+        user.setName(scanner.next());
+        user.setPhoneNumber(getValidPhoneNumber(scanner));
+        logger.info(" - Enter your Address: ");
+        user.setAddress(scanner.next());
+        logger.info(" - Enter your City: ");
+        user.setCity(scanner.next());
+        logger.info(" - Enter your Street: ");
+        user.setStreet(scanner.next());
+        user.setEmail(getValidEmail(scanner));
+        user.setPassword(getValidPassword(scanner));
 
+        return user;
+    }
+    private static int getValidId(Scanner scanner) {
+        boolean validId = false;
+        int id = 0;
         do {
             try {
                 logger.info(" - Enter your ID (numbers only): ");
-                user.setId(Integer.parseInt(scanner.next()));
+                id = Integer.parseInt(scanner.next());
                 validId = true;
             } catch (NumberFormatException e) {
                 displayUpLine();
@@ -233,15 +248,15 @@ public class Main {
                 displayDownLine();
             }
         } while (!validId);
-
-        logger.info(" - Enter your Name: ");
-        user.setName(scanner.next());
-
+        return id;
+    }
+    private static String getValidPhoneNumber(Scanner scanner) {
+        boolean validPhoneNumber = false;
+        String phoneNumber = "";
         do {
             logger.info(" - Enter your Phone Number (numbers only): ");
-            String phoneNumber = scanner.next();
+            phoneNumber = scanner.next();
             if (phoneNumber.matches("\\d+")) {
-                user.setPhoneNumber(phoneNumber);
                 validPhoneNumber = true;
             } else {
                 displayUpLine();
@@ -250,23 +265,15 @@ public class Main {
                 displayDownLine();
             }
         } while (!validPhoneNumber);
-
-        logger.info(" - Enter your Address: ");
-        user.setAddress(scanner.next());
-
-        logger.info(" - Enter your City: ");
-        user.setCity(scanner.next());
-
-        logger.info(" - Enter your Street: ");
-        user.setStreet(scanner.next());
-
+        return phoneNumber;
+    }
+    private static String getValidEmail(Scanner scanner) {
+        boolean validEmail = false;
+        String email = "";
         do {
             logger.info(" - Enter your Email: ");
-            String email = scanner.next();
-
-            // Check email format using regular expression
+            email = scanner.next();
             if (email.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")) {
-                user.setEmail(email);
                 validEmail = true;
             } else {
                 displayUpLine();
@@ -276,13 +283,13 @@ public class Main {
                 displayDownLine();
             }
         } while (!validEmail);
-
-        String password;
-        // Validate password length
+        return email;
+    }
+    private static String getValidPassword(Scanner scanner) {
+        String password = "";
         do {
             logger.info(" - Enter your Password (must be at least 5 characters): ");
             password = scanner.next();
-
             if (password.length() < 5) {
                 displayUpLine();
                 logger.warning("|            Password must be at least 6 characters long.               |\n");
@@ -291,62 +298,25 @@ public class Main {
             }
         } while (password.length() < 5);
         // Hash the user's password before saving it to UserDB
-        user.setPassword(hashPassword(password));
-
-        // Check if the user with the same ID or email already exists
-        while (UserDB.isUserExists(user.getId(), user.getEmail())) {
-            displayUpLine();
-            logger.warning("|           User with the same ID or email already exists.              |\n");
-            logger.warning("|               Please re-enter your ID and Email.                      |\n");
-            logger.warning("|                   **YOU NEED TO SIGN UP AGAIN**                       |\n");
-            displayDownLine();
-            do {
-                try {
-                    logger.info(" - Re-enter your ID (numbers only): ");
-                    user.setId(Integer.parseInt(scanner.next()));
-                    validId = true;
-                } catch (NumberFormatException e) {
-                    displayUpLine();
-                    logger.warning("|           Please enter a valid numerical ID.              |\n");
-                    logger.warning("|                   **YOU NEED TO SIGN UP AGAIN**           |\n");
-                    displayDownLine();
-                    validId = false;
-                }
-            } while (!validId);
-
-            boolean validEmailReEnter = false;
-            do {
-                logger.info(" - Re-enter your Email: ");
-                String reEnteredEmail = scanner.next();
-
-                // Check email format using regular expression
-                if (reEnteredEmail.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")) {
-                    user.setEmail(reEnteredEmail);
-                    validEmailReEnter = true;
-                } else {
-                    displayUpLine();
-                    logger.warning("|             Please enter a valid email address.                       |\n");
-                    logger.warning("|     example for the correct format: tala12@gmail.com                  |\n");
-                    logger.warning("|               **YOU NEED TO SIGN UP AGAIN**                           |\n");
-                    displayDownLine();
-                }
-            } while (!validEmailReEnter);
-        }
-
+        return hashPassword(password);
+    }
+    private static void displayUserInfo(User user) {
         displayUpLine();
         logger.info(STARS);
         logger.info("         * Thank you for signing up! Here are your details: *         \n");
         logger.info(STARS);
-        logger.info("               ID: "+user.getId()+"                                                      \n");
-        logger.info("               Name: "+user.getName()+"                                                    \n");
-        logger.info("               Phone Number: "+user.getPhoneNumber()+"                                            \n");
-        logger.info("               Address: "+user.getAddress()+"                                                 \n");
-        logger.info("               City: "+user.getCity()+"                                                    \n");
-        logger.info("               Street: "+user.getStreet()+"                                                  \n");
-        logger.info("               Email: "+user.getEmail()+"                                                   \n");
-        logger.info("               Password: "+ "*".repeat(Math.max(0, password.length())) +"                                                \n");
-
+        logger.info("               ID: " + user.getId() + "                                                      \n");
+        logger.info("               Name: " + user.getName() + "                                                    \n");
+        logger.info("               Phone Number: " + user.getPhoneNumber() + "                                            \n");
+        logger.info("               Address: " + user.getAddress() + "                                                 \n");
+        logger.info("               City: " + user.getCity() + "                                                    \n");
+        logger.info("               Street: " + user.getStreet() + "                                                  \n");
+        logger.info("               Email: " + user.getEmail() + "                                                   \n");
+        logger.info("               Password: " + "*".repeat(Math.max(0, user.getPassword().length())) + "                                                \n");
+    }
+    private static int getUserChoice() {
         int choice;
+        Scanner scanner = new Scanner(System.in);
         do {
             try {
                 logger.info(STARS);
@@ -359,7 +329,7 @@ public class Main {
                 logger.info("\n");
 
                 choice = scanner.nextInt();
-            }catch (InputMismatchException e){
+            } catch (InputMismatchException e) {
                 // Clear buffer (avoid infinite loop)
                 scanner.nextLine();
                 displayUpLine();
@@ -369,35 +339,47 @@ public class Main {
                 choice = -1;
             }
         } while (choice != 1 && choice != 2 && choice != 3);
+        return choice;
+    }
+    private static void confirmSignUp(User user) {
+        User newUser = new User();
+        newUser.setId(user.getId());
+        newUser.setName(user.getName());
+        newUser.setPhoneNumber(user.getPhoneNumber());
+        newUser.setAddress(user.getAddress());
+        newUser.setCity(user.getCity());
+        newUser.setStreet(user.getStreet());
+        newUser.setEmail(user.getEmail());
+        newUser.setPassword(user.getPassword());
 
-        if (choice == 1) {
-            // Confirm sign up
-            User newUser = new User();
-            newUser.setId(user.getId());
-            newUser.setName(user.getName());
-            newUser.setPhoneNumber(user.getPhoneNumber());
-            newUser.setAddress(user.getAddress());
-            newUser.setCity(user.getCity());
-            newUser.setStreet(user.getStreet());
-            newUser.setEmail(user.getEmail());
-            newUser.setPassword(user.getPassword());
+        // Add user to db
+        UserDB.addUser(newUser);
 
-            // Add the user to the database if not already exists
-            UserDB.addUser(newUser);
+        displayUpLine();
+        logger.info("|                  Account created added successfully!                  |\n");
+        displayDownLine();
+        logger.info("\n");
+    }
+    public static void signUpPage(){
+        displaySignUpHeader();
+        User user = getUserInformation();
+        displayUserInfo(user);
+        int choice = getUserChoice();
 
-            displayUpLine();
-            logger.info("|                  Account created added successfully!                  |\n");
-            //UserDB.displayUser(newUser); // Need to edit function in UserDB
-            displayDownLine();
-            logger.info("\n");
-        } else if (choice == 2){
-            // Edit information
-            signUpPage(); // Re-run the sign-up page for editing
-        } else {
-            //Home
-            logger.info("\n");
+        switch (choice) {
+            case 1:
+                confirmSignUp(user);
+                break;
+            case 2:
+                signUpPage();
+                break;
+            default:
+                // Home
+                logger.info("\n");
+                break;
         }
     }
+
     // logout method
     public static void logout() {
         displayUpLine();
