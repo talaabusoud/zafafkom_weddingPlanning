@@ -667,7 +667,7 @@ public class Main {
         // Assuming additional details are set here
 
         ReservationDB.addReservation(newReservation);
-        logger.info(String.format("Reservation successful: Service is booked for %s%n", bookingDateStr));
+        logger.info(() -> String.format("Reservation successful: Service is booked for %s%n", bookingDateStr));
     }
 
     private static String generateNewReservationId() {
