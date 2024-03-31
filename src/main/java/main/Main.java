@@ -309,20 +309,22 @@ public class Main {
         // Hash the user's password before saving it to UserDB
         return hashPassword(password);
     }
+    
     private static void displayUserInfo(User user) {
         displayUpLine();
         logger.info(STARS);
         logger.info("         * Thank you for signing up! Here are your details: *         \n");
         logger.info(STARS);
-        logger.info("               ID: " + user.getId() + "                                                      \n");
-        logger.info("               Name: " + user.getName() + "                                                    \n");
-        logger.info("               Phone Number: " + user.getPhoneNumber() + "                                            \n");
-        logger.info("               Address: " + user.getAddress() + "                                                 \n");
-        logger.info("               City: " + user.getCity() + "                                                    \n");
-        logger.info("               Street: " + user.getStreet() + "                                                  \n");
-        logger.info("               Email: " + user.getEmail() + "                                                   \n");
-        logger.info("               Password: " + "*".repeat(Math.max(0, user.getPassword().length())) + "                                                \n");
+        logger.info(() -> "               ID: " + user.getId() + "\n");
+        logger.info(() -> "               Name: " + user.getName() + "\n");
+        logger.info(() -> "               Phone Number: " + user.getPhoneNumber() + "\n");
+        logger.info(() -> "               Address: " + user.getAddress() + "\n");
+        logger.info(() -> "               City: " + user.getCity() + "\n");
+        logger.info(() -> "               Street: " + user.getStreet() + "\n");
+        logger.info(() -> "               Email: " + user.getEmail() + "\n");
+        logger.info(() -> "               Password: " + "*".repeat(Math.max(0, user.getPassword().length())) + "\n");
     }
+    
     private static int getUserChoice() {
         int choice;
         Scanner scanner = new Scanner(System.in);
