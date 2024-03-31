@@ -1110,6 +1110,7 @@ public class Main {
         }
         adminMenu(admin);
     }
+
     private static void showUsers() {
         List<User> users = UserDB.getUsers();
         if (users.isEmpty()) {
@@ -1117,20 +1118,24 @@ public class Main {
             return;
         }
         String headerFormat = "| %-10s | %-20s | %-20s | %-15s | %-30s |\n";
-        logger.info(String.format(headerFormat, "ID", "Name", "Phone Number", "City", "Email"));
+        Supplier<String> headerFormatSupplier = () -> String.format(headerFormat, "ID", "Name", "Phone Number", "City", "Email");
+
+        logger.info(headerFormatSupplier.get());
         logger.info(new String(new char[112]).replace('\0', '-'));
         logger.info("\n");
         String userFormat = "| %-10d | %-20s | %-20s | %-15s | %-30s |\n";
         for (User user : users) {
-            logger.info(String.format(userFormat,
+            Supplier<String> userFormatSupplier = () -> String.format(userFormat,
                     user.getId(),
                     user.getName(),
                     user.getPhoneNumber(),
                     user.getCity(),
-                    user.getEmail()));
+                    user.getEmail());
+            logger.info(userFormatSupplier.get());
         }
         adminMenu(admin);
     }
+
     private static void showServicesAndDeleteOption() {
         logger.info("Please choose an action:\n1- Show Services\n2- Delete a Service\n");
         Scanner scanner = new Scanner(System.in);
