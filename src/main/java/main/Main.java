@@ -782,7 +782,7 @@ public class Main {
             // login as service provider
             else if (option == 2) {
                 String[] loginInfo = loginPage();
-                ServiceProviderLogin(loginInfo[0], loginInfo[1]);
+                serviceProviderLogin(loginInfo[0], loginInfo[1]);
             }// end of option 2 (login as service provider)
 
 //___________USER_______________________________________________________________________________________________________
@@ -1282,7 +1282,7 @@ public class Main {
     }
 
     //--------------------------------service provider function--------------------------------//
-    public static void ServiceProviderLogin(String email, String password) {
+    public static void serviceProviderLogin(String email, String password) {
         LoginToMyAppAsServiceProvider serviceProviderLogin = new LoginToMyAppAsServiceProvider();
         serviceProvider = serviceProviderLogin.loggInCheck(email, password);
         if (serviceProvider != null) {
@@ -1299,7 +1299,7 @@ public class Main {
             switch (choice) {
                 case 1:
                     String[] loginInfo = loginPage();
-                    ServiceProviderLogin(loginInfo[0], loginInfo[1]);
+                    serviceProviderLogin(loginInfo[0], loginInfo[1]);
                     break;
                 case 2:
                     menu();
