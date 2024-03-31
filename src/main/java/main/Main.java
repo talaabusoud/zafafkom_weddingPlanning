@@ -30,6 +30,11 @@ public class Main {
     private static final String SERVICE_ID_MESSAGE_PREFIX = "Service with ID ";
     private static final String STARS ="         ****************************************************         \n" ;
     private static final String LINE ="+-------+-----------------+------------+-----------------+------------+------------+\n" ;
+    private static final String INVALID_TYPE_MESSAGE = "Invalid type. Please enter a valid service type.";
+    private static final String INVALID_NAME_MESSAGE = "Invalid name. Names must not contain digits.";
+    private static final String INVALID_PRICE_MESSAGE = "Invalid price. Please enter a numeric value.";
+    private static final String INVALID_PHONE_MESSAGE = "Invalid phone number. Please enter a 10-digit number.";
+    private static final String INVALID_IMAGE_MESSAGE = "Invalid image URL. Please enter a valid URL ending with .png or .jpg.";
 
     private static User user;
     private static Admin admin;
@@ -1369,69 +1374,70 @@ public class Main {
         }
     }
 
-
+    // add new service
     private static void addNewService(ServiceProvider loggedInUser) {
         Scanner scanner = new Scanner(System.in);
 
-        String type;
-        do {
-            logger.info("Enter Service Type (e.g., Hall, Food, DJ, zaffa, decoration): ");
-            type = scanner.nextLine();
-            if (!TestInput.type(type)) {
-                logger.warning("Invalid type. Please enter a valid service type.");
-            }
-        } while (!TestInput.type(type));
+        Validator typeValidator = input -> TestInput.type(input);
 
-        String name;
-        do {
-            logger.info("Enter Service Name: ");
-            name = scanner.nextLine();
-            if (!TestInput.isValidName(name)) {
-                logger.warning("Invalid name. Names must not contain digits.");
-            }
-        } while (!TestInput.isValidName(name));
+        String type = getInputWithValidation(scanner, "Enter Service Type (e.g., Hall, Food, DJ, zaffa, decoration): ", TestInput::type, INVALID_TYPE_MESSAGE);
+        String name = getInputWithValidation(scanner, "Enter Service Name: ", TestInput::isValidName, INVALID_NAME_MESSAGE);
+        String location = getInput(scanner, "Enter Service Location: ");
+        String status = getStatusFromUser(scanner);
+        double price = getDoubleInputWithValidation(scanner, "Enter Service Price: ", TestInput::isValidPrice, INVALID_PRICE_MESSAGE);
+        String phone = getInputWithValidation(scanner, "Enter Service Phone: ", TestInput::isValidPhone, INVALID_PHONE_MESSAGE);
+        String image = getInputWithValidation(scanner, "Enter Service Image URL: ", TestInput::imge, INVALID_IMAGE_MESSAGE);
 
-        logger.info("Enter Service Location: ");
-        String location = scanner.nextLine(); // Assuming location does not need validation
+        Service newService = createService(loggedInUser, type, name, location, status, price, phone, image);
+        RequestToAddServiceDB.addService(newService);
 
-        String status;
+        logger.info("\nNew service has been added to the request list successfully.\n");
+        ServiceProviderMenu(serviceProvider);
+    }
+    
+    private static String getStatusFromUser(Scanner scanner) {
         logger.info("Enter Service Status: \n1- Available\n2- Not Available");
         int statusChoice = scanner.nextInt();
         scanner.nextLine();
-        status = (statusChoice == 2) ? "Not Available" : "Available";
-        String priceStr;
-        double price = 0;
+        return (statusChoice == 2) ? "Not Available" : "Available";
+    }
+    
+    private static String getInput(Scanner scanner, String prompt) {
+        logger.info(prompt);
+        return scanner.nextLine();
+    }
+    
+    private static String getInputWithValidation(Scanner scanner, String prompt, Validator validator, String errorMessage) {
+        String input;
         do {
-            logger.info("Enter Service Price: ");
-            priceStr = scanner.nextLine();
-            if (TestInput.isValidPrice(priceStr)) {
-                price = Double.parseDouble(priceStr);
-            } else {
-                logger.warning("Invalid price. Please enter a numeric value.");
+            input = getInput(scanner, prompt);
+            if (!validator.validate(input)) {
+                logger.warning(errorMessage);
             }
-        } while (!TestInput.isValidPrice(priceStr));
+        } while (!validator.validate(input));
+        return input;
+    }
+    
+    interface Validator {
+        boolean validate(String input);
+    }
 
-        String phone;
+    private static double getDoubleInputWithValidation(Scanner scanner, String prompt, Validator validator, String errorMessage) {
+        double input;
+        boolean isValid;
         do {
-            logger.info("Enter Service Phone: ");
-            phone = scanner.nextLine();
-            if (!TestInput.isValidPhone(phone)) {
-                logger.warning("Invalid phone number. Please enter a 10-digit number.");
+            input = Double.parseDouble(getInput(scanner, prompt));
+            isValid = validator.validate(Double.toString(input));
+            if (!isValid) {
+                logger.warning(errorMessage);
             }
-        } while (!TestInput.isValidPhone(phone));
+        } while (!isValid);
+        return input;
+    }
 
-        String image;
-        do {
-            logger.info("Enter Service Image URL: ");
-            image = scanner.nextLine();
-            if (!TestInput.imge(image)) {
-                logger.warning("Invalid image URL. Please enter a valid URL ending with .png or .jpg.");
-            }
-        } while (!TestInput.imge(image));
-
-        // Creating a new service object
+    private static Service createService(ServiceProvider loggedInUser, String type, String name, String location, String status, double price, String phone, String image) {
         Service newService = new Service();
-        newService.setId(RequestToAddServiceDB.getServices().size() + 1 +ServiceDB.getServices().size() + 1); // Assuming IDs are sequential
+        newService.setId(RequestToAddServiceDB.getServices().size() + 1 + ServiceDB.getServices().size() + 1); // Assuming IDs are sequential
         newService.setType(type);
         newService.setName(name);
         newService.setLocation(location);
@@ -1440,13 +1446,10 @@ public class Main {
         newService.setPhone(phone);
         newService.setImage(image);
         newService.setOwner(loggedInUser);
-
-        // Adding the service to the request list
-        RequestToAddServiceDB.addService(newService);
-
-        logger.info("\nNew service has been added to the request list successfully.\n");
-        ServiceProviderMenu(serviceProvider);
+        return newService;
     }
+    // end of add new service
+
     private static void showAndDeleteServices(ServiceProvider loggedInUser) {
         Scanner scanner = new Scanner(System.in);
 
