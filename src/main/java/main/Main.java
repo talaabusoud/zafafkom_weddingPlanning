@@ -1378,8 +1378,6 @@ public class Main {
     private static void addNewService(ServiceProvider loggedInUser) {
         Scanner scanner = new Scanner(System.in);
 
-        Validator typeValidator = input -> TestInput.type(input);
-
         String type = getInputWithValidation(scanner, "Enter Service Type (e.g., Hall, Food, DJ, zaffa, decoration): ", TestInput::type, INVALID_TYPE_MESSAGE);
         String name = getInputWithValidation(scanner, "Enter Service Name: ", TestInput::isValidName, INVALID_NAME_MESSAGE);
         String location = getInput(scanner, "Enter Service Location: ");
