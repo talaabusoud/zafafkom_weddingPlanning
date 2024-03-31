@@ -751,7 +751,8 @@ public class Main {
 
         return searchResults;
     }
-    public static void main(String[]args) {
+
+  public static void main(String[]args) {
         Scanner scanner = new Scanner(System.in);
         int option = 0;
 
@@ -760,56 +761,56 @@ public class Main {
                 menu(); // Display the menu options
                 option = scanner.nextInt();
                 scanner.nextLine(); // Consume newline left-over
+
+                if (option == 0) {
+                    logger.info("Exiting program...");
+                    break;
+                }
+
+//___________ADMIN______________________________________________________________________________________________________
+                // login as Admin
+                if (option == 1){
+                    String[] loginInfo = loginPage();
+                    adminLogin(loginInfo[0], loginInfo[1]);
+                }
+
+//___________SERVICE_PROVIDER___________________________________________________________________________________________
+                // login as service provider
+                else if (option == 2) {
+                    String[] loginInfo = loginPage();
+                    serviceProviderLogin(loginInfo[0], loginInfo[1]);
+                }// end of option 2 (login as service provider)
+
+//___________USER_______________________________________________________________________________________________________
+                // login as user
+                else if (option == 3 ) {
+                    String[] loginInfo = loginPage();
+                    userLogin(loginInfo[0], loginInfo[1]);
+                }// end of option 3 (login as user)
+
+//___________SIGNUP_____________________________________________________________________________________________________
+                // sign up user
+                else if (option == 4) {
+                    signUpPage();
+                }// end of option 4 (sing up)
+
+//______________________________________________________________________________________________________________________
+                // wrong input
+                else {
+                    displayUpLine();
+                    displayEnterValidNumber();
+                    displayDownLine();
+                    //menu();
+                }
+
             } catch (InputMismatchException e) {
                 displayUpLine();
                 displayEnterValidNumber();
                 displayDownLine();
                 scanner.nextLine(); // Clear scanner's buffer
-                continue;
             }
-            if (option == 0) {
-                logger.info("Exiting program...");
-                break;
-            }
-//___________ADMIN______________________________________________________________________________________________________
-            // login as Admin
-            if (option == 1){
-                String[] loginInfo = loginPage();
-                adminLogin(loginInfo[0], loginInfo[1]);
-            }
-
-//___________SERVICE_PROVIDER___________________________________________________________________________________________
-            // login as service provider
-            else if (option == 2) {
-                String[] loginInfo = loginPage();
-                serviceProviderLogin(loginInfo[0], loginInfo[1]);
-            }// end of option 2 (login as service provider)
-
-//___________USER_______________________________________________________________________________________________________
-            // login as user
-            else if (option == 3 ) {
-                String[] loginInfo = loginPage();
-                userLogin(loginInfo[0], loginInfo[1]);
-            }// end of option 3 (login as user)
-
-//___________SIGNUP_____________________________________________________________________________________________________
-            // sign up user
-            else if (option == 4) {
-                signUpPage();
-            }// end of option 4 (sing up)
-
-//______________________________________________________________________________________________________________________
-            // wrong input
-            else {
-                displayUpLine();
-                displayEnterValidNumber();
-                displayDownLine();
-                //menu();
-            }
-
         }// end of while
     }// end of static main
-
 
     //--------------------------------admin function--------------------------------//
     public static void adminLogin(String email , String password) {
