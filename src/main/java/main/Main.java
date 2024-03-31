@@ -1485,7 +1485,9 @@ public class Main {
     private static void displayServiceTableHeader() {
         String headerFormat = "| %-5s | %-15s | %-10s | %-12s | %-15s | %-15s | %-30s | %-15s |\n";
         logger.info("-----------------------------------------------------------------------------------------------------------------------------------------------------\n");
-        logger.info(String.format(headerFormat, "ID", "Name", "Price", "Status", "Location", "Owner", "Image URL", "Type"));
+        if (headerFormat != null) {
+            logger.info(String.format(headerFormat, "ID", "Name", "Price", "Status", "Location", "Owner", "Image URL", "Type"));
+        }
         logger.info("-----------------------------------------------------------------------------------------------------------------------------------------------------\n");
     }
 
