@@ -800,7 +800,6 @@ public class Main {
                     displayUpLine();
                     displayEnterValidNumber();
                     displayDownLine();
-                    //menu();
                 }
 
             } catch (InputMismatchException e) {
