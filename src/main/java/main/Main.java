@@ -1325,9 +1325,9 @@ public class Main {
         displayEmpty();
         logger.info(MSG);
         displaySTARSLine();
-        ServiceProviderMenu(loggedInUser );
+        serviceProviderMenu(loggedInUser );
     }
-    private static void ServiceProviderMenu(ServiceProvider loggedInUser) {
+    private static void serviceProviderMenu(ServiceProvider loggedInUser) {
         Scanner scanner = new Scanner(System.in);
         int choice;
 
@@ -1390,7 +1390,7 @@ public class Main {
         RequestToAddServiceDB.addService(newService);
 
         logger.info("\nNew service has been added to the request list successfully.\n");
-        ServiceProviderMenu(serviceProvider);
+        serviceProviderMenu(serviceProvider);
     }
     
     private static String getStatusFromUser(Scanner scanner) {
@@ -1454,7 +1454,7 @@ public class Main {
 
         if (providerServices.isEmpty()) {
             logger.info("\nYou have no services listed.\n");
-            ServiceProviderMenu(loggedInUser);
+            serviceProviderMenu(loggedInUser);
             return;
         }
 
@@ -1478,7 +1478,7 @@ public class Main {
                 break;
         }
 
-        ServiceProviderMenu(loggedInUser);
+        serviceProviderMenu(loggedInUser);
     }
 
     private static void displayServiceTableHeader() {
@@ -1520,7 +1520,7 @@ public class Main {
 
         if (reservationsForProvider.isEmpty()) {
             logger.info("\nNo reservations found.\n");
-            ServiceProviderMenu(serviceProvider);
+            serviceProviderMenu(serviceProvider);
         }
 
         ReservationDB.displayReservations(reservationsForProvider);
@@ -1547,7 +1547,7 @@ public class Main {
             default:
                 logger.info("\nInvalid option, please try again.");
         }
-        ServiceProviderMenu(serviceProvider);
+        serviceProviderMenu(serviceProvider);
 
     }
 
@@ -1684,7 +1684,7 @@ private static void editServiceProviderProfile(ServiceProvider loggedInUser) {
             logger.info("\nInvalid response.\n");
         }
 
-        ServiceProviderMenu(loggedInUser);
+        serviceProviderMenu(loggedInUser);
     }
 
     private static String getResponseFromUser(Scanner scanner) {
