@@ -1164,25 +1164,29 @@ public class Main {
         }
     }
     public static void displayServices(List<Service> services) {
+        String temp;
         if (services.isEmpty()) {
             logger.info("No services found.");
         } else {
             String headerFormat = "| %-10s | %-20s | %-20s | %-15s | %-30s |\n";
-            logger.info("\n"+String.format(headerFormat, "ID", "Name", "Type", "Status", "Price"));
+            temp = "\n"+String.format(headerFormat, "ID", "Name", "Type", "Status", "Price");
+            logger.info(temp);
 
             // عرض كل خدمة
             for (Service service : services) {
-                logger.info(String.format(headerFormat,
-                        service.getId(), service.getName(), service.getType(), service.getStatus(), service.getPrice()));
+                temp=String.format(headerFormat, service.getId(), service.getName(), service.getType(), service.getStatus(), service.getPrice());
+                logger.info(temp);
             }
         }
     }
     public static void deleteService(int id) {
         boolean removed = ServiceDB.deleteService(id);
+        String temp;
         if (removed) {
-            logger.info("\nService with ID " + id + " was deleted successfully.\n");
-        } else {
-            logger.warning("\nService with ID " + id + " could not be found or deleted.\n");
+            temp="\nService with ID " + id + " was deleted successfully.\n";
+            logger.info(temp);
+        } else {temp="\nService with ID " + id + " could not be found or deleted.\n";
+            logger.warning(temp);
         }
     }
 
@@ -1243,6 +1247,7 @@ public class Main {
     }
 
     private static void showRequestsList() {
+        String temp;
         Scanner scanner = new Scanner(System.in);
         List<Service> requests = RequestToAddServiceDB.getServices(); // الحصول على الطلبات
 
@@ -1279,18 +1284,22 @@ public class Main {
                     if (serviceToApprove != null) {
                         ServiceDB.addService(serviceToApprove);
                         RequestToAddServiceDB.cancelRequest(approveId);
-                        logger.info(SERVICE_ID_MESSAGE_PREFIX  + approveId + " has been approved.");
+                        temp=SERVICE_ID_MESSAGE_PREFIX  + approveId + " has been approved.";
+                        logger.info(temp);
                     } else {
-                        logger.info(SERVICE_ID_MESSAGE_PREFIX  + approveId + " not found.");
+                        temp=SERVICE_ID_MESSAGE_PREFIX  + approveId + " not found.";
+                        logger.info(temp);
                     }
                     break;
                 case 3:
                     logger.info("Enter the ID of the service to reject:");
                     int rejectId = scanner.nextInt();
                     if (RequestToAddServiceDB.getServices().removeIf(s -> s.getId() == rejectId)) {
-                        logger.info(SERVICE_ID_MESSAGE_PREFIX  + rejectId + " has been rejected.");
+                        temp=SERVICE_ID_MESSAGE_PREFIX  + rejectId + " has been rejected.";
+                        logger.info(temp);
                     } else {
-                        logger.info(SERVICE_ID_MESSAGE_PREFIX  + rejectId + " not found.");
+                        temp=SERVICE_ID_MESSAGE_PREFIX  + rejectId + " not found.";
+                        logger.info(temp);
                     }
                     break;
                 case 4: break;
@@ -1504,7 +1513,8 @@ public class Main {
     private static void displayServiceTableHeader() {
         String headerFormat = "| %-5s | %-15s | %-10s | %-12s | %-15s | %-15s | %-30s | %-15s |\n";
         logger.info("-----------------------------------------------------------------------------------------------------------------------------------------------------\n");    
-        logger.info(String.format(headerFormat, "ID", "Name", "Price", "Status", "Location", "Owner", "Image URL", "Type"));
+       String temp=String.format(headerFormat, "ID", "Name", "Price", "Status", "Location", "Owner", "Image URL", "Type");
+        logger.info(temp);
         logger.info("-----------------------------------------------------------------------------------------------------------------------------------------------------\n");
     }
 
