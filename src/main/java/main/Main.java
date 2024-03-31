@@ -19,6 +19,8 @@ import java.util.stream.Collectors;
 import static database.ServiceProviderDB.displayServiceProvider;
 
 public class Main {
+    private static final String WELCOME_MESSAGE_PREFIX = "|        *                   WELCOME ";
+    private static final String WELCOME_MESSAGE_SUFFIX = ":)                    *        |\n";
     private static final String MSG ="|              ENTER THE NUMBER OF ACTION YOU WANT TO TAKE              |\n" ;
     private static final String MSG_LOGIN_FAILED ="|   Login failed! Please check your email and password and try again.   |\n" ;
     private static final String MSG_RE_ENTER ="|                 1- Re-enter email and password                        |\n" ;
@@ -143,66 +145,66 @@ public class Main {
             return;
         }
 
+        displayUpLine();
+        displayEmpty();
+        displaySTARSLine();
+        logger.warning(WELCOME_MESSAGE_PREFIX + loggedInUser.getName() + WELCOME_MESSAGE_SUFFIX);
+        displaySTARSLine();
+        displayEmpty();
+        logger.info(MSG);
+        displaySTARSLine();
+        displayEmpty();
+        logger.info("|------------------------------- User Page -----------------------------|\n");
+        logger.info("|               1- Go To Services Page                                  |\n");
+        logger.info("|               2- My Profile                                           |\n");
+        logger.info("|               3- Log out                                              |\n");
+        displayDownLine();
+        logger.info("\n");
+
+        try {
+            userChoice = scanner.nextInt();
+        } catch (InputMismatchException e) {
+            // Clear buffer (avoid infinite loop)
+            scanner.nextLine();
             displayUpLine();
-            displayEmpty();
-            displaySTARSLine();
-            logger.warning("|        *                   WELCOME " + loggedInUser.getName() + ":)                    *        |\n");
-            displaySTARSLine();
-            displayEmpty();
-            logger.info(MSG);
-            displaySTARSLine();
-            displayEmpty();
-            logger.info("|------------------------------- User Page -----------------------------|\n");
-            logger.info("|               1- Go To Services Page                                  |\n");
-            logger.info("|               2- My Profile                                           |\n");
-            logger.info("|               3- Log out                                              |\n");
+            logger.warning(MSG_INVALID_INPUT);
+            logger.warning("|                   Please enter a number (1 to 4).                    |\n");
             displayDownLine();
-            logger.info("\n");
+            userChoice = -1;
+        }
 
-            try {
-                userChoice = scanner.nextInt();
-            } catch (InputMismatchException e) {
-                // Clear buffer (avoid infinite loop)
-                scanner.nextLine();
-                displayUpLine();
-                logger.warning(MSG_INVALID_INPUT);
-                logger.warning("|                   Please enter a number (1 to 4).                    |\n");
-                displayDownLine();
-                userChoice = -1;
-            }
-
-            switch (userChoice) {
-                case 1:
-                    if (user != null) {
-                        servicesPage(user);
-                    } else {
-                        displayUpLine();
-                        logger.warning(MSG_LOG_IN_FIRST);
-                        displayDownLine();
-                    }
-                    break;
-
-                case 2:
-                    if (user != null) {
-                        userProfile(user);
-                    } else {
-                        displayUpLine();
-                        logger.warning(MSG_LOG_IN_FIRST);
-                        displayDownLine();
-                    }
-                    break;
-
-
-                case 3:
-                    logout();
-                    break;
-
-                default:
+        switch (userChoice) {
+            case 1:
+                if (user != null) {
+                    servicesPage(user);
+                } else {
                     displayUpLine();
-                    displayEnterValidNumber();
+                    logger.warning(MSG_LOG_IN_FIRST);
                     displayDownLine();
-                    break;
-            }
+                }
+                break;
+
+            case 2:
+                if (user != null) {
+                    userProfile(user);
+                } else {
+                    displayUpLine();
+                    logger.warning(MSG_LOG_IN_FIRST);
+                    displayDownLine();
+                }
+                break;
+
+
+            case 3:
+                logout();
+                break;
+
+            default:
+                displayUpLine();
+                displayEnterValidNumber();
+                displayDownLine();
+                break;
+        }
     }
     //sign up page (register user)
     private static void displaySignUpHeader() {
@@ -842,7 +844,7 @@ public class Main {
         displayUpLine();
         displayEmpty();
         displaySTARSLine();
-        logger.warning("|        *                   WELCOME " + loggedInUser.getEmail() + ":)                    *        |\n");
+        logger.warning(WELCOME_MESSAGE_PREFIX + loggedInUser.getEmail() + WELCOME_MESSAGE_SUFFIX);
         displaySTARSLine();
         displayEmpty();
         logger.info(MSG);
@@ -850,66 +852,66 @@ public class Main {
         Adminmenu(loggedInUser );
     }
     private static void Adminmenu(Admin loggedInUser){
-    Scanner scanner = new Scanner(System.in);
-    int adminChoice;
+        Scanner scanner = new Scanner(System.in);
+        int adminChoice;
 
-    logger.info("\n|------------------------------- Admin Page -----------------------------|\n");
-    logger.info("|                 1- add new user / service provider / Admin             |\n");
-    logger.info("|                 2- Show service provider                               |\n");
-    logger.info("|                 3- Show users                                          |\n");
-    logger.info("|                 4- Show services & delete                              |\n");
-    logger.info("|                 5- show reservations & delete                          |\n");
-    logger.info("|                 6- profile                                             |\n");
-    logger.info("|                 7- requests list                                       |\n");
-    logger.info("|                 8- logout                                              |\n");
-    logger.info("-------------------------------------------------------------------------|\n");
-    logger.info("\n");
+        logger.info("\n|------------------------------- Admin Page -----------------------------|\n");
+        logger.info("|                 1- add new user / service provider / Admin             |\n");
+        logger.info("|                 2- Show service provider                               |\n");
+        logger.info("|                 3- Show users                                          |\n");
+        logger.info("|                 4- Show services & delete                              |\n");
+        logger.info("|                 5- show reservations & delete                          |\n");
+        logger.info("|                 6- profile                                             |\n");
+        logger.info("|                 7- requests list                                       |\n");
+        logger.info("|                 8- logout                                              |\n");
+        logger.info("-------------------------------------------------------------------------|\n");
+        logger.info("\n");
 
-    try {
-        adminChoice = scanner.nextInt();
-    } catch (InputMismatchException e) {
-        // Clear buffer (avoid infinite loop)
-        scanner.nextLine();
-        displayUpLine();
-        logger.warning(MSG_INVALID_INPUT);
-        logger.warning("|                   Please enter a number (1 to 8).                    |\n");
-        displayDownLine();
-        adminChoice = -1;
-    }
-
-    switch (adminChoice) {
-        case 1: // إضافة مستخدم جديد أو مقدم خدمة
-            addNewUser();
-            break;
-        case 2: // عرض مقدمي الخدمات
-                showServiceProviders();
-            break;
-        case 3: // عرض المستخدمين
-               showUsers();
-            break;
-        case 4: // عرض الخدمات والحذف
-             showServicesAndDeleteOption();
-            break;
-        case 5: // عرض الحجوزات وخيار الحذف
-            showReservationsAndDeleteOption();
-            break;
-        case 6: // عرض الملف الشخصي للإدارة
-            showAdminProfile(loggedInUser);
-            break;
-        case 7: // عرض قائمة الطلبات
-            showRequestsList();
-            break;
-        case 8: // تسجيل الخروج
-            logout();
-            break;
-
-        default:
+        try {
+            adminChoice = scanner.nextInt();
+        } catch (InputMismatchException e) {
+            // Clear buffer (avoid infinite loop)
+            scanner.nextLine();
             displayUpLine();
-            displayEnterValidNumber();
+            logger.warning(MSG_INVALID_INPUT);
+            logger.warning("|                   Please enter a number (1 to 8).                    |\n");
             displayDownLine();
-            break;
+            adminChoice = -1;
+        }
+
+        switch (adminChoice) {
+            case 1: // إضافة مستخدم جديد أو مقدم خدمة
+                addNewUser();
+                break;
+            case 2: // عرض مقدمي الخدمات
+                showServiceProviders();
+                break;
+            case 3: // عرض المستخدمين
+                showUsers();
+                break;
+            case 4: // عرض الخدمات والحذف
+                showServicesAndDeleteOption();
+                break;
+            case 5: // عرض الحجوزات وخيار الحذف
+                showReservationsAndDeleteOption();
+                break;
+            case 6: // عرض الملف الشخصي للإدارة
+                showAdminProfile(loggedInUser);
+                break;
+            case 7: // عرض قائمة الطلبات
+                showRequestsList();
+                break;
+            case 8: // تسجيل الخروج
+                logout();
+                break;
+
+            default:
+                displayUpLine();
+                displayEnterValidNumber();
+                displayDownLine();
+                break;
+        }
     }
-}
     private static void addNewUser() {
 
 
@@ -1222,53 +1224,53 @@ public class Main {
 
         }else{
 
-        ServiceDB.displayServices(requests);
+            ServiceDB.displayServices(requests);
 
-        logger.info("Options:\n");
-        logger.info("1- Approve All Requests\n");
-        logger.info("2- Approve a Specific Request\n");
-        logger.info("3- Reject a Specific Request\n");
-        logger.info("4- Exit\n");
-        logger.info("Enter your choice:");
+            logger.info("Options:\n");
+            logger.info("1- Approve All Requests\n");
+            logger.info("2- Approve a Specific Request\n");
+            logger.info("3- Reject a Specific Request\n");
+            logger.info("4- Exit\n");
+            logger.info("Enter your choice:");
 
-        int choice = scanner.nextInt();
-        scanner.nextLine();
+            int choice = scanner.nextInt();
+            scanner.nextLine();
 
-        switch (choice) {
-            case 1:
-                RequestToAddServiceDB.getServices().forEach(ServiceDB::addService);
-                RequestToAddServiceDB.clearTheRequestList();
-                logger.info("All requests have been approved.");
-                break;
-            case 2:
-                logger.info("Enter the ID of the service to approve:");
-                int approveId = scanner.nextInt();
-                Service serviceToApprove = requests.stream()
-                        .filter(s -> s.getId() == approveId)
-                        .findFirst()
-                        .orElse(null);
-                if (serviceToApprove != null) {
-                    ServiceDB.addService(serviceToApprove);
-                    RequestToAddServiceDB.cancelRequest(approveId);
-                    logger.info("Service with ID " + approveId + " has been approved.");
-                } else {
-                    logger.info("Service with ID " + approveId + " not found.");
-                }
-                break;
-            case 3:
-                logger.info("Enter the ID of the service to reject:");
-                int rejectId = scanner.nextInt();
-                if (RequestToAddServiceDB.getServices().removeIf(s -> s.getId() == rejectId)) {
-                    logger.info("Service with ID " + rejectId + " has been rejected.");
-                } else {
-                    logger.info("Service with ID " + rejectId + " not found.");
-                }
-                break;
-            case 4: break;
-            default:
-                logger.info("Invalid choice.");
-                break;
-        }}
+            switch (choice) {
+                case 1:
+                    RequestToAddServiceDB.getServices().forEach(ServiceDB::addService);
+                    RequestToAddServiceDB.clearTheRequestList();
+                    logger.info("All requests have been approved.");
+                    break;
+                case 2:
+                    logger.info("Enter the ID of the service to approve:");
+                    int approveId = scanner.nextInt();
+                    Service serviceToApprove = requests.stream()
+                            .filter(s -> s.getId() == approveId)
+                            .findFirst()
+                            .orElse(null);
+                    if (serviceToApprove != null) {
+                        ServiceDB.addService(serviceToApprove);
+                        RequestToAddServiceDB.cancelRequest(approveId);
+                        logger.info("Service with ID " + approveId + " has been approved.");
+                    } else {
+                        logger.info("Service with ID " + approveId + " not found.");
+                    }
+                    break;
+                case 3:
+                    logger.info("Enter the ID of the service to reject:");
+                    int rejectId = scanner.nextInt();
+                    if (RequestToAddServiceDB.getServices().removeIf(s -> s.getId() == rejectId)) {
+                        logger.info("Service with ID " + rejectId + " has been rejected.");
+                    } else {
+                        logger.info("Service with ID " + rejectId + " not found.");
+                    }
+                    break;
+                case 4: break;
+                default:
+                    logger.info("Invalid choice.");
+                    break;
+            }}
         Adminmenu(admin);
     }
 
@@ -1311,7 +1313,7 @@ public class Main {
         displayUpLine();
         displayEmpty();
         displaySTARSLine();
-        logger.warning("|        *                   WELCOME " + loggedInUser.getEmail() + ":)                    *        |\n");
+        logger.warning(WELCOME_MESSAGE_PREFIX + loggedInUser.getEmail() + WELCOME_MESSAGE_SUFFIX);
         displaySTARSLine();
         displayEmpty();
         logger.info(MSG);
@@ -1399,7 +1401,7 @@ public class Main {
         double price = 0;
         do {
             logger.info("Enter Service Price: ");
-             priceStr = scanner.nextLine();
+            priceStr = scanner.nextLine();
             if (TestInput.isValidPrice(priceStr)) {
                 price = Double.parseDouble(priceStr);
             } else {
@@ -1461,39 +1463,39 @@ public class Main {
             providerServices.forEach(ServiceDB::displayService);
 
 
-                logger.info("Options: \n1- Edit a Service\n2- Delete a Service\n3- Exit\n");
-                logger.info("Enter your choice: ");
-                int choice = scanner.nextInt();
+            logger.info("Options: \n1- Edit a Service\n2- Delete a Service\n3- Exit\n");
+            logger.info("Enter your choice: ");
+            int choice = scanner.nextInt();
 
-                switch (choice) {
-                    case 1:
-                        editService(loggedInUser);
-                        break;
-                    case 2:
-                        // حذف خدمة
-                        logger.info("Enter the ID of the service you want to delete:");
-                        int deleteId = scanner.nextInt();
-                        scanner.nextLine(); // تنظيف البافر
-                        boolean serviceExists = false;
-                        for (Service service : providerServices) {
-                            if (service.getId() == deleteId) {
-                                serviceExists = true;
-                                break;
-                            }
+            switch (choice) {
+                case 1:
+                    editService(loggedInUser);
+                    break;
+                case 2:
+                    // حذف خدمة
+                    logger.info("Enter the ID of the service you want to delete:");
+                    int deleteId = scanner.nextInt();
+                    scanner.nextLine(); // تنظيف البافر
+                    boolean serviceExists = false;
+                    for (Service service : providerServices) {
+                        if (service.getId() == deleteId) {
+                            serviceExists = true;
+                            break;
                         }
-                        if (serviceExists && ServiceDB.deleteService(deleteId)) {
-                            logger.info("Service deleted successfully.");
-                        } else {
-                            logger.info("Service could not be found or does not belong to you.");
-                        }
+                    }
+                    if (serviceExists && ServiceDB.deleteService(deleteId)) {
+                        logger.info("Service deleted successfully.");
+                    } else {
+                        logger.info("Service could not be found or does not belong to you.");
+                    }
 
-                        break;
-                    case 3:
-                        break;
-                    default:
-                        logger.info("Invalid option. Please enter a valid choice.");
-                        break;
-                }
+                    break;
+                case 3:
+                    break;
+                default:
+                    logger.info("Invalid option. Please enter a valid choice.");
+                    break;
+            }
             ServiceProviderMenu(serviceProvider);
 
         }
@@ -1503,37 +1505,37 @@ public class Main {
 
 
 
-            List<Reserve> reservationsForProvider = ReservationDB.getReservationsForService(loggedInUser.getId());
+        List<Reserve> reservationsForProvider = ReservationDB.getReservationsForService(loggedInUser.getId());
 
-            if (reservationsForProvider.isEmpty()) {
-                logger.info("\nNo reservations found.\n");
-                ServiceProviderMenu(serviceProvider);
-            }
+        if (reservationsForProvider.isEmpty()) {
+            logger.info("\nNo reservations found.\n");
+            ServiceProviderMenu(serviceProvider);
+        }
 
-            ReservationDB.displayReservations(reservationsForProvider);
+        ReservationDB.displayReservations(reservationsForProvider);
 
-            logger.info("\nOptions:");
-            logger.info("\n1 - Delete a reservation");
-            logger.info("\n2 - Exit");
+        logger.info("\nOptions:");
+        logger.info("\n1 - Delete a reservation");
+        logger.info("\n2 - Exit");
 
-            logger.info("\nEnter your choice: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+        logger.info("\nEnter your choice: ");
+        int choice = scanner.nextInt();
+        scanner.nextLine();
 
-            switch (choice) {
-                case 1: // Delete a reservation
-                    logger.info("\nEnter reservation ID to delete: ");
-                    String reservationIdToDelete = scanner.nextLine();
-                    ReservationDB.deleteReservation(reservationIdToDelete);
-                    break;
+        switch (choice) {
+            case 1: // Delete a reservation
+                logger.info("\nEnter reservation ID to delete: ");
+                String reservationIdToDelete = scanner.nextLine();
+                ReservationDB.deleteReservation(reservationIdToDelete);
+                break;
 
-                case 2: // Exit
+            case 2: // Exit
 
-                    break;
+                break;
 
-                default:
-                    logger.info("\nInvalid option, please try again.");
-            }
+            default:
+                logger.info("\nInvalid option, please try again.");
+        }
         ServiceProviderMenu(serviceProvider);
 
     }
@@ -1688,14 +1690,3 @@ public class Main {
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
