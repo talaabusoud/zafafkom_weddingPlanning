@@ -856,9 +856,9 @@ public class Main {
         displayEmpty();
         logger.info(MSG);
         displaySTARSLine();
-        Adminmenu(loggedInUser );
+        adminMenu(loggedInUser );
     }
-    private static void Adminmenu(Admin loggedInUser){
+    private static void adminMenu(Admin loggedInUser){
         Scanner scanner = new Scanner(System.in);
         int adminChoice;
 
@@ -942,7 +942,7 @@ public class Main {
                 signUpPage();
                 break;
             case "4":
-                Adminmenu(admin);
+                adminMenu(admin);
                 break;
             default:
                 System.out.println("Invalid choice. Please enter a number between 1 and 3.");
@@ -988,7 +988,7 @@ public class Main {
         Admin newAdmin = new Admin(password,email , phone, address, name, id);
         AdminDB.addAdmin(password,email, phone, address, name, id);
         AdminDB.displayAdmin(newAdmin);
-        Adminmenu(admin);
+        adminMenu(admin);
 
     }
     private static void addServiceProvider() {
@@ -1051,7 +1051,7 @@ public class Main {
                 ));
             }
         }
-        Adminmenu(admin);
+        adminMenu(admin);
     }
     private static void showReservationsAndDeleteOption() {
         Scanner scanner = new Scanner(System.in);
@@ -1081,7 +1081,7 @@ public class Main {
                 if (reservationToDelete != null) {
                     ReservationDB.deleteReservation(reservationId);
                     logger.info("\nReservation deleted successfully.");
-                    Adminmenu(admin);
+                    adminMenu(admin);
                 } else {
                     logger.info("\nNo reservation found with the ID: " + reservationId);
                     showReservationsAndDeleteOption();
@@ -1096,7 +1096,7 @@ public class Main {
                 showReservationsAndDeleteOption();
                 break;
         }
-        Adminmenu(admin);
+        adminMenu(admin);
     }
     private static void showUsers() {
         List<User> users = UserDB.getUsers();
@@ -1117,7 +1117,7 @@ public class Main {
                     user.getCity(),
                     user.getEmail()));
         }
-        Adminmenu(admin);
+        adminMenu(admin);
     }
     private static void showServicesAndDeleteOption() {
         logger.info("Please choose an action:\n1- Show Services\n2- Delete a Service\n");
@@ -1128,7 +1128,7 @@ public class Main {
         switch (choice) {
             case 1:
                 displayServices(ServiceDB.getServices());
-                Adminmenu(admin);
+                adminMenu(admin);
 
                 break;
             case 2:
@@ -1136,7 +1136,7 @@ public class Main {
                 int serviceId = scanner.nextInt();
                 scanner.nextLine();
                 deleteService(serviceId);
-                Adminmenu(admin);
+                adminMenu(admin);
                 break;
             default:
                 logger.warning("Invalid choice. Please select 1 or 2.");
@@ -1183,7 +1183,7 @@ public class Main {
         } else {
             logger.info("\nInvalid response.\n");
         }
-        Adminmenu(admin); // Assuming this is meant to call some kind of menu display method for the admin.
+        adminMenu(admin); // Assuming this is meant to call some kind of menu display method for the admin.
     }
 
     private static void updateAdminProfile(Admin loggedInUser, Scanner scanner) {
@@ -1278,7 +1278,7 @@ public class Main {
                     logger.info("Invalid choice.");
                     break;
             }}
-        Adminmenu(admin);
+        adminMenu(admin);
     }
 
     //--------------------------------service provider function--------------------------------//
