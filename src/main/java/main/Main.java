@@ -1553,92 +1553,114 @@ public class Main {
 
     }
 
+// edit service
     private static void editService(ServiceProvider loggedInUser) {
         Scanner scanner = new Scanner(System.in);
-        logger.info("\nEnter the ID of the service you want to edit:");
-        int serviceId = scanner.nextInt();
-        scanner.nextLine(); // لتنظيف البافر
+        int serviceId = getServiceIdFromUser(scanner);
 
-        // البحث عن الخدمة بناءً على مُعرف الخدمة ومُعرف مقدم الخدمة
-        Service serviceToEdit = null;
-        for (Service service : ServiceDB.getServicesByProvider(loggedInUser.getId())) {
-            if (service.getId() == serviceId) {
-                serviceToEdit = service;
-                break;
-            }
-        }
-
+        Service serviceToEdit = findServiceById(serviceId, loggedInUser);
         if (serviceToEdit == null) {
             logger.info("\nService not found or does not belong to you.\n");
             return;
         }
+        scanner.nextLine();
+        
+        editServiceName(scanner, serviceToEdit);
+        editServiceType(scanner, serviceToEdit);
+        editServiceLocation(scanner, serviceToEdit);
+        editServiceStatus(scanner, serviceToEdit);
+        editServicePrice(scanner, serviceToEdit);
+        editServicePhone(scanner, serviceToEdit);
+        editServiceImageURL(scanner, serviceToEdit);
 
-        // تعديل اسم الخدمة
+        ServiceDB.updateService(serviceToEdit);
+        logger.info("\nService updated successfully.\n");
+    }
+
+    private static int getServiceIdFromUser(Scanner scanner) {
+        logger.info("\nEnter the ID of the service you want to edit:");
+        return scanner.nextInt();
+    }
+
+    private static Service findServiceById(int serviceId, ServiceProvider loggedInUser) {
+        for (Service service : ServiceDB.getServicesByProvider(loggedInUser.getId())) {
+            if (service.getId() == serviceId) {
+                return service;
+            }
+        }
+        return null;
+    }
+
+    private static void editServiceName(Scanner scanner, Service service) {
         logger.info("\nEnter the new name (leave blank to keep current):");
         String newName = scanner.nextLine().trim();
         if (!newName.isEmpty() && TestInput.isValidName(newName)) {
-            serviceToEdit.setName(newName);
+            service.setName(newName);
         } else if (!newName.isEmpty()) {
             logger.info("\nInvalid name. Keeping the current name.");
         }
+    }
 
-        // تعديل نوع الخدمة
+    private static void editServiceType(Scanner scanner, Service service) {
         logger.info("\nEnter the new type (e.g., Hall, Food, DJ, Zaffa, Decoration) (leave blank to keep current):");
         String newType = scanner.nextLine().trim();
         if (!newType.isEmpty() && TestInput.type(newType)) {
-            serviceToEdit.setType(newType);
+            service.setType(newType);
         } else if (!newType.isEmpty()) {
             logger.info("\nInvalid type. Keeping the current type.");
         }
+    }
 
-        // تعديل الموقع
+    private static void editServiceLocation(Scanner scanner, Service service) {
         logger.info("\nEnter the new location (leave blank to keep current):");
         String newLocation = scanner.nextLine().trim();
         if (!newLocation.isEmpty()) {
-            serviceToEdit.setLocation(newLocation);
+            service.setLocation(newLocation);
         }
+    }
 
-        // تعديل الحالة
-        logger.info("\nEnter the new status (\n1- for Available, \n2 -for Not Available  ");
+    private static void editServiceStatus(Scanner scanner, Service service) {
+        logger.info("\nEnter the new status (1 for Available, 2 for Not Available):");
         String statusChoice = scanner.nextLine().trim();
         if ("1".equals(statusChoice)) {
-            serviceToEdit.setStatus("Available");
+            service.setStatus("Available");
         } else {
-            serviceToEdit.setStatus("Not Available");
+            service.setStatus("Not Available");
         }
+    }
 
-        // تعديل السعر
+    private static void editServicePrice(Scanner scanner, Service service) {
         logger.info("\nEnter the new price (leave blank to keep current):");
         String newPriceStr = scanner.nextLine().trim();
         if (!newPriceStr.isEmpty() && TestInput.isValidPrice(newPriceStr)) {
             double newPrice = Double.parseDouble(newPriceStr);
-            serviceToEdit.setPrice(newPrice);
+            service.setPrice(newPrice);
         } else if (!newPriceStr.isEmpty()) {
             logger.info("\nInvalid price. Keeping the current price.");
         }
+    }
 
-        // تعديل الهاتف
+    private static void editServicePhone(Scanner scanner, Service service) {
         logger.info("\nEnter the new phone (leave blank to keep current):");
         String newPhone = scanner.nextLine().trim();
         if (!newPhone.isEmpty() && TestInput.isValidPhone(newPhone)) {
-            serviceToEdit.setPhone(newPhone);
+            service.setPhone(newPhone);
         } else if (!newPhone.isEmpty()) {
             logger.info("\nInvalid phone. Keeping the current phone.");
         }
+    }
 
-        // تعديل URL الصورة
+    private static void editServiceImageURL(Scanner scanner, Service service) {
         logger.info("\nEnter the new image URL (leave blank to keep current):");
         String newImageURL = scanner.nextLine().trim();
         if (!newImageURL.isEmpty() && TestInput.imge(newImageURL)) {
-            serviceToEdit.setImage(newImageURL);
+            service.setImage(newImageURL);
         } else if (!newImageURL.isEmpty()) {
             logger.info("\nInvalid image URL. Keeping the current image URL.");
         }
-
-        // تحديث الخدمة في قاعدة البيانات
-        ServiceDB.updateService(serviceToEdit);
-        logger.info("\nService updated successfully.\n");
     }
+// end of edit service
+ 
     private static void editServiceProviderProfile(ServiceProvider loggedInUser) {
         Scanner scanner = new Scanner(System.in);
 
