@@ -1094,14 +1094,15 @@ public class Main {
                     logger.info("\nReservation deleted successfully.");
                     adminMenu(admin);
                 } else {
-                    logger.info("\nNo reservation found with the ID: " + reservationId);
+                    logger.info(() -> "\nNo reservation found with the ID: " + reservationId);
                     showReservationsAndDeleteOption();
                 }
-
                 break;
+
             case 2:
                 logger.info("\nExiting...");
                 break;
+            
             default:
                 logger.info("\nInvalid choice. Please enter 1 or 2.");
                 showReservationsAndDeleteOption();
