@@ -26,6 +26,7 @@ public class Main {
     private static final String MSG_RE_ENTER ="|                 1- Re-enter email and password                        |\n" ;
     private static final String MSG_LOG_IN_FIRST ="| User not logged in. Please log in first.                              |\n" ;
     private static final String MSG_INVALID_INPUT ="|                            Invalid input.                             |\n" ;
+    private static final String PASSWORD_WARNING_MESSAGE = "Password must be at least 6 characters long. Please enter a stronger password:";
     private static final String STARS ="         ****************************************************         \n" ;
     private static final String LINE ="+-------+-----------------+------------+-----------------+------------+------------+\n" ;
 
@@ -973,7 +974,7 @@ public class Main {
         logger.info("Enter Admin's Password:");
         String password = scanner.nextLine();
         while (password.length() < 6) {
-            logger.warning("Password must be at least 6 characters long. Please enter a stronger password:");
+            logger.warning(PASSWORD_WARNING_MESSAGE);
             password = scanner.nextLine();
         }
 
@@ -1014,7 +1015,7 @@ public class Main {
         logger.info("Enter Admin's Password:");
         String password = scanner.nextLine();
         while (password.length() < 6) {
-            logger.warning("Password must be at least 6 characters long. Please enter a stronger password:");
+            logger.warning(PASSWORD_WARNING_MESSAGE);
             password = scanner.nextLine();
         }
         int id = AdminDB.getAdmins().size() + 1;
@@ -1208,7 +1209,7 @@ public class Main {
         String newPassword = scanner.nextLine().trim();
         if (!newPassword.isEmpty()) {
             while (newPassword.length() < 6) {
-                logger.warning("Password must be at least 6 characters long. Please enter a stronger password:");
+                logger.warning(PASSWORD_WARNING_MESSAGE);
                 newPassword = scanner.nextLine().trim();
             }
             admin.setPassword(newPassword);
@@ -1667,7 +1668,7 @@ public class Main {
             String newPassword = scanner.nextLine().trim();
             if (!newPassword.isEmpty()){
                 while (newPassword.length() < 6) {
-                    logger.warning("\nPassword must be at least 6 characters long. Please enter a stronger password:");
+                    logger.warning("\n"+PASSWORD_WARNING_MESSAGE);
                     newPassword = scanner.nextLine().trim();
                 }
                 loggedInUser.setPassword(newPassword);
