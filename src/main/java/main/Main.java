@@ -1117,11 +1117,14 @@ public class Main {
             logger.info("No users found.");
             return;
         }
+        String horizontalLine = new String(new char[112]).replace('\0', '-');
+        Supplier<String> horizontalLineSupplier = () -> horizontalLine;
+
         String headerFormat = "| %-10s | %-20s | %-20s | %-15s | %-30s |\n";
         Supplier<String> headerFormatSupplier = () -> String.format(headerFormat, "ID", "Name", "Phone Number", "City", "Email");
 
         logger.info(headerFormatSupplier.get());
-        logger.info(new String(new char[112]).replace('\0', '-'));
+        logger.info(horizontalLineSupplier.get());
         logger.info("\n");
         String userFormat = "| %-10d | %-20s | %-20s | %-15s | %-30s |\n";
         for (User user : users) {
