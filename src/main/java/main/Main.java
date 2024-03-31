@@ -13,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.function.Supplier;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -1035,7 +1036,7 @@ public class Main {
         ServiceProviderDB.addServiceProvider(newServiceProvider);
         displayServiceProvider(newServiceProvider);
     }
-   public static void showServiceProviders() {
+    public static void showServiceProviders() {
         List<ServiceProvider> serviceProviders = ServiceProviderDB.getServiceProviders();
         if (serviceProviders.isEmpty()) {
             logger.info("No service providers found.");
@@ -1044,8 +1045,10 @@ public class Main {
             Supplier<String> headerFormatSupplier = () -> String.format(format, "ID", "Name", "Phone", "Address", "Email", "Password");
 
             logger.info(headerFormatSupplier.get());
-            logger.info(new String(new char[100]).replace('\0', '-'));
-            logger.info("\n");
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(new String(new char[100]).replace('\0', '-'));
+                logger.info("\n");
+            }
 
             for (ServiceProvider serviceProvider : serviceProviders) {
                 Supplier<String> serviceProviderFormatSupplier = () -> String.format(format,
