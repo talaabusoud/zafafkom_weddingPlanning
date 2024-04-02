@@ -22,7 +22,7 @@ import java.util.Map;
 public class UserEdit_deleteReservation {
     private User user;
     private Reserve reservation;
-    private Service service;
+
 
     @Given("there exists a reservation with id {string} for the user")
     public void thereExistsAReservationWithIdForTheUser(String reservationId) {
@@ -72,26 +72,22 @@ public class UserEdit_deleteReservation {
         assertEquals("The event date is not updated", reservation.getEventDate(), updatedReservation.getEventDate());
         assertEquals("The event time is not updated", reservation.getEventTime(), updatedReservation.getEventTime());
         assertEquals("The event duration is not updated", reservation.getEventDuration(), updatedReservation.getEventDuration());
-//        throw new io.cucumber.java.PendingException();
     }
 
 
     @When("the service is not available on that date")
     public void theServiceIsNotAvailableOnThatDate() {
-        // Write code here that turns the phrase above into concrete actions
-//        throw new io.cucumber.java.PendingException();
+
     }
 
     @Then("the user cannot update the service")
     public void theUserCannotUpdateTheService() {
-        // Write code here that turns the phrase above into concrete actions
-//        throw new io.cucumber.java.PendingException();
+
     }
 
 
     @When("the service is not available at time {string} or for a duration of {string}")
     public void theServiceIsNotAvailableAtTimeOrForADurationOf(String time, String duration) {
-        // Write code here that turns the phrase above into concrete actions
         if (!ServiceDB.isServiceAvailableAtTimeOrDuration(reservation.getServiceId(), time, duration)) {
             reservation = null;
         }
@@ -100,38 +96,29 @@ public class UserEdit_deleteReservation {
 
     @Then("the user cannot update this service to that time or duration")
     public void theUserCannotUpdateThisServiceToThatTimeOrDuration() {
-        // Write code here that turns the phrase above into concrete actions
         assertNull("The reservation object should be null", reservation);
 
-//        throw new io.cucumber.java.PendingException();
     }
 
 
     @When("the user wants to cancel\\/delete reservation number {string}")
     public void theUserWantsToCancelDeleteReservationNumber(String reservationId) {
-        // Write code here that turns the phrase above into concrete actions
         reservation = ReservationDB.getReservationById(reservationId);
-//        throw new io.cucumber.java.PendingException();
     }
     @When("confirms the cancellation")
     public void confirmsTheCancellation() {
-        // Write code here that turns the phrase above into concrete actions
         if (reservation != null) {
             ReservationDB.deleteReservation(reservation.getId());
             reservation = null;
         }
-//        throw new io.cucumber.java.PendingException();
     }
     @Then("the reservation is successfully canceled\\/deleted")
     public void theReservationIsSuccessfullyCanceledDeleted() {
         assertNull("The reservation was not canceled/deleted successfully", reservation);
-//        throw new io.cucumber.java.PendingException();
     }
 
     @Then("an error message is displayed indicating the reservation does not exist")
     public void anErrorMessageIsDisplayedIndicatingTheReservationDoesNotExist() {
-        // Write code here that turns the phrase above into concrete actions
         LoggerUtility.getLogger().warning("The reservation does not exist.");
-//        throw new io.cucumber.java.PendingException();
     }
 }

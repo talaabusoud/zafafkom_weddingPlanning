@@ -22,6 +22,9 @@ public class add_user_by_admin {
     private ServiceProvider serviceProvider;
     private User user;
 
+    int initialUserCount= UserDB.getUsers().size();;
+    int currentUserCount = UserDB.getUsers().size();;
+
     public add_user_by_admin() {
         myApp = new LoginToMyAppAsAdmin();
     }
@@ -58,7 +61,6 @@ public class add_user_by_admin {
             assertEquals(address, admin.getAddress());
             assertEquals(name, admin.getName());
             assertEquals(id, admin.getId());
-
 
             admin.setPassword(password);
             admin.setEmail(email);
@@ -97,35 +99,27 @@ public class add_user_by_admin {
 
     @When("selects the option to exit")
     public void selectsTheOptionToExit() {
-        // This would be the implementation for exiting the process.
         logger.info("Admin selects the option to exit. No new user added.");
     }
 
     @Then("no new user should be added and the admin returns to the admin menu")
     public void noNewUserShouldBeAddedAndTheAdminReturnsToTheAdminMenu() {
-        int initialUserCount = UserDB.getUsers().size();
-        int currentUserCount = UserDB.getUsers().size();
         assertEquals("No new user should be added", initialUserCount, currentUserCount);
         logger.info("Verified no new user added and admin returned to the admin menu.");
     }
 
-    // Implement the steps for handling invalid email.
     @When("enters an invalid email for the new admin")
     public void entersAnInvalidEmailForTheNewAdmin() {
-        // Implementation for entering an invalid email.
         logger.info("Entered an invalid email for the new admin.");
     }
 
-    // Let's assume there are additional steps for adding a service provider and a regular user, following similar patterns.
     @When("selects the service provider user type")
     public void selectsTheServiceProviderUserType() {
-        // Simulate selecting the service provider user type.
         logger.info("Admin has selected to add a new service provider.");
     }
 
     @When("enters the new service provider's name, email, phone, address, and password")
     public void entersTheNewServiceProviderSNameEmailPhoneAddressAndPassword() {
-        // Simulate entering service provider's details and validate input.
         String name = "New ServiceProvider";
         String email = "newsp@example.com";
         String phone = "0987654321";
@@ -185,7 +179,7 @@ public class add_user_by_admin {
         user.setAddress("789 User Street");
         user.setCity("User City");
         user.setStreet("Main Street");
-        user.setPassword("userPassword"); // Assuming hashPassword is a static method in UserDB for hashing passwords
+        user.setPassword("userPassword");
 
         if (TestInput.isValidName(user.getName()) && user.getEmail().contains("@") && TestInput.isValidPhone(user.getPhoneNumber())) {
             UserDB.addUser(user);
@@ -197,7 +191,15 @@ public class add_user_by_admin {
 
     @Then("the new user should be added to the system")
     public void theNewUserShouldBeAddedToTheSystem() {
-        // And for the user
+
+        User user1 = new User();
+        user1.setId(20);
+        user1.setEmail("test@example.com");
+        UserDB.addUser(user1);
+        assertTrue(UserDB.isUserExists(20, "nonexistent@example.com"));
+        assertTrue(UserDB.isUserExists(-1, "test@example.com"));
+
+
         User addedUser = UserDB.getUsers().get(UserDB.getUsers().size() - 1);
         assertNotNull("New user should not be null", addedUser);
         assertEquals("New user's email should match", "newuser@example.com", addedUser.getEmail());
@@ -206,7 +208,5 @@ public class add_user_by_admin {
     @Then("the system should prompt the admin to enter a valid email")
     public void theSystemShouldPromptTheAdminToEnterAValidEmail() {
         logger.info("enter a valid email ");
-
     }
-
 }

@@ -23,8 +23,6 @@ public class add_service_to_request_list {
     }
     @When("user click on insert order and flag is {string}")
     public void userClickOnInsertOrderAndFlagIs(String string) {
-
-
          if (string.equals(true)) assertTrue(myApp.isLoggedIn());
     }
     @Then("the field {string} should be with error")
@@ -88,8 +86,6 @@ public class add_service_to_request_list {
         else assertFalse(flag);
 
         int serviceIdToCancel =4;
-
-        // Cancel the request
         RequestToAddServiceDB.cancelRequest(serviceIdToCancel);
         Service resultService = ServiceDB.getServiceById(serviceIdToCancel);
         assertNull("Service with ID " + serviceIdToCancel + " should have been removed.", resultService);

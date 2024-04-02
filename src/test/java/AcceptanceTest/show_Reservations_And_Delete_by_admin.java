@@ -44,8 +44,9 @@ public class show_Reservations_And_Delete_by_admin {
 
     @Given("the admin is viewing the list of reservations")
     public void theAdminIsViewingTheListOfReservations() {
-        reservations = ReservationDB.getReservations(); // Simulate fetching reservations for viewing.
+        reservations = ReservationDB.getReservations();
         assertNotNull("Reservations should be available for viewing", reservations);
+
     }
 
     @When("the admin chooses to delete a reservation")
@@ -68,10 +69,9 @@ public class show_Reservations_And_Delete_by_admin {
 
     @When("the admin enters an invalid reservation ID")
     public void theAdminEntersAnInvalidReservationID() {
-        // Simulate entering an invalid ID and attempting to delete.
         String invalidId = "invalid";
-        ReservationDB.deleteReservation(invalidId); // Assume this method sets deletionSuccess appropriately.
-        message = "No reservation found with the ID: " + invalidId; // Simulate an error message.
+        ReservationDB.deleteReservation(invalidId);
+        message = "No reservation found with the ID: " + invalidId;
     }
 
     @Then("the system should inform the admin that no reservation was found with the ID")

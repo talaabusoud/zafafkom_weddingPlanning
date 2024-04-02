@@ -43,7 +43,6 @@ public class show_profile_Admin {
 
     @Given("the admin wants to update their profile information")
     public void theAdminWantsToUpdateTheirProfileInformation() {
-        // Write code here that turns the phrase above into concrete actions
     }
     @When("the admin changes their {string} to {string}")
     public void theAdminChangesTheirTo(String field, String value) {

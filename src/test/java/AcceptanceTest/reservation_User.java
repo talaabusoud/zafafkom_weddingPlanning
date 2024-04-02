@@ -47,10 +47,8 @@ public class reservation_User {
 
         ReservationDB.addReservation(testReservation);
 
-        // Verify the reservation was added by checking the list's size
         assertEquals(1, ReservationDB.getReservations().size());
 
-        // Verify the added reservation's ID matches the test reservation's ID
         assertEquals("NewID123", ReservationDB.getReservations().get(0).getId());
 
         Map<String, String> reservations = new HashMap<>();
@@ -74,10 +72,8 @@ public class reservation_User {
 
     @Given("that the user logged in")
     public void that_the_user_logged_in() {
-        // Write code here that turns the phrase above into concrete actions
         user = UserDB.getUsers().stream().filter(u -> u.getId() == 1).findFirst().orElse(null);
         assertNotNull(user);
-//        throw new io.cucumber.java.PendingException();
     }
 
     @Given("the user want to show all services in different categories")
@@ -94,31 +90,28 @@ public class reservation_User {
 
     @Given("the user with number {string} is logged in")
     public void the_user_with_number_is_logged_in(String userId) {
-        // Write code here that turns the phrase above into concrete actions
         int id = Integer.parseInt(userId);
         user = UserDB.getUsers().stream().filter(u -> u.getId() == id).findFirst().orElse(null);
         assertNotNull(user);
         System.out.println("Searching for user with ID: " + userId);
         System.out.println("Found user: " + user);
-//        throw new io.cucumber.java.PendingException();
     }
 
     @Given("the user wants to reserve a service with id {string}")
     public void the_user_wants_to_reserve_a_service_with_id(String serviceId) {
-        // Write code here that turns the phrase above into concrete actions
         int id = Integer.parseInt(serviceId);
         service = ServiceDB.getServices().stream().filter(s -> s.getId() == id).findFirst().orElse(null);
         assertNotNull(service);
-//        throw new io.cucumber.java.PendingException();
+
     }
 
     @Given("the service with id {string} is available")
     public void the_service_with_id_is_available(String serviceId) {
-        // Write code here that turns the phrase above into concrete actions
+
         int id = Integer.parseInt(serviceId);
         service = ServiceDB.getServices().stream().filter(s -> s.getId() == id && s.getStatus().equals("available")).findFirst().orElse(null);
         assertNotNull(service);
-//        throw new io.cucumber.java.PendingException();
+
     }
 
     @Given("the user enters date {string}, time {string}, and duration {string}")
@@ -127,30 +120,25 @@ public class reservation_User {
         reservationDate = date;
         reservationTime = time;
         reservationDuration = duration;
-//        throw new io.cucumber.java.PendingException();
+
     }
 
     @Then("the reservation is registered successfully")
     public void the_reservation_is_registered_successfully() {
-        // Write code here that turns the phrase above into concrete actions
-//        throw new io.cucumber.java.PendingException();
+
     }
 
     @Given("the user wants to reserve the service with id {string}, date {string}, time {string} and duration {string}")
     public void the_user_wants_to_reserve_the_service_with_id_date_time_and_duration(String serviceId, String date, String time, String duration) {
-        // Write code here that turns the phrase above into concrete actions
         this.serviceId = serviceId;
         this.reservationDate = date;
         this.reservationTime = time;
         this.reservationDuration = duration;
-//        throw new io.cucumber.java.PendingException();
     }
 
     @Given("the service with id {string} is not available on that date")
     public void theServiceWithIdIsNotAvailableOnThatDate(String serviceId) {
-        // Write code here that turns the phrase above into concrete actions
         this.isServiceAvailable = false;
-//        throw new io.cucumber.java.PendingException();
     }
 
     @Then("the user cannot reserve this service")
@@ -158,9 +146,7 @@ public class reservation_User {
         // Write code here that turns the phrase above into concrete actions
         if (!isServiceAvailable) {
             System.out.println("Service with ID " + serviceId + " is not available on " + reservationDate);
-            // You can also throw an exception or handle the unavailability scenario based on your application logic
         }
-//        throw new io.cucumber.java.PendingException();
     }
     @Then("a message appears to inform the user of the unavailability")
     public void aMessageAppearsToInformTheUserOfTheUnavailability() {
@@ -168,18 +154,15 @@ public class reservation_User {
         if (!isServiceAvailable) {
             System.out.println("Sorry, the service is not available on " + reservationDate);
         }
-//        throw new io.cucumber.java.PendingException();
     }
 
     @Given("the user wants to reserve the service with id {string}, date {string}, time {string} and duration")
     public void theUserWantsToReserveTheServiceWithIdDateTimeAndDuration(String serviceId,  String date, String time) {
-        // Write code here that turns the phrase above into concrete actions
-//        throw new io.cucumber.java.PendingException();
+
     }
     @Given("the service with id {string} is not available at time {string} or for a duration of {string}")
     public void theServiceWithIdIsNotAvailableAtTimeOrForADurationOf(String serviceId, String time, String duration) {
-        // Write code here that turns the phrase above into concrete actions
-//        throw new io.cucumber.java.PendingException();
+
     }
 
 
@@ -187,25 +170,19 @@ public class reservation_User {
 
     @Given("the user with number {string} is checking the status of reservation number {string}")
     public void the_user_with_number_is_checking_the_status_of_reservation_number(String userId, String reservationId) {
-        // Write code here that turns the phrase above into concrete actions
         reservations.put("123", "Confirmed");
         reservations.put("456", "Pending");
         reservations.put("789", "Cancelled");
         reservations.put("789", "Cancelled");
-
-        // Get the reservation status for the given reservation ID
         String status = reservations.get(reservationId);
-
-        // Display the reservation status
         System.out.println("Reservation status for reservation " + reservationId + ": " + status);
 
-//        throw new io.cucumber.java.PendingException();
+
     }
 
     @Then("the reservation status is displayed")
     public void the_reservation_status_is_displayed() {
-        // Write code here that turns the phrase above into concrete actions
-//        throw new io.cucumber.java.PendingException();
+
     }
 
     @Given("the user with number {string} wants to receive his reservation with number {string} in a ready state")
@@ -221,10 +198,8 @@ public class reservation_User {
 
         assertTrue(ReservationDB.isServiceReservedOnDate(1, "01/01/2023"));
 
-        // Test a date that does not have a reservation for service 1
         assertFalse(ReservationDB.isServiceReservedOnDate(1, "2023-01-03"));
 
-        // Test a service that does not have any reservation on the given date
         assertFalse(ReservationDB.isServiceReservedOnDate(3, "2023-01-01"));
 
 

@@ -1031,10 +1031,11 @@ public class Main {
             password = scanner.nextLine();
         }
         int id = AdminDB.getAdmins().size() + 1;
-        // Assuming ServiceProvider class has a constructor that accepts these parameters
         ServiceProvider newServiceProvider = new ServiceProvider(password,email, phone, address, name,id);
         ServiceProviderDB.addServiceProvider(newServiceProvider);
         displayServiceProvider(newServiceProvider);
+        adminMenu(admin);
+
     }
     public static void showServiceProviders() {
         List<ServiceProvider> serviceProviders = ServiceProviderDB.getServiceProviders();
@@ -1479,9 +1480,7 @@ public class Main {
         newService.setOwner(loggedInUser);
         return newService;
     }
-    // end of add new service
 
-//show and delete services
        private static void showAndDeleteServices(ServiceProvider loggedInUser) {
         List<Service> providerServices = ServiceDB.getServicesByProvider(loggedInUser.getId());
 

@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class Update_Service_Information {
     private static final Logger logger = LoggerUtility.getLogger();
     LoginToMyAppAsServiceProvider loginToMyAppAsServiceProvider;
-    Service service; // Assuming Service class
+    Service service;
 
     public Update_Service_Information() {
         loginToMyAppAsServiceProvider = new LoginToMyAppAsServiceProvider();
@@ -112,24 +112,24 @@ public class Update_Service_Information {
 
     @When("the service provider attempts to update a service with an invalid ID <InvalidID>")
     public void theServiceProviderAttemptsToUpdateAServiceWithAnInvalidIDInvalidID() {
-        this.service = ServiceDB.getServiceById(-1); // فرض أن -1 هو معرف غير صالح
+        this.service = ServiceDB.getServiceById(-1);
         assertNull(this.service, "Service should not exist for an invalid ID.");
 
     }
 
     @When("enters invalid data for the new name, type, price, phone, and image URL")
     public void entersInvalidDataForTheNewNameTypePricePhoneAndImageURL() {
-        // Write code here that turns the phrase above into concrete actions
+
 
     }
     @Then("an error message is displayed for each invalid input")
     public void anErrorMessageIsDisplayedForEachInvalidInput() {
-        // Write code here that turns the phrase above into concrete actions
+
 
     }
     @Then("the service's current information is kept unchanged")
     public void theServiceSCurrentInformationIsKeptUnchanged() {
-        // Write code here that turns the phrase above into concrete actions
+
 
     }
 

@@ -52,15 +52,9 @@ public class show_Services_And_Delete_Option_by_admin {
         service.setStatus("available");
         service.setName("Royal");
         service.setPrice(15000);
-
-        // When
         String result = service.toString();
-
-        // Then
         String expected = "Service{id=12000, location='Hebron', type='Hall', status='available', name='Royal', price=15000.0}";
         assertEquals(expected, result);
-
-
         servicesBeforeAction = ServiceDB.getServices();
         assertFalse(servicesBeforeAction.isEmpty());
 
@@ -81,7 +75,6 @@ public class show_Services_And_Delete_Option_by_admin {
     public void theUpdatedListOfServicesIsDisplayed() {
         List<Service> servicesAfterDeletion = ServiceDB.getServices();
         assertNotNull("Service list should not be null after deletion", servicesAfterDeletion);
-       // assertTrue("Service list size should decrease after deletion", servicesAfterDeletion.size() < servicesBeforeAction.size());
         ServiceDB.displayServices(servicesAfterDeletion); // This will log the updated list of services
 
 
@@ -89,7 +82,6 @@ public class show_Services_And_Delete_Option_by_admin {
 
     @When("the admin enters an invalid option")
     public void theAdminEntersAnInvalidOption() {
-        // Write code here that turns the phrase above into concrete actions
 
     }
     @Then("an error message is displayed indicating the choice is invalid")

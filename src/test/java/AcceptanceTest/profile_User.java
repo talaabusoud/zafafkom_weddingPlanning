@@ -19,7 +19,6 @@ public class profile_User {
 
     public profile_User() {
         system = new LoginAsUser();
-        //system.login();
     }
 
     @Given("the user with id {string} is logged in")

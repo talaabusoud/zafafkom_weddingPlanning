@@ -20,6 +20,8 @@ public class AdminDB {
         admins.add(new Admin("1234","mohamad", "0595425100","Hebron","Mohamad",3));
         admins.add(new Admin("1","1", "0592429100","Bethlehem","Ahmad",3));
         admins.add(new Admin("correctpassword","admin@example.com", "0595421100","Jenin","Kamal",3));
+        admins.add(new Admin("123456","mohamad@gmail.com", "0592429100","Bethlehem","Ahmad",3));
+
     }
     public static void addAdmin(String password, String email, String phone, String address, String name, int id) {
 

@@ -15,13 +15,11 @@ import static database.RequestToAddServiceDB.getServices;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class add_Service_From_Admin {
+public class add_Service_By_Admin {
     LoginToMyAppAsAdmin myApp ;
     Service service;
-    private static Logger logger = LoggerUtility.getLogger();
-    public add_Service_From_Admin()
-
-    {
+    private static final Logger logger = LoggerUtility.getLogger();
+    public add_Service_By_Admin(){
         myApp = new LoginToMyAppAsAdmin();
         myApp.login();
         AppLogger.setLevel(logger);
@@ -30,7 +28,6 @@ public class add_Service_From_Admin {
     @Given("that the administrator is logged in")
     public void thatTheAdministratorIsLoggedIn() {
          assertTrue(myApp.isLoggedIn());
-
     }
     @Given("request list have Sarvice to rent")
     public void requestListHaveSarviceToRent() {

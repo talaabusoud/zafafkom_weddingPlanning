@@ -59,24 +59,20 @@ public class LoginAsUser {
 
     public User loggInCheck(String enteredEmail, String enteredPassword) {
         for (User u : UserDB.getUsers()) {
-            logger.info("Checking user: " + u.getEmail());
-            temp = "Entered email: " + enteredEmail;
-            logger.info(temp);
-
             if (u.getEmail().equalsIgnoreCase(enteredEmail)) {
-                logger.info("Email match found.");
 
                 if (verifyPassword(enteredPassword, u.getPassword())) {
-                    temp="Password match found. Login successful for user: " + enteredEmail;
+                    temp="Password match found. Login successful for user: " + enteredEmail+"\n";
                     logger.info(temp);
-                    return u; // Successfully logged in
+                    return u;
                 } else {
-                    temp="Incorrect password for user: " + enteredEmail;
+                    temp="Incorrect password for user: " + enteredEmail+"\n";
                     logger.info(temp);
+                    return null;
                 }
             }
         }
-temp="User not found for login: " + enteredEmail;
+temp="User not found for login: " + enteredEmail+"\n";
         logger.info(temp);
         return null;
     }
