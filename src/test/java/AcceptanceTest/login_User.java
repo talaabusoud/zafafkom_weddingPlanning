@@ -1,5 +1,7 @@
 package AcceptanceTest;
 
+import database.UserDB;
+import entity.User;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -31,7 +33,7 @@ public class login_User {
     @When("the user enters valid username and password")
     public void the_user_enters_valid_username_and_password() {
 
-    
+
     }
 
     @When("the username for user is {string}")
@@ -46,8 +48,7 @@ public class login_User {
 
     @When("clicks on the login button")
     public void clicks_on_the_login_button() {
-        // Write code here that turns the phrase above into concrete actions
-        //throw new io.cucumber.java.PendingException();
+
     }
 
     @Then("the user is logged in the app successfully {string} login successfully {string}")
@@ -59,6 +60,8 @@ public class login_User {
       system.setCredentials(username, password);
       system.login();
       assertTrue(system.isLoggedIn());
+      UserDB.getUserByEmail(username);
+
 
     }
 
@@ -74,14 +77,13 @@ public class login_User {
 
       system.loggInCheck(username,password);
       assertFalse(system.isLoggedIn());
-       // throw new io.cucumber.java.PendingException();
     }
 
     @Then("the message appear to tell the user what's wrong {string} Invalid username {string}")
     public void the_message_appear_to_tell_the_user_what_s_wrong_invalid_username(String string, String string2) {
-        // Write code here that turns the phrase above into concrete actions
+
       system.errorInLogin();
-        //throw new io.cucumber.java.PendingException();
+
     }
 
     @Then("the message appear to tell the user what's wrong {string} Wrong password {string}")
@@ -108,15 +110,13 @@ public class login_User {
     public void the_user_will_not_login_with_incorrect_password() {
       system.loggInCheck(username, password);
       assertFalse(system.isLoggedIn());
+
     }
 
-    // New Scenario
     @Then("the user will not login as the user does not exist")
     public void the_user_will_not_login_as_the_user_does_not_exist() {
       system.loggInCheck(username, password);
       assertFalse(system.isLoggedIn());
-
-
     }
 
 }

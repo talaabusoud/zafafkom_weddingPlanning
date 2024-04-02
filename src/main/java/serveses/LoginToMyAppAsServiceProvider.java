@@ -36,14 +36,17 @@ public class LoginToMyAppAsServiceProvider {
     public ServiceProvider loggInCheck(String email, String password) {
 
         for (ServiceProvider a : ServiceProviderDB.getServiceProviders()) {
+            logger.warning("Checking Service Provider: " + a.getEmail());
+            String x ;
             if (a.getEmail().equalsIgnoreCase(email)) {
+                logger.warning(".");
                 if (verifyPassword(password, a.getPassword())) {
-                    String x;
-                    x="Password match found. Login successful for user: " + email+"\n";
+                    x="Password match found. Login successful for user: " + email;
                     logger.warning(x);
                     login();
                     return a;
-
+                } else {
+                    errorInLogin();
                 }
             }
 
