@@ -23,7 +23,7 @@ public class editAccount_User {
         system.login();
         user = new User();
 
-        reservation = new Reserve();
+        reservation = new Reserve(); // Assuming Reserve has a default constructor
         reservation.setServiceId(1);
     }
 
@@ -45,7 +45,12 @@ public class editAccount_User {
             assertEquals(newUserInfo.get("Address"), user.getAddress());
             assertEquals(newUserInfo.get("Street"), user.getStreet());
 
-
+            User user1 = new User();
+            user1.setId(20);
+            user1.setEmail("test@example.com");
+            UserDB.addUser(user1);
+            assertTrue(UserDB.isUserExists(20, "nonexistent@example.com"));
+            assertTrue(UserDB.isUserExists(-1, "test@example.com"));
         } else {
             throw new IllegalArgumentException("No data provided for user modification.");
         }
@@ -57,14 +62,25 @@ public class editAccount_User {
 
         assertTrue(system.validateUserInformation(user));
         System.out.println("User ensures the modification is without errors.");
-
-
     }
 
     @Then("the user's information is successfully updated")
     public void the_user_s_information_is_successfully_updated() {
         UserDB.updateUser(user);
         System.out.println("User's information is successfully updated.");
+
+
+
+        List<Reserve> reservations = user.getReservations();
+        assertNotNull(reservations);
+        assertTrue(reservations.isEmpty());
+
+        user.addReservation(reservation);
+        assertThat(user.getReservations(), hasItem(reservation));
+        user.addReservation(reservation);
+        assertTrue(user.hasReservedService(1));
+        user.addReservation(reservation);
+        assertFalse(user.hasReservedService(2));
 
         UserDB.updateUser(user);
         System.out.println("User is modifying information with new values: " + user);
@@ -78,7 +94,7 @@ public class editAccount_User {
         String username = credentials.get("username");
         String password = credentials.get("password");
 
-        }
+}
     @When("clicks the confirmation button")
     public void clicks_the_confirmation_button() {
         System.out.println("User clicks the confirmation button.");
@@ -87,25 +103,8 @@ public class editAccount_User {
 
     @And("the user's information is updated in the system")
     public void the_users_information_is_updated_in_the_system() {
-
-
         assertTrue(system.validateUserInformation(user));
         System.out.println("User's information is updated in the system.");
-
-
-////////////////////test add  reservations for user
-        List<Reserve> reservations = user.getReservations();
-        assertNotNull(reservations);
-        assertTrue(reservations.isEmpty());
-
-        user.addReservation(reservation);
-        assertThat(user.getReservations(), hasItem(reservation));
-        user.addReservation(reservation);
-        assertTrue(user.hasReservedService(1));
-        user.addReservation(reservation);
-        assertFalse(user.hasReservedService(2));
-
-
     }
 
 }

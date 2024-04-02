@@ -36,16 +36,12 @@ public class login_User {
 
     @When("the username for user is {string}")
     public void the_username_for_user_is(String username) {
-        // Write code here that turns the phrase above into concrete actions
         this.username = username;
-        //throw new io.cucumber.java.PendingException();
     }
 
     @When("the password for user is {string}")
     public void the_password_for_user_is(String password) {
-        // Write code here that turns the phrase above into concrete actions
         this.password = password;
-        //throw new io.cucumber.java.PendingException();
     }
 
     @When("clicks on the login button")
@@ -119,6 +115,8 @@ public class login_User {
     public void the_user_will_not_login_as_the_user_does_not_exist() {
       system.loggInCheck(username, password);
       assertFalse(system.isLoggedIn());
+
+
     }
 
 }
