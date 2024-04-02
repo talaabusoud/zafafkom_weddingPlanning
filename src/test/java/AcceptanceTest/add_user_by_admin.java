@@ -192,18 +192,21 @@ public class add_user_by_admin {
     @Then("the new user should be added to the system")
     public void theNewUserShouldBeAddedToTheSystem() {
 
-        User user1 = new User();
-        user1.setId(20);
-        user1.setEmail("test@example.com");
-        UserDB.addUser(user1);
-        assertTrue(UserDB.isUserExists(20, "nonexistent@example.com"));
-        assertTrue(UserDB.isUserExists(-1, "test@example.com"));
+
 
 
         User addedUser = UserDB.getUsers().get(UserDB.getUsers().size() - 1);
         assertNotNull("New user should not be null", addedUser);
         assertEquals("New user's email should match", "newuser@example.com", addedUser.getEmail());
         logger.info("Verified that the new user has been added to the system.");
+
+
+        User user1 = new User();
+        user1.setId(20);
+        user1.setEmail("test@example.com");
+        UserDB.addUser(user1);
+        assertTrue(UserDB.isUserExists(20, "nonexistent@example.com"));
+        assertTrue(UserDB.isUserExists(-1, "test@example.com"));
     }
     @Then("the system should prompt the admin to enter a valid email")
     public void theSystemShouldPromptTheAdminToEnterAValidEmail() {
